@@ -1,0 +1,55 @@
+{
+  "lastUpdated": "2026-02-27",
+  "businessName": "Carlo's Embroidery Gifts",
+  "stats": [
+    { "label": "Market Growth Rate", "value": "9-10%", "sub": "annually (PH market)", "trend": "up", "icon": "📈" },
+    { "label": "Top Platform", "value": "Shopee PH", "sub": "#2 most profitable niche 2025", "trend": "neutral", "icon": "🛒" },
+    { "label": "Peak Season", "value": "Dec & Feb", "sub": "Christmas & Valentine's", "trend": "neutral", "icon": "🎁" },
+    { "label": "Avg Profit Margin", "value": "75–85%", "sub": "on embroidered items", "trend": "up", "icon": "💰" }
+  ],
+  "trendingProducts": [
+    { "rank": 1, "product": "Embroidered Bath Towels + Name", "demand": "Very High", "priceRange": "₱350–₱500", "margin": 75, "trend": "rising", "emoji": "🔥" },
+    { "rank": 2, "product": "Custom Polo / T-Shirt Embroidery", "demand": "Very High", "priceRange": "₱400–₱700", "margin": 70, "trend": "rising", "emoji": "🔥" },
+    { "rank": 3, "product": "Embroidered Canvas Tote Bags", "demand": "High", "priceRange": "₱400–₱650", "margin": 80, "trend": "rising", "emoji": "🔥" },
+    { "rank": 4, "product": "Personalized Caps / Hats", "demand": "High", "priceRange": "₱350–₱600", "margin": 72, "trend": "rising", "emoji": "🔥" },
+    { "rank": 5, "product": "Wedding / Debut Souvenirs", "demand": "High", "priceRange": "₱150–₱400", "margin": 75, "trend": "stable", "emoji": "⚡" },
+    { "rank": 6, "product": "Baby Items (Onesie / Bib)", "demand": "High", "priceRange": "₱600–₱1,200", "margin": 78, "trend": "rising", "emoji": "⚡" },
+    { "rank": 7, "product": "Custom Hoodies / Sweatshirts", "demand": "Growing", "priceRange": "₱600–₱1,000", "margin": 68, "trend": "rising", "emoji": "📈" },
+    { "rank": 8, "product": "Embroidered Handkerchiefs", "demand": "Growing", "priceRange": "₱150–₱300", "margin": 82, "trend": "stable", "emoji": "📈" },
+    { "rank": 9, "product": "Couple Pillowcases", "demand": "Growing", "priceRange": "₱400–₱900", "margin": 76, "trend": "rising", "emoji": "📈" },
+    { "rank": 10, "product": "Embroidered Aprons", "demand": "Emerging", "priceRange": "₱400–₱900", "margin": 74, "trend": "rising", "emoji": "🌱" }
+  ],
+  "competitors": [
+    { "name": "Keepsakes.ph", "platform": "Instagram", "followers": "8.7K", "focus": "Custom gift sets (general)", "weakness": "Not embroidery-specific", "threat": "Medium" },
+    { "name": "Stitched Lab Studio", "platform": "TikTok", "followers": "Viral", "focus": "Apparel embroidery only", "weakness": "No towels, bags, or home items", "threat": "High" },
+    { "name": "Artbox Studio", "platform": "Website", "followers": "—", "focus": "Events & corporate gifts", "weakness": "No embroidery at all", "threat": "Low" },
+    { "name": "Treen Manila", "platform": "Website + Shopee", "followers": "—", "focus": "Wooden / laser-cut items", "weakness": "Zero embroidery", "threat": "Low" },
+    { "name": "Jmigs Embroidery", "platform": "Facebook (Divisoria)", "followers": "17.1K", "focus": "All embroidery items", "weakness": "Physical store only, no online shop", "threat": "Medium" }
+  ],
+  "pricingBenchmarks": {
+    "labels": ["Bath Towel", "Tote Bag", "Cap", "Polo Shirt", "Handkerchief"],
+    "competitorAvg": [450, 550, 500, 600, 250],
+    "yourSuggestedPrice": [400, 480, 420, 550, 200],
+    "materialCost": [110, 50, 100, 160, 30]
+  },
+  "seasonalDemand": [
+    { "month": "Jan", "level": 2, "label": "New Year gifts" },
+    { "month": "Feb", "level": 5, "label": "🔥 Valentine's Day" },
+    { "month": "Mar", "level": 3, "label": "Graduation season starts" },
+    { "month": "Apr", "level": 3, "label": "Summer events" },
+    { "month": "May", "level": 4, "label": "🔥 Mother's Day" },
+    { "month": "Jun", "level": 4, "label": "Graduation peak" },
+    { "month": "Jul", "level": 2, "label": "Off-peak" },
+    { "month": "Aug", "level": 2, "label": "Off-peak" },
+    { "month": "Sep", "level": 3, "label": "Ber months start" },
+    { "month": "Oct", "level": 3, "label": "Pre-Christmas orders" },
+    { "month": "Nov", "level": 4, "label": "Christmas rush begins" },
+    { "month": "Dec", "level": 5, "label": "🔥 Christmas peak" }
+  ],
+  "insights": [
+    { "icon": "🎓", "title": "Graduation Season = Next Big Wave (Mar–Jun 2026)", "body": "Graduation season is starting. Embroidered tote bags with names/batch years, custom caps, and personalized towels are peak graduation gifts. Competitors are already pivoting — Lucky Loops, SM Custom Labs, GoMommy Printz all ramping up. Get your graduation promo ready NOW.", "type": "opportunity" },
+    { "icon": "🎯", "title": "No Dominant Embroidery Brand in PH", "body": "Google AI confirmed: no single brand owns the embroidery gifting space in the Philippines. The market is fragmented — your opportunity to become the go-to name.", "type": "opportunity" },
+    { "icon": "🚀", "title": "Shopee Ranks Personalized Gifts #2 Most Profitable Niche (2025)", "body": "Per sitegiant.ph (Mar 2025), Personalized Gifts & Custom Accessories is the #2 most profitable product category to sell on Shopee Philippines this year.", "type": "market" },
+    { "icon": "📱", "title": "TikTok Embroidery Content = 383K+ Views", "body": "SM Store's embroidery TikTok got 383,800 views in 6 months. UNIQLO PH's Valentine's embroidery post went viral 2 weeks ago. Video content drives this niche.", "type": "trend" }
+  ]
+}

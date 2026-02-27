@@ -1,0 +1,140 @@
+{
+  "lastUpdated": "2026-02-26",
+  "suppliers": [
+    {
+      "id": 1, "name": "Jmigs Embroidery", "platform": "Facebook", "category": "Towels / Caps / Robes",
+      "items": "Bath towel, hand towel, face towel, handkerchief, bathrobe, caps",
+      "pricePerPc": "₱50–₱150", "minOrder": "1 pc (retail)", "location": "Divisoria, Manila",
+      "contact": "09478066335", "contactType": "phone", "rating": "⭐ 17.1K followers",
+      "priority": "TOP", "notes": "Physical store at Divisoria Mall 2F Stall 2D-01. All items free embroidery."
+    },
+    {
+      "id": 2, "name": "Towel Republic PH", "platform": "Facebook", "category": "Towels / Bags / Caps",
+      "items": "Towels, tote bags, caps, bathrobes — WITH free embroidery included",
+      "pricePerPc": "₱60–₱250", "minOrder": "1 pc", "location": "Nationwide",
+      "contact": "fb.com/TowelRepublicPH", "contactType": "facebook", "rating": "⭐ Active page",
+      "priority": "TOP", "notes": "Caps ₱220, Tote bag ₱250 WITH embroidery. Accepts bulk orders. Very active."
+    },
+    {
+      "id": 3, "name": "House of Canvas Ph", "platform": "Facebook", "category": "Tote Bags",
+      "items": "Plain canvas bags — all sizes, sublimation-ready, embroidery-ready",
+      "pricePerPc": "₱30–₱55", "minOrder": "Bulk", "location": "Nationwide",
+      "contact": "fb.com/houseofcanvasph", "contactType": "facebook", "rating": "⭐ Direct manufacturer",
+      "priority": "TOP", "notes": "Direct manufacturer and supplier of plain canvas bags. Active Facebook page with videos."
+    },
+    {
+      "id": 4, "name": "YJJ Merchandise & Co.", "platform": "Facebook", "category": "Shirts / Polos",
+      "items": "Plain shirts, polo shirts, sweatshirts, jackets, t-shirts, dri-fit, sando",
+      "pricePerPc": "₱80–₱180", "minOrder": "1 pc", "location": "La Loma, Quezon City",
+      "contact": "0966-3806-584 (Viber)", "contactType": "phone", "rating": "⭐ Wholesale & retail",
+      "priority": "HIGH", "notes": "Active supplier, open for retail and wholesale. Viber contact available."
+    },
+    {
+      "id": 5, "name": "PTPA Custom Embroidery", "platform": "Facebook", "category": "Towels / Caps",
+      "items": "Bath towels, caps, and more — embroidery-ready blanks",
+      "pricePerPc": "₱80–₱200", "minOrder": "Bulk", "location": "Tanay, Rizal",
+      "contact": "09457050606 / 09514461514", "contactType": "phone", "rating": "⭐ Verified",
+      "priority": "HIGH", "notes": "Found in Metro Manila Digital Embroidery group. Nationwide shipping available."
+    },
+    {
+      "id": 6, "name": "Joytex PH", "platform": "Facebook", "category": "Shirts",
+      "items": "Basic plain shirts — direct supplier, high quality, affordable",
+      "pricePerPc": "₱60–₱100", "minOrder": "1 pc", "location": "Philippines",
+      "contact": "fb.com/joytexph", "contactType": "facebook", "rating": "⭐ Direct brand",
+      "priority": "MEDIUM", "notes": "New brand, positioned as direct supplier of quality plain shirts."
+    },
+    {
+      "id": 7, "name": "Plain Canvas Tote (Direct Patahian)", "platform": "Shopee", "category": "Tote Bags",
+      "items": "Canvas tote bags 10x12\", 12x14\", 13x15\" — for printing, souvenir, eco bag, corporate",
+      "pricePerPc": "₱38–₱55", "minOrder": "1 pc", "location": "Shopee PH",
+      "contact": "shopee.ph", "contactType": "shopee", "rating": "4.9⭐ 22 reviews",
+      "priority": "TOP", "notes": "Search 'plain canvas tote bag direct supplier' on Shopee. Multiple sellers available."
+    },
+    {
+      "id": 8, "name": "Wholesale Tote Bag Plain (Bulk)", "platform": "Shopee", "category": "Tote Bags",
+      "items": "Canvas tote bags — wholesale bulk direct from patahian (factory direct)",
+      "pricePerPc": "₱30–₱45", "minOrder": "Bulk (₱2,000)", "location": "Shopee PH",
+      "contact": "shopee.ph/Wholesale-Price-Tote-Bag-Plain-Bulk-Order-i.181054434.18738318965", "contactType": "shopee",
+      "rating": "5.0⭐ 3 reviews", "priority": "HIGH", "notes": "Direct factory wholesale. Best price for bulk orders."
+    },
+    {
+      "id": 9, "name": "Plain Katsa Flat Tote — Direct", "platform": "Shopee", "category": "Tote Bags",
+      "items": "Flat tote bag with base — katsa canvas, eco bag",
+      "pricePerPc": "₱30–₱34", "minOrder": "1 pc", "location": "Shopee PH",
+      "contact": "shopee.ph", "contactType": "shopee", "rating": "4.8⭐ 163 reviews",
+      "priority": "HIGH", "notes": "Search 'plain katsa flat tote direct supplier' on Shopee."
+    },
+    {
+      "id": 10, "name": "Face Towel 100% Cotton Ring Spun", "platform": "Shopee", "category": "Towels",
+      "items": "Face towels 30x30cm, 100% cotton — embroidery-ready, gym, spa, hand towel",
+      "pricePerPc": "₱83–₱96", "minOrder": "1 pc", "location": "Shopee PH",
+      "contact": "shopee.ph", "contactType": "shopee", "rating": "⭐ Highly rated",
+      "priority": "HIGH", "notes": "Search 'face towel 100% cotton ring spun' on Shopee. Good quality for embroidery."
+    },
+    {
+      "id": 11, "name": "Plain Dri-Fit Polo Shirt Wholesale", "platform": "Shopee", "category": "Shirts",
+      "items": "Unisex plain polo dri-fit — wholesale available, breathable, quick-dry",
+      "pricePerPc": "₱130", "minOrder": "1 pc", "location": "Shopee PH",
+      "contact": "shopee.ph", "contactType": "shopee", "rating": "⭐ Listed",
+      "priority": "MEDIUM", "notes": "Search 'unisex plain dri-fit polo wholesale' on Shopee."
+    },
+    {
+      "id": 12, "name": "Blank Towel Collection", "platform": "Lazada", "category": "Towels",
+      "items": "Blank towels — various sizes, cotton, microfiber, coral fleece",
+      "pricePerPc": "₱8–₱30", "minOrder": "1 pc", "location": "Lazada PH",
+      "contact": "lazada.com.ph/tag/blank-towel/", "contactType": "lazada", "rating": "⭐ Multiple sellers",
+      "priority": "HIGH", "notes": "Cheapest blank towels. Good for handkerchiefs and face towels. Nationwide."
+    },
+    {
+      "id": 13, "name": "Lexan Cotton Hand Towel", "platform": "Lazada", "category": "Towels",
+      "items": "High quality cotton hand towel 35x75cm — soft, absorbent, unisex",
+      "pricePerPc": "₱62.40", "minOrder": "1 pc", "location": "Lazada PH",
+      "contact": "lazada.com.ph/tag/cotton-towel-handkerchief-unisex/", "contactType": "lazada",
+      "rating": "5.0⭐ 3,100 sold", "priority": "TOP", "notes": "Best seller on Lazada. 3,100+ sold. Proven quality for embroidery."
+    },
+    {
+      "id": 14, "name": "Cotton Canvas Tote Blank Bulk", "platform": "Lazada", "category": "Tote Bags",
+      "items": "Cotton canvas tote bag blank — 10-bag bulk pack, black or natural",
+      "pricePerPc": "₱67", "minOrder": "10 pcs (₱670)", "location": "Lazada PH",
+      "contact": "lazada.com.ph", "contactType": "lazada", "rating": "4.4⭐ 120 reviews",
+      "priority": "HIGH", "notes": "Search 'cotton canvas tote bag blank bulk' on Lazada. Good for bulk embroidery orders."
+    },
+    {
+      "id": 15, "name": "Handkerchief Wholesale", "platform": "Lazada", "category": "Handkerchiefs",
+      "items": "Cotton handkerchiefs wholesale — sets of 6 or 12 pcs, plain white",
+      "pricePerPc": "₱8–₱15", "minOrder": "1 set", "location": "Lazada PH",
+      "contact": "lazada.com.ph/tag/handkerchief-wholesale/", "contactType": "lazada",
+      "rating": "⭐ Multiple sellers", "priority": "MEDIUM", "notes": "Best price for handkerchiefs. Great for souvenir orders."
+    },
+    {
+      "id": 16, "name": "JC Canvas PH", "platform": "Website", "category": "Tote Bags",
+      "items": "Canvas tote bags with 2\" base — thick fabric, customizable",
+      "pricePerPc": "₱39–₱54", "minOrder": "10 pcs", "location": "jccanvasph.com",
+      "contact": "https://jccanvasph.com", "contactType": "website", "rating": "⭐ Direct supplier",
+      "priority": "HIGH", "notes": "₱390 for 10pcs. Prices scale with volume (20–100pcs). Website order form."
+    },
+    {
+      "id": 17, "name": "Craft Clothing PH", "platform": "Website", "category": "Tote Bags",
+      "items": "Canvas bags for branding — trendy styles, ready for logo/embroidery",
+      "pricePerPc": "Custom", "minOrder": "50 pcs", "location": "craftclothing.ph",
+      "contact": "https://craftclothing.ph", "contactType": "website", "rating": "⭐ Corporate supplier",
+      "priority": "MEDIUM", "notes": "Good for corporate giveaway orders. Min 50pcs."
+    },
+    {
+      "id": 18, "name": "Fabrica MNL", "platform": "Website", "category": "Tote Bags / Corporate",
+      "items": "Custom tote bags + embroidery service — merch, corporate, events",
+      "pricePerPc": "Custom", "minOrder": "50 pcs", "location": "fabricamnl.com",
+      "contact": "https://fabricamnl.com", "contactType": "website", "rating": "⭐ Established brand",
+      "priority": "MEDIUM", "notes": "Also offers embroidery services. Good benchmark to know competitor pricing."
+    }
+  ],
+  "facebookGroups": [
+    { "name": "PLAIN TSHIRT SUPPLIERS PHILIPPINES", "members": "73,600+", "focus": "Blank apparel suppliers — shirts, polos, hoodies", "priority": "TOP" },
+    { "name": "Polo Shirt and Plain Shirt Supplier Hub", "members": "27,600+", "focus": "Wholesale polo & plain shirt suppliers", "priority": "TOP" },
+    { "name": "Corporate Giveaways Philippines", "members": "Large", "focus": "Tote bags, towels, caps — corporate items & giveaways", "priority": "HIGH" },
+    { "name": "Affordable Wedding and Event Suppliers Manila", "members": "Large", "focus": "Souvenir suppliers for weddings, debuts, baptisms", "priority": "HIGH" },
+    { "name": "Corporate Giveaways Buyers & Suppliers PH", "members": "Active", "focus": "Bulk sourcing — tote bags, towels, caps, custom items", "priority": "HIGH" },
+    { "name": "PURCHASING GROUP & SUPPLIERS PHI.", "members": "Active", "focus": "Towel and textile suppliers — bulk & VAT-registered options", "priority": "MEDIUM" }
+  ],
+  "messageTemplate": "Hi! I'm looking for blank [ITEM] for embroidery — personalized gift/souvenir business. Can I ask:\n(1) What's your price per piece for [quantity]?\n(2) What's your minimum order?\n(3) Do you ship to [city/province]?\n(4) What materials/sizes are available?\nThank you! 😊"
+}

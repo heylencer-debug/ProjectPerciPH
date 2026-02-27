@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Percy PH — Embroidery Intelligence</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="data/data.js"></script>
+  <script src="data/feed.js"></script>
+  <script src="data/calendar.js"></script>
+  <script src="data/catalog.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- MOBILE MENU TOGGLE -->
+  <button class="mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+  <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">⚔️</span>
+      <div>
+        <div class="logo-title">Project Percy PH</div>
+        <div class="logo-sub">Embroidery Intelligence</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-label">MENU</div>
+      <a href="#" class="nav-item active" data-page="market">
+        <span class="nav-icon">📊</span> Market Analysis
+      </a>
+      <a href="#" class="nav-item" data-page="competitors">
+        <span class="nav-icon">🏆</span> Competitors
+        <span class="nav-badge" style="background:#DC2626">5</span>
+      </a>
+      <a href="#" class="nav-item" data-page="suppliers">
+        <span class="nav-icon">🏪</span> Suppliers List
+      </a>
+      <a href="#" class="nav-item" data-page="supplier-intel">
+        <span class="nav-icon">🕵️</span> Supplier Intelligence
+        <span class="nav-badge" style="background:#8B5CF6">Ethel</span>
+      </a>
+      <a href="#" class="nav-item" data-page="feed">
+        <span class="nav-icon">📱</span> Social Feed
+        <span class="nav-badge" id="feed-badge">10</span>
+      </a>
+      <div class="nav-label" style="margin-top:12px">CONTENT</div>
+      <a href="#" class="nav-item" data-page="calendar">
+        <span class="nav-icon">📅</span> Content Calendar
+      </a>
+      <a href="#" class="nav-item" data-page="captions">
+        <span class="nav-icon">✍️</span> Captions Library
+        <span class="nav-badge" style="background:#A78BFA">30</span>
+      </a>
+      <div class="nav-label" style="margin-top:12px">BUSINESS</div>
+      <a href="#" class="nav-item" data-page="pricing">
+        <span class="nav-icon">💰</span> Pricing Calculator
+      </a>
+      <a href="#" class="nav-item" data-page="catalog">
+        <span class="nav-icon">📦</span> Product Catalog
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="footer-label">LAST UPDATED</div>
+      <div class="footer-date" id="sidebar-date">—</div>
+      <div class="footer-hint">Edit data/ files to update</div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- HEADER -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <h1 class="page-title" id="page-title">Market Analysis</h1>
+        <p class="page-sub" id="page-sub">Philippines Embroidery Gift Market — Live Research Data</p>
+      </div>
+      <div class="topbar-right">
+        <div class="updated-badge">
+          <span class="badge-dot"></span>
+          Updated: <strong id="header-date">—</strong>
+        </div>
+      </div>
+    </header>
+
+    <!-- QUICK STATS BAR -->
+    <div class="quick-stats-bar" id="quick-stats-bar">
+      <div class="quick-stat">
+        <span class="quick-stat-icon">🏆</span>
+        <div class="quick-stat-content">
+          <div class="quick-stat-label">Top Product</div>
+          <div class="quick-stat-value">Bath Towels</div>
+        </div>
+      </div>
+      <div class="quick-stat">
+        <span class="quick-stat-icon">💎</span>
+        <div class="quick-stat-content">
+          <div class="quick-stat-label">Best Margin</div>
+          <div class="quick-stat-value">82% — Handkerchiefs</div>
+        </div>
+      </div>
+      <div class="quick-stat">
+        <span class="quick-stat-icon">📅</span>
+        <div class="quick-stat-content">
+          <div class="quick-stat-label">Peak Season</div>
+          <div class="quick-stat-value">Dec + Feb</div>
+        </div>
+      </div>
+      <div class="quick-stat highlight">
+        <span class="quick-stat-icon">🎓</span>
+        <div class="quick-stat-content">
+          <div class="quick-stat-label">Graduation Rush</div>
+          <div class="quick-stat-value" id="grad-countdown">2 days</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: MARKET ANALYSIS -->
+    <section id="page-market" class="page active">
+
+      <!-- SEASONAL ALERTS BANNER -->
+      <div class="seasonal-alerts-banner" id="seasonal-alerts"></div>
+
+      <!-- STAT CARDS -->
+      <div class="stats-grid" id="stats-grid"></div>
+
+      <!-- TRENDING PRODUCTS -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">🔥 Trending Products</h2>
+          <span class="card-sub">Ranked by demand & profit potential</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="products-table">
+            <thead>
+              <tr>
+                <th>#</th><th>Product</th><th>Demand</th><th>Price Range</th><th>Est. Margin</th><th>Trend</th>
+              </tr>
+            </thead>
+            <tbody id="products-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW -->
+      <div class="two-col">
+        <div class="section-card">
+          <div class="card-header">
+            <h2 class="card-title">💰 Pricing Benchmarks</h2>
+            <span class="card-sub">Competitor avg vs. your price vs. material cost</span>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="pricingChart"></canvas>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="card-header">
+            <h2 class="card-title">📅 Seasonal Demand</h2>
+            <span class="card-sub">Monthly demand intensity (Jan–Dec)</span>
+          </div>
+          <div class="chart-wrap">
+            <canvas id="seasonChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMPETITORS -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">🏆 Top Competitors</h2>
+          <span class="card-sub">Philippines embroidery & personalized gift market</span>
+        </div>
+        <div class="competitors-grid" id="competitors-grid"></div>
+      </div>
+
+      <!-- INSIGHTS -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">💡 Market Insights</h2>
+          <span class="card-sub">Key intelligence from live research</span>
+        </div>
+        <div class="insights-grid" id="insights-grid"></div>
+      </div>
+
+      <!-- PRODUCT OPPORTUNITIES (Ethel Intelligence) -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">🎯 Product Opportunities</h2>
+          <span class="card-sub">Discovered by Ethel 🕵️ — Intelligence Agent</span>
+        </div>
+        <div class="opportunities-grid" id="opportunities-grid">
+          <!-- Populated by script.js from window.PRODUCT_OPPORTUNITIES -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PAGE: COMPETITORS DEEP-DIVE -->
+    <section id="page-competitors" class="page">
+      <!-- COMPETITOR CARDS -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">🏆 Competitor Analysis</h2>
+          <span class="card-sub">Know your competition — their strengths, weaknesses, and your advantages</span>
+        </div>
+        <div class="competitor-detail-grid" id="competitor-detail-grid"></div>
+      </div>
+
+      <!-- THREAT MATRIX -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">📊 Threat Matrix</h2>
+          <span class="card-sub">X = Market Reach · Y = Product Overlap — Bigger & higher = more dangerous</span>
+        </div>
+        <div class="threat-matrix-wrap">
+          <div class="threat-matrix" id="threat-matrix">
+            <div class="matrix-quadrant q1">
+              <span class="quadrant-label">High Overlap<br>Low Reach</span>
+            </div>
+            <div class="matrix-quadrant q2">
+              <span class="quadrant-label">⚠️ DANGER ZONE<br>High Overlap + High Reach</span>
+            </div>
+            <div class="matrix-quadrant q3">
+              <span class="quadrant-label">Low Priority</span>
+            </div>
+            <div class="matrix-quadrant q4">
+              <span class="quadrant-label">Watch<br>High Reach</span>
+            </div>
+            <div class="matrix-axis-x">Market Reach →</div>
+            <div class="matrix-axis-y">Product Overlap ↑</div>
+            <!-- Dots will be injected by JS -->
+          </div>
+          <div class="matrix-legend" id="matrix-legend"></div>
+        </div>
+      </div>
+
+      <!-- MY ADVANTAGES -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">⚔️ Your Competitive Advantages</h2>
+          <span class="card-sub">Why customers should choose Project Percy PH over competitors</span>
+        </div>
+        <div class="advantages-list" id="advantages-list"></div>
+      </div>
+    </section>
+
+    <!-- PAGE: PRICING CALCULATOR -->
+    <section id="page-pricing" class="page">
+      <div class="pricing-layout">
+        <!-- CALCULATOR -->
+        <div class="section-card pricing-calculator-card">
+          <div class="card-header">
+            <h2 class="card-title">💰 Pricing Calculator</h2>
+            <span class="card-sub">Calculate costs, margins, and suggested prices</span>
+          </div>
+          <div class="pricing-calculator">
+            <div class="calc-inputs">
+              <div class="calc-field">
+                <label>Item Type</label>
+                <select id="calc-item" class="calc-select">
+                  <option value="tote_bag">🛍️ Tote Bag</option>
+                  <option value="towel">🧴 Bath Towel</option>
+                  <option value="cap">🧢 Cap</option>
+                  <option value="polo">👔 Polo Shirt</option>
+                  <option value="handkerchief">🧣 Handkerchief</option>
+                </select>
+              </div>
+              <div class="calc-field">
+                <label>Quantity</label>
+                <input type="number" id="calc-qty" class="calc-input" value="1" min="1" max="100">
+              </div>
+              <div class="calc-field">
+                <label>Embroidery Complexity</label>
+                <select id="calc-complexity" class="calc-select">
+                  <option value="simple">Simple Name/Text</option>
+                  <option value="pet">Pet Portrait (+80%)</option>
+                  <option value="face">Face Portrait (+100%)</option>
+                  <option value="couple">Couple Silhouette (+120%)</option>
+                </select>
+              </div>
+            </div>
+            <div class="calc-results" id="calc-results">
+              <!-- Results injected by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- PRICE COMPARISON BAR -->
+        <div class="section-card">
+          <div class="card-header">
+            <h2 class="card-title">📊 Price Comparison</h2>
+            <span class="card-sub">Your price vs competitor average</span>
+          </div>
+          <div class="price-comparison" id="price-comparison">
+            <!-- Comparison bar injected by JS -->
+          </div>
+        </div>
+
+        <!-- BULK PRICING TIERS -->
+        <div class="section-card">
+          <div class="card-header">
+            <h2 class="card-title">📦 Bulk Pricing Tiers</h2>
+            <span class="card-sub">Discounted rates for volume orders</span>
+          </div>
+          <div class="bulk-tiers" id="bulk-tiers">
+            <!-- Tiers injected by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: SUPPLIERS LIST -->
+    <section id="page-suppliers" class="page">
+
+      <!-- FILTERS -->
+      <div class="filters-bar">
+        <input type="text" id="supplier-search" class="filter-input" placeholder="🔍  Search supplier, item, location..." />
+        <select id="filter-category" class="filter-select">
+          <option value="">All Categories</option>
+          <option>Tote Bags</option>
+          <option>Towels</option>
+          <option>Caps</option>
+          <option>Shirts</option>
+          <option>Handkerchiefs</option>
+          <option>Robes</option>
+        </select>
+        <select id="filter-platform" class="filter-select">
+          <option value="">All Platforms</option>
+          <option>Facebook</option>
+          <option>Shopee</option>
+          <option>Lazada</option>
+          <option>Website</option>
+        </select>
+        <div class="filter-count"><span id="supplier-count">—</span> suppliers</div>
+      </div>
+
+      <!-- SUPPLIER TABLE -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">🏪 Supplier Directory</h2>
+          <span class="card-sub">Click any row to highlight · All data from live research Feb 2026</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table suppliers-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Supplier</th>
+                <th>Platform</th>
+                <th>Category</th>
+                <th>Items</th>
+                <th>Price/pc</th>
+                <th>Min Order</th>
+                <th>Location</th>
+                <th>Rating</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="suppliers-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FACEBOOK GROUPS -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">👥 Facebook Groups to Join</h2>
+          <span class="card-sub">Post your sourcing needs — suppliers will respond within 24h</span>
+        </div>
+        <div class="groups-grid" id="groups-grid"></div>
+      </div>
+
+      <!-- MESSAGE TEMPLATE -->
+      <div class="section-card">
+        <div class="card-header">
+          <h2 class="card-title">✉️ Supplier Inquiry Template</h2>
+          <span class="card-sub">Copy and send to any supplier</span>
+        </div>
+        <div class="template-wrap">
+          <textarea id="msg-template" class="template-box" readonly></textarea>
+          <button class="copy-btn" id="copy-btn" onclick="copyTemplate()">📋 Copy Message</button>
+          <div class="copy-success" id="copy-success">✅ Copied to clipboard!</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- PAGE: SUPPLIER INTELLIGENCE (Ethel) -->
+    <section id="page-supplier-intel" class="page">
+
+      <!-- HEADER & LAST UPDATED -->
+      <div class="ethel-header">
+        <div>
+          <h2 style="font-size:24px;font-weight:700;margin:0;color:#fff">🕵️ Supplier Intelligence</h2>
+          <p style="margin:4px 0 0 0;color:#94A3B8;font-size:14px">Curated by Ethel — Intelligence Agent</p>
+        </div>
+        <div class="updated-badge" style="background:#1E293B">
+          <span class="badge-dot" style="background:#8B5CF6"></span>
+          Last synced: <strong id="ethel-updated">—</strong>
+        </div>
+      </div>
+
+      <!-- STATS BAR -->
+      <div class="supplier-stats-bar" id="supplier-stats-bar">
+        <div class="supplier-stat">
+          <span class="stat-icon">🏪</span>
+          <div>
+            <div class="stat-label">Total Suppliers</div>
+            <div class="stat-value" id="total-suppliers">—</div>
+          </div>
+        </div>
+        <div class="supplier-stat">
+          <span class="stat-icon">💰</span>
+          <div>
+            <div class="stat-label">Avg Price/pc</div>
+            <div class="stat-value" id="avg-price">—</div>
+          </div>
+        </div>
+        <div class="supplier-stat">
+          <span class="stat-icon">📦</span>
+          <div>
+            <div class="stat-label">Lowest MOQ</div>
+            <div class="stat-value" id="lowest-moq">—</div>
+          </div>
+        </div>
+        <div class="supplier-stat">
+          <span class="stat-icon">🔥</span>
+          <div>
+            <div class="stat-label">Active Promos</div>
+            <div class="stat-value" id="active-promos">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILTER BUTTONS -->
+      <div class="filter-pills">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="Bags">🛍️ Bags</button>
+        <button class="filter-pill" data-filter="Caps">🧢 Caps</button>
+        <button class="filter-pill" data-filter="Polo">👔 Polo</button>
+        <button class="filter-pill" data-filter="Towels">🧴 Towels</button>
+      </div>
+
+      <!-- SUPPLIER CARDS GRID -->
+      <div class="suppliers-cards-grid" id="suppliers-cards-grid">
+        <!-- Populated by script.js from window.SUPPLIERS -->
+      </div>
+
+    </section>
+
+    <!-- PAGE: SOCIAL FEED -->
+    <section id="page-feed" class="page">
+
+      <!-- FEED CONTROLS -->
+      <div class="feed-controls">
+        <div class="feed-filters">
+          <button class="feed-filter-btn active" data-filter="all">All Posts</button>
+          <button class="feed-filter-btn" data-filter="competitor">🏆 Competitors</button>
+          <button class="feed-filter-btn" data-filter="trend">📈 Trends</button>
+          <button class="feed-filter-btn" data-filter="wedding">💍 Wedding</button>
+        </div>
+        <div class="feed-platform-filters">
+          <button class="platform-btn active" data-platform="all">All</button>
+          <button class="platform-btn" data-platform="TikTok">🎵 TikTok</button>
+          <button class="platform-btn" data-platform="Facebook">👥 Facebook</button>
+          <button class="platform-btn" data-platform="Instagram">📸 Instagram</button>
+        </div>
+      </div>
+
+      <!-- FEED + SIDEBAR LAYOUT -->
+      <div class="feed-layout">
+
+        <!-- POSTS FEED -->
+        <div class="feed-main">
+          <div class="feed-header">
+            <h2 class="card-title">📱 Competitor & Trend Feed</h2>
+            <span class="feed-count"><span id="feed-post-count">0</span> posts · Updated daily at 8AM</span>
+          </div>
+          <div id="feed-posts"></div>
+        </div>
+
+        <!-- SIDEBAR: PROFILES TO WATCH -->
+        <div class="feed-sidebar">
+          <div class="section-card">
+            <div class="card-header">
+              <h2 class="card-title">👁️ Watch List</h2>
+            </div>
+            <div id="competitor-profiles"></div>
+          </div>
+
+          <!-- INTEL SUMMARY -->
+          <div class="section-card" style="margin-top:16px">
+            <div class="card-header">
+              <h2 class="card-title">🧠 Key Insights</h2>
+            </div>
+            <div class="intel-list">
+              <div class="intel-item">
+                <span class="intel-icon">🔥</span>
+                <span>TikTok embroidery content gets <strong>100K–400K views</strong> — start filming your process</span>
+              </div>
+              <div class="intel-item">
+                <span class="intel-icon">💍</span>
+                <span>On-site embroidery at <strong>wedding fairs</strong> = zero competition in Cebu right now</span>
+              </div>
+              <div class="intel-item">
+                <span class="intel-icon">🌙</span>
+                <span><strong>Sleepwear + embroidery</strong> = 267K views. Robes/pajamas are underserved</span>
+              </div>
+              <div class="intel-item">
+                <span class="intel-icon">✈️</span>
+                <span><strong>OFW pasalubong</strong> market: worldwide shipping + personalized PH gifts = big niche</span>
+              </div>
+              <div class="intel-item">
+                <span class="intel-icon">🏷️</span>
+                <span>UNIQLO charges <strong>premium prices</strong> for same service — you can undercut by 40%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PAGE: CONTENT CALENDAR -->
+    <section id="page-calendar" class="page">
+      <div class="cal-header-bar">
+        <div class="cal-month-title" id="cal-month-title">March 2026</div>
+        <div class="cal-legend">
+          <span class="cal-leg"><span class="leg-dot pillar-art-gifting"></span>🎁 Art of Gifting</span>
+          <span class="cal-leg"><span class="leg-dot pillar-craft"></span>🧵 Craft & Process</span>
+          <span class="cal-leg"><span class="leg-dot pillar-filipino"></span>🇵🇭 Filipino Gift Culture</span>
+          <span class="cal-leg"><span class="leg-dot pillar-inspo"></span>💡 Gift Inspo</span>
+          <span class="cal-leg"><span class="leg-dot pillar-brand"></span>👤 Behind the Brand</span>
+          <span class="cal-leg"><span class="leg-dot pillar-promo"></span>📢 Promotional</span>
+        </div>
+      </div>
+      <div class="cal-layout">
+        <div class="cal-grid-wrap">
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+        <!-- SIDE PANEL FOR SELECTED DAY -->
+        <div class="cal-side-panel" id="cal-side-panel">
+          <div class="cal-panel-header">
+            <span class="cal-panel-day" id="cal-panel-day">—</span>
+            <span class="cal-panel-status" id="cal-panel-status">—</span>
+          </div>
+          <div class="cal-panel-content" id="cal-panel-content">
+            <p class="cal-panel-hint">Click a day to see content details</p>
+          </div>
+        </div>
+      </div>
+      <div class="section-card" style="margin-top:24px">
+        <div class="card-header">
+          <h2 class="card-title">📋 All Scheduled Posts</h2>
+          <span class="card-sub">Click any row to expand the full caption · Track status: Draft / Ready / Posted</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="cal-table">
+            <thead>
+              <tr><th>Day</th><th>Platform</th><th>Type</th><th>Time</th><th>Pillar</th><th>Status</th><th>Content Preview</th></tr>
+            </thead>
+            <tbody id="cal-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: CAPTIONS LIBRARY -->
+    <section id="page-captions" class="page">
+      <div class="filters-bar">
+        <input type="text" id="caption-search" class="filter-input" placeholder="🔍  Search caption, keyword, CTA..." />
+        <select id="caption-platform" class="filter-select">
+          <option value="">All Platforms</option>
+          <option>Instagram</option>
+          <option>TikTok</option>
+          <option>Facebook</option>
+        </select>
+        <select id="caption-pillar" class="filter-select">
+          <option value="">All Pillars</option>
+          <option value="tease">Tease</option>
+          <option value="process">Process</option>
+          <option value="product">Product</option>
+          <option value="giftinspo">Gift Inspo</option>
+          <option value="engagement">Engagement</option>
+          <option value="brand">Brand</option>
+          <option value="promo">Promo</option>
+        </select>
+        <div class="filter-count"><span id="caption-count">30</span> captions</div>
+      </div>
+      <div class="captions-grid" id="captions-grid"></div>
+    </section>
+
+    <!-- PAGE: PRODUCT CATALOG -->
+    <section id="page-catalog" class="page">
+      <!-- RECOMMENDATION CARD -->
+      <div class="recommendation-card" id="recommendation-card">
+        <div class="rec-header">
+          <span class="rec-icon">🎯</span>
+          <div>
+            <div class="rec-title">Which product should I sell first?</div>
+            <div class="rec-sub">Top 3 products by margin + demand score</div>
+          </div>
+        </div>
+        <div class="rec-products" id="rec-products">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- PRODUCT CARDS -->
+      <div class="catalog-grid" id="catalog-grid"></div>
+
+      <!-- COMPETITOR PRICING -->
+      <div class="section-card" style="margin-top:24px">
+        <div class="card-header">
+          <h2 class="card-title">📊 Competitor Price Comparison</h2>
+          <span class="card-sub" id="comp-insight"></span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table" id="comp-pricing-table">
+            <thead><tr id="comp-pricing-head"></tr></thead>
+            <tbody id="comp-pricing-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BUNDLE IDEAS -->
+      <div class="section-card" style="margin-top:24px">
+        <div class="card-header">
+          <h2 class="card-title">🎁 Bundle Ideas</h2>
+          <span class="card-sub">Pre-built packages that increase average order value</span>
+        </div>
+        <div class="bundles-grid" id="bundles-grid"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="mobile-nav" id="mobile-nav">
+    <a href="#" class="mobile-nav-item active" data-page="market">
+      <span class="mobile-nav-icon">📊</span>
+      <span>Market</span>
+    </a>
+    <a href="#" class="mobile-nav-item" data-page="competitors">
+      <span class="mobile-nav-icon">🏆</span>
+      <span>Rivals</span>
+    </a>
+    <a href="#" class="mobile-nav-item" data-page="suppliers">
+      <span class="mobile-nav-icon">🏪</span>
+      <span>Suppliers</span>
+    </a>
+    <a href="#" class="mobile-nav-item" data-page="feed">
+      <span class="mobile-nav-icon">📱</span>
+      <span>Feed</span>
+    </a>
+    <a href="#" class="mobile-nav-item" onclick="toggleMobileMenu(); return false;">
+      <span class="mobile-nav-icon">☰</span>
+      <span>More</span>
+    </a>
+  </nav>
+
+  <script src="app.js"></script>
+  <script>
+    // Mobile menu toggle
+    function toggleMobileMenu() {
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.getElementById('mobile-overlay');
+      const toggle = document.getElementById('mobile-menu-toggle');
+      
+      sidebar.classList.toggle('mobile-open');
+      overlay.classList.toggle('active');
+      toggle.textContent = sidebar.classList.contains('mobile-open') ? '✕' : '☰';
+    }
+    
+    // Mobile bottom nav sync with page changes
+    document.addEventListener('DOMContentLoaded', () => {
+      const mobileNavItems = document.querySelectorAll('.mobile-nav-item[data-page]');
+      const sidebarNavItems = document.querySelectorAll('.nav-item[data-page]');
+      
+      // Sync mobile nav with sidebar nav
+      mobileNavItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+          e.preventDefault();
+          const page = item.dataset.page;
+          
+          // Update active state
+          mobileNavItems.forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+          
+          // Trigger sidebar nav click
+          const sidebarItem = document.querySelector(`.nav-item[data-page="${page}"]`);
+          if (sidebarItem) {
+            sidebarItem.click();
+          }
+        });
+      });
+      
+      // Sync sidebar nav with mobile nav
+      sidebarNavItems.forEach(item => {
+        const originalClick = item.onclick;
+        item.addEventListener('click', () => {
+          const page = item.dataset.page;
+          const mobileItem = document.querySelector(`.mobile-nav-item[data-page="${page}"]`);
+          if (mobileItem) {
+            mobileNavItems.forEach(i => i.classList.remove('active'));
+            mobileItem.classList.add('active');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
