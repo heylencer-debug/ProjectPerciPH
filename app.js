@@ -5,13 +5,12 @@ let pricingChart = null;
 let seasonChart = null;
 
 // Lazy loading state - track which tabs have been loaded & rendered
+// Only lazy-load tabs whose data is in separate files
 const lazyState = {
   feed: { loaded: false, rendered: false },
   calendar: { loaded: false, rendered: false },
   captions: { loaded: false, rendered: false },
-  catalog: { loaded: false, rendered: false },
-  pricing: { loaded: false, rendered: false },
-  'supplier-intel': { loaded: false, rendered: false }
+  catalog: { loaded: false, rendered: false }
 };
 
 // ===== INIT =====
@@ -50,14 +49,26 @@ function boot() {
   renderProductsTable();
   renderCompetitors();
   renderInsights();
+  renderProductOpportunities();
   renderCharts();
-  
+
+  // Competitors deep-dive (data is in data.js, already loaded)
+  renderCompetitorDeepDive();
+  renderThreatMatrix();
+  renderAdvantages();
+
   // Suppliers page shares the same data.js - render immediately
   renderSuppliers();
   renderGroups();
   renderTemplate();
   setupFilters();
-  
+
+  // Supplier Intelligence (data is in data.js, already loaded)
+  renderSupplierIntelligence();
+
+  // Pricing Calculator (data is in data.js, already loaded)
+  initPricingCalculator();
+
   // Setup nav with lazy loading hooks
   setupNav();
   
@@ -133,16 +144,7 @@ async function lazyLoadTab(page) {
   
   // Already loaded & rendered? Skip.
   if (state.loaded && state.rendered) return;
-  
-  // Show mini loading indicator
-  const pageEl = document.getElementById('page-' + page);
-  if (!state.rendered && pageEl) {
-    pageEl.innerHTML = `<div style="text-align:center;padding:80px 20px;color:#94A3B8;">
-      <div style="font-size:32px;margin-bottom:16px">⚔️</div>
-      <div style="font-size:14px;font-weight:500">Loading ${page}...</div>
-    </div>`;
-  }
-  
+
   // Load the data script if not loaded
   if (!state.loaded) {
     await loadScript(page);
@@ -162,26 +164,22 @@ function loadScript(page) {
     const scriptMap = {
       feed: 'data/feed.js',
       calendar: 'data/calendar.js',
-      captions: 'data/calendar.js', // captions uses same data as calendar
-      catalog: 'data/catalog.js',
-      pricing: 'data/catalog.js', // pricing uses catalog data
-      'supplier-intel': 'data/feed.js' // supplier intel uses feed data for now
+      captions: 'data/calendar.js',
+      catalog: 'data/catalog.js'
     };
-    
+
     const src = scriptMap[page];
     if (!src) {
-      resolve(); // No script needed
+      resolve();
       return;
     }
-    
+
     // Check if already loaded by checking for the global
     const globalMap = {
       feed: 'FEED_DATA',
       calendar: 'CALENDAR_DATA',
       captions: 'CAPTIONS_DATA',
-      catalog: 'CATALOG_DATA',
-      pricing: 'PRICING_DATA',
-      'supplier-intel': 'SUPPLIERS'
+      catalog: 'CATALOG_DATA'
     };
     
     if (window[globalMap[page]]) {
@@ -229,15 +227,6 @@ function renderTab(page) {
         renderBundles();
         renderRecommendations();
       }
-      break;
-    case 'pricing':
-      if (window.PRICING_DATA) {
-        initPricingCalculator();
-      }
-      break;
-    case 'supplier-intel':
-      if (window.PRODUCT_OPPORTUNITIES) renderProductOpportunities();
-      if (window.SUPPLIERS) renderSupplierIntelligence();
       break;
   }
 }
@@ -649,90 +638,7 @@ function setupFeedFilters() {
 }
 
 // ===== CONTENT CALENDAR =====
-function renderCalendar() {
-  const cd = window.CALENDAR_DATA;
-  document.getElementById('cal-month-title').textContent = cd.month + ' ' + cd.year;
-  const grid = document.getElementById('cal-grid');
-
-  // Day labels
-  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-  let html = days.map(d => `<div class="cal-day-label">${d}</div>`).join('');
-
-  // Get first day of month & total days
-  const firstDay = new Date(cd.year, cd.monthNum - 1, 1).getDay();
-  const totalDays = new Date(cd.year, cd.monthNum, 0).getDate();
-
-  // Build lookup maps
-  const postsByDay = {};
-  cd.posts.forEach(p => {
-    if (!postsByDay[p.day]) postsByDay[p.day] = [];
-    postsByDay[p.day].push(p);
-  });
-  const holidaysByDay = {};
-  cd.holidays.forEach(h => { holidaysByDay[h.date] = h; });
-
-  // Empty cells before day 1
-  for (let i = 0; i < firstDay; i++) html += `<div class="cal-cell empty"></div>`;
-
-  // Day cells
-  for (let d = 1; d <= totalDays; d++) {
-    const posts = postsByDay[d] || [];
-    const holiday = holidaysByDay[d];
-    const hasHoliday = !!holiday;
-    const hasPosts = posts.length > 0;
-    let cls = 'cal-cell';
-    if (hasHoliday) cls += ' has-holiday';
-    else if (hasPosts) cls += ' has-posts';
-
-    const pips = posts.map(p => {
-      const pc = { Instagram: 'pip-instagram', TikTok: 'pip-tiktok', Facebook: 'pip-facebook' }[p.platform] || '';
-      const icon = { Instagram: '📸', TikTok: '🎵', Facebook: '👥' }[p.platform] || '';
-      return `<div class="cal-post-pip ${pc}">${icon} ${p.type || ''}</div>`;
-    }).join('');
-
-    html += `<div class="${cls}">
-      <div class="cal-date">${d}</div>
-      ${hasHoliday ? `<div class="cal-holiday-tag">${holiday.name}</div>` : ''}
-      ${pips}
-    </div>`;
-  }
-
-  grid.innerHTML = html;
-}
-
-function renderCalendarTable() {
-  const cd = window.CALENDAR_DATA;
-  const platIcon = { Instagram: '📸', TikTok: '🎵', Facebook: '👥' };
-  const platBadge = { Instagram: 'cp-instagram', TikTok: 'cp-tiktok', Facebook: 'cp-facebook' };
-  const pillarColors = { tease:'pillar-tease', process:'pillar-process', product:'pillar-product',
-    giftinspo:'pillar-giftinspo', engagement:'pillar-engagement', brand:'pillar-brand', promo:'pillar-promo' };
-
-  const tbody = document.getElementById('cal-body');
-  let rows = '';
-  cd.posts.forEach((p, i) => {
-    const rowId = 'calrow-' + i;
-    const preview = (p.caption || '').split('\n')[0].substring(0, 60) + '…';
-    rows += `<tr class="cal-table-row" onclick="toggleCalRow(${i})" style="cursor:pointer">
-      <td><strong style="color:#E94560">Mar ${p.day}</strong><br><small style="color:#A0AEC0">${p.time}</small></td>
-      <td><span class="caption-platform ${platBadge[p.platform]}">${platIcon[p.platform]} ${p.platform}</span></td>
-      <td style="font-size:12px;color:#4A5568">${p.type || '—'}</td>
-      <td style="font-size:12px;color:#718096">${p.time}</td>
-      <td><span class="caption-pillar-tag ${pillarColors[p.pillar] || ''}">${p.pillar}</span></td>
-      <td style="font-size:12.5px;color:#4A5568">${preview}</td>
-      <td style="font-size:12px;color:#718096;max-width:200px">${(p.visualNote||'').substring(0,60)}${p.visualNote&&p.visualNote.length>60?'…':''}</td>
-    </tr>
-    <tr id="${rowId}" class="cal-caption-expand">
-      <td colspan="7" style="padding:0">
-        <div style="padding:14px 20px 16px">
-          <div class="cal-caption-box">${(p.caption||'').replace(/\n/g,'<br>')}</div>
-          ${p.visualNote ? `<div class="cal-visual-note">${p.visualNote}</div>` : ''}
-          ${p.cta ? `<div><span class="cal-cta-tag">CTA: ${p.cta}</span></div>` : ''}
-        </div>
-      </td>
-    </tr>`;
-  });
-  tbody.innerHTML = rows;
-}
+// (V2 renderCalendar and renderCalendarTable are defined below)
 
 function toggleCalRow(i) {
   const el = document.getElementById('calrow-' + i);
@@ -1415,5 +1321,5 @@ function renderSupplierIntelligence() {
   });
 }
 
-// ===== NAV UPDATES =====
-// Override setupNav to include new pages
+// ===== STARTUP =====
+document.addEventListener('DOMContentLoaded', init);
