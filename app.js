@@ -4,6 +4,16 @@ let suppliersData = null;
 let pricingChart = null;
 let seasonChart = null;
 
+// Lazy loading state - track which tabs have been loaded & rendered
+const lazyState = {
+  feed: { loaded: false, rendered: false },
+  calendar: { loaded: false, rendered: false },
+  captions: { loaded: false, rendered: false },
+  catalog: { loaded: false, rendered: false },
+  pricing: { loaded: false, rendered: false },
+  'supplier-intel': { loaded: false, rendered: false }
+};
+
 // ===== INIT =====
 async function init() {
   // Use embedded globals (works with file://) or fallback to fetch (works on server)
@@ -26,11 +36,13 @@ async function init() {
         <div style="color:#E94560;font-size:22px;font-weight:700;margin-bottom:12px">⚠️ Data load error</div>
         <p style="color:#4A5568">Could not load data files. Try opening via Chrome directly.</p>
       </div>`;
+      hideLoader();
     }
   }
 }
 
 function boot() {
+  // ONLY render the active tab (market) on initial load
   setDates();
   updateGradCountdown();
   renderSeasonalAlerts();
@@ -39,21 +51,26 @@ function boot() {
   renderCompetitors();
   renderInsights();
   renderCharts();
+  
+  // Suppliers page shares the same data.js - render immediately
   renderSuppliers();
   renderGroups();
   renderTemplate();
-  if (window.FEED_DATA)        { renderFeed(); renderCompetitorProfiles(); }
-  if (window.CALENDAR_DATA)    { renderCalendar(); renderCalendarTable(); }
-  if (window.CAPTIONS_DATA)    { renderCaptions(); setupCaptionFilters(); }
-  if (window.CATALOG_DATA)     { renderCatalog(); renderCompetitorPricing(); renderBundles(); renderRecommendations(); }
-  if (window.COMPETITOR_DETAIL){ renderCompetitorDeepDive(); renderThreatMatrix(); renderAdvantages(); }
-  if (window.PRICING_DATA)     { initPricingCalculator(); }
-  // Ethel Intelligence
-  if (window.PRODUCT_OPPORTUNITIES) { renderProductOpportunities(); }
-  if (window.SUPPLIERS)        { renderSupplierIntelligence(); }
-  setupNav();
   setupFilters();
-  setupFeedFilters();
+  
+  // Setup nav with lazy loading hooks
+  setupNav();
+  
+  // Hide loader after critical render
+  hideLoader();
+}
+
+function hideLoader() {
+  const loader = document.getElementById('app-loader');
+  if (loader) {
+    loader.classList.add('hidden');
+    setTimeout(() => loader.remove(), 300);
+  }
 }
 
 // ===== DATES =====
@@ -67,33 +84,162 @@ function formatDate(d) {
   return date.toLocaleDateString('en-PH', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
-// ===== NAV =====
+// ===== NAV WITH LAZY LOADING =====
 function setupNav() {
+  const titles = {
+    market:         ['Market Analysis',         'Philippines Embroidery Gift Market — Live Research Data'],
+    competitors:    ['Competitor Deep-Dive',    'Know your competition — Intel that keeps you ahead'],
+    suppliers:      ['Suppliers List',          'Wholesale & retail sources for embroidery blanks — Feb 2026'],
+    'supplier-intel': ['Supplier Intelligence', 'Curated supplier data from Ethel 🕵️ — Intelligence Agent'],
+    feed:           ['Social Feed',             'Competitor posts, viral trends & market signals — updated daily'],
+    calendar:       ['Content Calendar',        'March 2026 posting schedule — 30 planned posts across all platforms'],
+    captions:       ['Captions Library',        '30 ready-to-use captions for Instagram, TikTok & Facebook'],
+    pricing:        ['Pricing Calculator',      'Calculate costs, margins & competitive pricing in real-time'],
+    catalog:        ['Product Catalog',         'Your SKUs, pricing tiers, margins & competitor comparison']
+  };
+
   document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', e => {
+    item.addEventListener('click', async (e) => {
       e.preventDefault();
       const page = item.dataset.page;
+      
+      // Update nav state
       document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
       item.classList.add('active');
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-' + page).classList.add('active');
-      const titles = {
-        market:         ['Market Analysis',         'Philippines Embroidery Gift Market — Live Research Data'],
-        competitors:    ['Competitor Deep-Dive',    'Know your competition — Intel that keeps you ahead'],
-        suppliers:      ['Suppliers List',          'Wholesale & retail sources for embroidery blanks — Feb 2026'],
-        'supplier-intel': ['Supplier Intelligence', 'Curated supplier data from Ethel 🕵️ — Intelligence Agent'],
-        feed:           ['Social Feed',             'Competitor posts, viral trends & market signals — updated daily'],
-        calendar:       ['Content Calendar',        'March 2026 posting schedule — 30 planned posts across all platforms'],
-        captions:       ['Captions Library',        '30 ready-to-use captions for Instagram, TikTok & Facebook'],
-        pricing:        ['Pricing Calculator',      'Calculate costs, margins & competitive pricing in real-time'],
-        catalog:        ['Product Catalog',         'Your SKUs, pricing tiers, margins & competitor comparison']
-      };
+      
+      // Update header
       document.getElementById('page-title').textContent = titles[page][0];
       document.getElementById('page-sub').textContent = titles[page][1];
-      if (page === 'suppliers') document.getElementById('header-date').textContent = formatDate(suppliersData.lastUpdated);
-      else document.getElementById('header-date').textContent = formatDate(marketData.lastUpdated);
+      if (page === 'suppliers') {
+        document.getElementById('header-date').textContent = formatDate(suppliersData.lastUpdated);
+      } else {
+        document.getElementById('header-date').textContent = formatDate(marketData.lastUpdated);
+      }
+      
+      // Lazy load tab data if needed
+      await lazyLoadTab(page);
+      
+      // Show the page
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
     });
   });
+}
+
+// Lazy load tab data & render on first activation
+async function lazyLoadTab(page) {
+  const state = lazyState[page];
+  if (!state) return; // Tab doesn't need lazy loading (already rendered in boot)
+  
+  // Already loaded & rendered? Skip.
+  if (state.loaded && state.rendered) return;
+  
+  // Show mini loading indicator
+  const pageEl = document.getElementById('page-' + page);
+  if (!state.rendered && pageEl) {
+    pageEl.innerHTML = `<div style="text-align:center;padding:80px 20px;color:#94A3B8;">
+      <div style="font-size:32px;margin-bottom:16px">⚔️</div>
+      <div style="font-size:14px;font-weight:500">Loading ${page}...</div>
+    </div>`;
+  }
+  
+  // Load the data script if not loaded
+  if (!state.loaded) {
+    await loadScript(page);
+    state.loaded = true;
+  }
+  
+  // Render the tab content
+  if (!state.rendered) {
+    renderTab(page);
+    state.rendered = true;
+  }
+}
+
+// Dynamically load a data script
+function loadScript(page) {
+  return new Promise((resolve, reject) => {
+    const scriptMap = {
+      feed: 'data/feed.js',
+      calendar: 'data/calendar.js',
+      captions: 'data/calendar.js', // captions uses same data as calendar
+      catalog: 'data/catalog.js',
+      pricing: 'data/catalog.js', // pricing uses catalog data
+      'supplier-intel': 'data/feed.js' // supplier intel uses feed data for now
+    };
+    
+    const src = scriptMap[page];
+    if (!src) {
+      resolve(); // No script needed
+      return;
+    }
+    
+    // Check if already loaded by checking for the global
+    const globalMap = {
+      feed: 'FEED_DATA',
+      calendar: 'CALENDAR_DATA',
+      captions: 'CAPTIONS_DATA',
+      catalog: 'CATALOG_DATA',
+      pricing: 'PRICING_DATA',
+      'supplier-intel': 'SUPPLIERS'
+    };
+    
+    if (window[globalMap[page]]) {
+      resolve(); // Already loaded
+      return;
+    }
+    
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => resolve();
+    script.onerror = () => {
+      console.error(`Failed to load ${src}`);
+      reject();
+    };
+    document.head.appendChild(script);
+  });
+}
+
+// Render tab content after data is loaded
+function renderTab(page) {
+  switch(page) {
+    case 'feed':
+      if (window.FEED_DATA) {
+        renderFeed();
+        renderCompetitorProfiles();
+        setupFeedFilters();
+      }
+      break;
+    case 'calendar':
+      if (window.CALENDAR_DATA) {
+        renderCalendar();
+        renderCalendarTable();
+      }
+      break;
+    case 'captions':
+      if (window.CAPTIONS_DATA) {
+        renderCaptions();
+        setupCaptionFilters();
+      }
+      break;
+    case 'catalog':
+      if (window.CATALOG_DATA) {
+        renderCatalog();
+        renderCompetitorPricing();
+        renderBundles();
+        renderRecommendations();
+      }
+      break;
+    case 'pricing':
+      if (window.PRICING_DATA) {
+        initPricingCalculator();
+      }
+      break;
+    case 'supplier-intel':
+      if (window.PRODUCT_OPPORTUNITIES) renderProductOpportunities();
+      if (window.SUPPLIERS) renderSupplierIntelligence();
+      break;
+  }
 }
 
 // ===== STATS =====
