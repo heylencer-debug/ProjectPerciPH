@@ -1890,8 +1890,75 @@ function setupSupplierTabs() {
       var target = document.getElementById('supplier-tab-' + tab.dataset.tab);
       if (target) target.style.display = 'block';
       if (tab.dataset.tab === 'products') loadSupplierProducts();
+      if (tab.dataset.tab === 'source-by-product') renderReferenceProducts();
     });
   });
+}
+
+// ===== SOURCE BY PRODUCT =====
+var REFERENCE_PRODUCTS = [
+  { name: 'Pocket Puffy Bag', emoji: '👜', category: 'bag', keywords: ['puffy bag', 'poofy bag', 'bubble pouch', 'puffy pouch'] },
+  { name: 'Dumpling Bag', emoji: '🥟', category: 'bag', keywords: ['dumpling bag', 'cloud bag', 'half moon bag'] },
+  { name: 'Colourblock Pouch', emoji: '🎨', category: 'bag', keywords: ['colourblock pouch', 'color block pouch', 'nylon pouch wholesale'] },
+  { name: 'Micro Dumpling Bag', emoji: '🛍️', category: 'bag', keywords: ['micro bag', 'mini dumpling bag', 'mini cloud bag'] },
+  { name: 'Glazed Poofy Bag', emoji: '✨', category: 'bag', keywords: ['glazed bag', 'shiny poofy bag', 'glossy pouch bag'] },
+  { name: 'Leather Flat Pouch', emoji: '🗂️', category: 'bag', keywords: ['leather flat pouch', 'leather clutch blank', 'flat leather bag'] },
+  { name: 'Canvas Tote Bag', emoji: '🛒', category: 'bag', keywords: ['blank canvas tote', 'canvas tote wholesale', 'cotton tote bag blank'] },
+  { name: 'Crossbody Mini Bag', emoji: '👝', category: 'bag', keywords: ['mini crossbody bag', 'crossbody bag blank', 'small shoulder bag wholesale'] },
+  { name: 'Bamboo Tumbler', emoji: '🎋', category: 'tumbler', keywords: ['bamboo tumbler', 'bamboo cup wholesale', 'eco tumbler blank'] },
+  { name: 'Stainless Tumbler', emoji: '🥤', category: 'tumbler', keywords: ['blank stainless tumbler', 'engravable tumbler', 'steel cup wholesale'] },
+  { name: 'Glass Cup with Straw', emoji: '🧃', category: 'tumbler', keywords: ['glass cup straw wholesale', 'glass tumbler blank', 'iridescent glass cup'] },
+  { name: 'Classic Twill Cap', emoji: '🧢', category: 'cap', keywords: ['blank twill cap', 'embroidery baseball cap blank', '6 panel cap wholesale'] },
+  { name: 'Vintage Distressed Cap', emoji: '🎩', category: 'cap', keywords: ['vintage washed cap blank', 'distressed cap wholesale', 'dad hat blank'] },
+  { name: 'Bucket Hat', emoji: '🪣', category: 'cap', keywords: ['blank bucket hat wholesale', 'bucket hat blank embroidery', 'plain bucket hat'] },
+  { name: 'Compact Pocket Mirror', emoji: '🪞', category: 'accessory', keywords: ['blank compact mirror', 'pocket mirror wholesale', 'engravable mirror'] },
+  { name: 'Leather Keychain', emoji: '🔑', category: 'accessory', keywords: ['blank leather keychain', 'engravable key fob', 'leather keyring wholesale'] },
+  { name: 'Zip Wallet', emoji: '👛', category: 'wallet', keywords: ['blank zip wallet wholesale', 'blank leather wallet', 'zip pouch wallet blank'] },
+  { name: 'Patch Iron-On Set', emoji: '🎯', category: 'patch', keywords: ['custom iron on patch wholesale', 'embroidery patch blank', 'sew on patch OEM'] }
+];
+
+function renderReferenceProducts() {
+  var grid = document.getElementById('reference-products-grid');
+  if (!grid) return;
+  grid.innerHTML = REFERENCE_PRODUCTS.map(function(p) {
+    return '<div class="reference-product-card" onclick="loadSourceListings(' + JSON.stringify(p).replace(/"/g, '&quot;') + ')">'
+      + '<div class="ref-emoji">' + p.emoji + '</div>'
+      + '<div class="ref-name">' + p.name + '</div>'
+      + '<div class="ref-category">' + p.category.toUpperCase() + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+async function loadSourceListings(product) {
+  var panel = document.getElementById('source-listings-panel');
+  var title = document.getElementById('source-panel-title');
+  var grid = document.getElementById('source-listings-grid');
+  if (!panel || !grid) return;
+  title.textContent = product.emoji + ' ' + product.name + ' — Supplier Listings';
+  panel.style.display = 'block';
+  grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:32px">Searching Supabase...</p>';
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  try {
+    var url = SB_URL + '/rest/v1/supplier_products?category=eq.' + encodeURIComponent(product.category) + '&order=scraped_at.desc&limit=32';
+    var res = await fetch(url, { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } });
+    var all = await res.json();
+    if (!Array.isArray(all) || all.length === 0) {
+      grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:32px">No listings yet for this product. Ethel will scrape more at 8AM.</p>';
+      return;
+    }
+    // Filter by keywords
+    var keywords = product.keywords.map(function(k) { return k.toLowerCase(); });
+    var filtered = all.filter(function(p) {
+      var name = (p.product_name || '').toLowerCase();
+      return keywords.some(function(k) { return name.includes(k.split(' ')[0]) || name.includes(k.split(' ')[1] || ''); });
+    });
+    var products = filtered.length > 0 ? filtered : all.slice(0, 16);
+    grid.innerHTML = products.map(function(p) { return renderSupplierProductCard(p); }).join('');
+  } catch(e) {
+    grid.innerHTML = '<p style="color:#DC2626;text-align:center;padding:32px">Error loading listings. Check console.</p>';
+    console.error(e);
+  }
 }
 
 // ===== STARTUP =====
