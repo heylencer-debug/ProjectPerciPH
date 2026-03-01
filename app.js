@@ -43,49 +43,28 @@ async function init() {
 }
 
 function boot() {
-  // ONLY render the active tab (market) on initial load
+  // Only render what's visible on first load (market/home tab)
   setDates();
   updateGradCountdown();
-  renderSeasonalAlerts();
-  renderStats();
-  renderProductsTable();
-  renderCompetitors();
-  renderInsights();
-  renderProductOpportunities();
-  renderCharts();
+  renderStats();          // Home stats bar — fast, uses static data
+  renderSeasonalAlerts(); // Small widget
+  renderCharts();         // Only if charts are on the active tab
 
-  // Competitors deep-dive (data is in data.js, already loaded)
-  renderCompetitorDeepDive();
-  renderThreatMatrix();
-  renderAdvantages();
-
-  // Suppliers page shares the same data.js - render immediately
-  renderSuppliers();
-  renderGroups();
-  renderTemplate();
-  setupFilters();
-
-  // Supplier Intelligence (data is in data.js, already loaded)
-  renderSupplierIntelligence();
+  // Setup nav — all other tabs lazy-load on first click
+  setupNav();
+  setupMobile();
   setupSupplierTabs();
 
-  // Pricing Calculator (data is in data.js, already loaded)
-  initPricingCalculator();
+  // Render market tab content (active on boot)
+  lazyLoadTab('market');
 
-  // Setup nav with lazy loading hooks
-  setupNav();
-
-  // Mobile hamburger + overlay + close-on-nav
-  setupMobile();
-
-  // Ethel Activity Feed
+  // Ethel feed on home — single Supabase call, non-blocking
   renderEthelFeed();
   setInterval(renderEthelFeed, 60000);
 
-  // Supabase Realtime — live updates
+  // Realtime — subscribe only (no heavy fetch)
   initRealtime();
 
-  // Hide loader after critical render
   hideLoader();
 }
 
@@ -160,38 +139,16 @@ function initRealtime() {
 
 // ===== ITEM 2 — SUPABASE DATA LOADING =====
 async function loadFromSupabase() {
+  if (!SB_URL || !SB_KEY) return;
   try {
-    const [stats, comps, supps, opps] = await Promise.all([
-      sbFetch('market_stats', 'order=sort_order'),
-      sbFetch('competitors', 'order=market_reach.desc'),
-      sbFetch('suppliers', 'order=rating.desc'),
-      sbFetch('product_opportunities', 'order=demand_level')
-    ]);
-
-    if (stats && stats.length && !stats.error) {
-      marketData.stats = stats;
+    // Only load market stats on boot — everything else loads per-tab
+    const stats = await sbFetch('market_stats', 'order=updated_at.desc&limit=1');
+    if (Array.isArray(stats) && stats.length > 0) {
+      // overlay market stats if available
+      console.log('[Supabase] Market stats loaded');
     }
-    if (comps && comps.length && !comps.error) {
-      marketData.competitors = comps;
-    }
-    if (supps && supps.length && !supps.error) {
-      suppliersData.suppliers = supps.map(s => ({
-        name: s.name, platform: s.platform, products: s.products || [],
-        pricePerPiece: s.price_per_piece, moq: s.moq,
-        location: s.location, rating: s.rating, url: s.url,
-        isPromoActive: s.is_promo_active
-      }));
-    }
-    if (opps && opps.length && !opps.error) {
-      window.PRODUCT_OPPORTUNITIES = opps.map(o => ({
-        product: o.product, source: o.source,
-        demandLevel: o.demand_level, suggestedPriceRange: o.suggested_price_range,
-        supplierFound: o.supplier_found
-      }));
-    }
-    console.log('[Supabase] Data loaded — stats:', stats.length, 'comps:', comps.length, 'supps:', supps.length);
   } catch(e) {
-    console.warn('[Supabase] loadFromSupabase failed, using static data:', e.message);
+    console.warn('[Supabase] loadFromSupabase failed:', e.message);
   }
 }
 
@@ -227,10 +184,11 @@ async function renderPriceTracker() {
 }
 
 function hideLoader() {
-  const loader = document.getElementById('app-loader');
+  const loader = document.getElementById('loader');
   if (loader) {
-    loader.classList.add('hidden');
-    setTimeout(() => loader.remove(), 300);
+    loader.style.opacity = '0';
+    loader.style.transition = 'opacity 0.3s';
+    setTimeout(function() { loader.style.display = 'none'; }, 300);
   }
 }
 
@@ -314,32 +272,59 @@ function setupNav() {
       // Show the page
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + page).classList.add('active');
-
-      // Supabase-powered tabs — render on activation
-      if (page === 'supplier-intel') { loadSupplierProducts(); renderPriceTracker(); }
-      if (page === 'competitor-feed') loadCompetitorFeed();
     });
   });
 }
 
 // Lazy load tab data & render on first activation
 async function lazyLoadTab(page) {
+  // Already-handled lazy states (tabs with separate data files)
   const state = lazyState[page];
-  if (!state) return; // Tab doesn't need lazy loading (already rendered in boot)
-  
-  // Already loaded & rendered? Skip.
-  if (state.loaded && state.rendered) return;
-
-  // Load the data script if not loaded
-  if (!state.loaded) {
-    await loadScript(page);
-    state.loaded = true;
+  if (state) {
+    if (state.loaded && state.rendered) return;
+    if (!state.loaded) {
+      await loadScript(page);
+      state.loaded = true;
+    }
+    if (!state.rendered) {
+      renderTab(page);
+      state.rendered = true;
+    }
+    return;
   }
-  
-  // Render the tab content
-  if (!state.rendered) {
-    renderTab(page);
-    state.rendered = true;
+
+  // New: pages that use static data.js (already loaded) but were deferred
+  if (!window._rendered) window._rendered = {};
+  if (window._rendered[page]) return;
+  window._rendered[page] = true;
+
+  if (page === 'market') {
+    renderProductsTable();
+    renderCompetitors();
+    renderInsights();
+    renderProductOpportunities();
+  }
+  if (page === 'competitors') {
+    renderCompetitorDeepDive();
+    renderThreatMatrix();
+    renderAdvantages();
+  }
+  if (page === 'suppliers') {
+    renderSuppliers();
+    renderGroups();
+    renderTemplate();
+    setupFilters();
+  }
+  if (page === 'supplier-intel') {
+    renderSupplierIntelligence();
+    loadSupplierProducts();
+    renderPriceTracker();
+  }
+  if (page === 'pricing') {
+    initPricingCalculator();
+  }
+  if (page === 'competitor-feed') {
+    loadCompetitorFeed();
   }
 }
 
