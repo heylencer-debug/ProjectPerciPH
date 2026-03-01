@@ -5,23 +5,26 @@
 // Populated by Ethel 🕵️ — last updated: auto
 
 window.SUPPLIERS = [
+  // ── BAGS & POUCHES ──────────────────────────────────────────────────────────
   {
     "name": "JC Canvas PH",
     "platform": "Website + Shopee",
-    "products": ["Blank canvas tote bags", "Eco bags"],
+    "category": "Bags & Pouches",
+    "products": ["Blank canvas tote bags", "Eco bags", "Canvas pouches"],
     "pricePerPiece": "₱65/pc (20-100pc)",
     "moq": 10,
-    "location": "Cebu/PH",
+    "location": "Cebu, PH 🔥 LOCAL",
     "rating": 4.6,
     "url": "https://jccanvasph.com",
     "isPromoActive": false,
     "priority": "HIGH",
-    "notes": "🔥 CEBU LOCAL — Low MOQ (10pcs), established manufacturer since 2017"
+    "notes": "CEBU LOCAL — lowest MOQ (10pcs), established since 2017. Best first contact for tote bags."
   },
   {
-    "name": "Craft Clothing",
+    "name": "Craft Clothing PH",
     "platform": "Website + Shopee",
-    "products": ["Blank canvas totes", "Blank polo shirts (dri-fit)", "Promotional items"],
+    "category": "Bags & Pouches",
+    "products": ["Blank canvas totes", "Canvas pouches", "Eco bags"],
     "pricePerPiece": "₱80-150/pc",
     "moq": 12,
     "location": "Manila, NCR",
@@ -29,111 +32,211 @@ window.SUPPLIERS = [
     "url": "https://www.craftclothing.ph",
     "isPromoActive": false,
     "priority": "HIGH",
-    "notes": "Eco-friendly options, free shipping ₱50K+ NCR orders, 12pc MOQ for stock"
-  },
-  {
-    "name": "Shirt Planet",
-    "platform": "Website",
-    "products": ["Blank polo shirts", "Blank T-shirts", "Apparel wholesale"],
-    "pricePerPiece": "₱100-180/pc",
-    "moq": "Flexible",
-    "location": "Philippines",
-    "rating": 4.6,
-    "url": "https://shirtplanet.com.ph",
-    "isPromoActive": false,
-    "priority": "HIGH",
-    "notes": "Fast 1-2 day shipping, no business license required, wholesale focus"
-  },
-  {
-    "name": "Lazada PH — Face Towel Wholesale",
-    "platform": "Lazada",
-    "products": ["12pc 100% cotton plain white blank face towels"],
-    "pricePerPiece": "₱60-100/pc",
-    "moq": 12,
-    "location": "Online (Lazada)",
-    "rating": 4.4,
-    "url": "https://www.lazada.com.ph/tag/face-towel-wholesale/",
-    "isPromoActive": false,
-    "priority": "HIGH",
-    "notes": "Affordable cotton blank towels, ideal for embroidery, 12pc sets"
-  },
-  {
-    "name": "Acobs Global",
-    "platform": "Website",
-    "products": ["Blank canvas bags", "Blank caps and hats", "Corporate giveaways"],
-    "pricePerPiece": "₱60-100/pc",
-    "moq": 50,
-    "location": "Metro Manila",
-    "rating": "N/A",
-    "url": "https://acobsglobal.com",
-    "isPromoActive": false,
-    "priority": "MEDIUM",
-    "notes": "Good for caps/hats wholesale, 50pc MOQ"
+    "notes": "Free shipping ₱50K+ NCR orders. Good for canvas pouches similar to BTV colourblock style."
   },
   {
     "name": "Fabrica MNL",
     "platform": "Website",
-    "products": ["Blank canvas totes", "Blank polo shirts", "Blank caps (200pc MOQ)"],
-    "pricePerPiece": "₱70-130/pc totes, ₱120-180/pc polos",
+    "category": "Bags & Pouches",
+    "products": ["Blank canvas totes (6x8\" to 16x18\")", "Nylon flat pouches"],
+    "pricePerPiece": "₱70-130/pc",
     "moq": 100,
     "location": "Mandaluyong, Metro Manila",
     "rating": 4.5,
     "url": "https://www.fabricamnl.com",
     "isPromoActive": false,
     "priority": "MEDIUM",
-    "notes": "Direct manufacturer, good quality, high MOQ (100pc totes, 200pc caps)"
+    "notes": "Direct manufacturer. Good quality but high MOQ (100pc totes). Best for scaling up."
   },
   {
-    "name": "MARJHIN Printing Shop",
-    "platform": "Shopee",
-    "products": ["Blank sublimation patches", "Blank YALEX shirts/polos"],
-    "pricePerPiece": "₱10/patch (100pc), ₱108-185/pc shirts",
-    "moq": 100,
-    "location": "Shopee PH",
-    "rating": 4.8,
-    "url": "https://shopee.ph/marjhinprintingshop",
-    "isPromoActive": false,
-    "priority": "MEDIUM",
-    "notes": "3K+ sold, good for patches and affordable blank shirts"
-  },
-  {
-    "name": "Newasia Garment Co.",
-    "platform": "Website",
-    "products": ["Blank polo shirts (plain styles)"],
-    "pricePerPiece": "₱120-200/pc",
-    "moq": 100,
-    "location": "Philippines (serves int'l brands)",
-    "rating": 4.7,
-    "url": "https://www.newasiagarment.com",
-    "isPromoActive": false,
-    "priority": "MEDIUM",
-    "notes": "Premium manufacturer (supplies Uniqlo, Zara), 100pc MOQ"
-  },
-  {
-    "name": "Tutuban Center / TutuBuy",
-    "platform": "Website + Physical",
-    "products": ["Wholesale blank bags", "Blank caps", "Fabrics, tailoring items"],
-    "pricePerPiece": "₱40-120/pc (haggling)",
-    "moq": "10-50pc (varies)",
-    "location": "Divisoria, Manila + Online",
+    "name": "Divisoria / Tutuban",
+    "platform": "Physical (in-person)",
+    "category": "Bags & Pouches",
+    "products": ["Blank canvas bags", "Nylon pouches", "Zipper bags", "Fabric pouches"],
+    "pricePerPiece": "₱40-120/pc",
+    "moq": "10-50pc (varies by stall)",
+    "location": "Divisoria, Manila",
     "rating": 4.2,
     "url": "https://www.tutubancenter.com",
     "isPromoActive": false,
     "priority": "MEDIUM",
-    "notes": "Divisoria wholesale, best for in-person sourcing trips with cash"
+    "notes": "Sourcing trip required. Bring cash. Best prices PH-side for bags + pouches in small batches."
   },
+  {
+    "name": "Alibaba — Puffy/Dumpling-style Pouches",
+    "platform": "Alibaba (China OEM)",
+    "category": "Bags & Pouches",
+    "products": ["Cloud dumpling pouches (PU leather)", "Colourblock nylon pouches", "Puffy mini bags"],
+    "pricePerPiece": "$2-6/pc (equiv ₱115-350)",
+    "moq": "36-100pc",
+    "location": "Guangdong / Taiwan via Alibaba",
+    "rating": 4.3,
+    "url": "https://www.alibaba.com/showroom/dumpling-bag.html",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Closest match to BTV Dumpling Bag / Bubble Pouch style. Search: 'puffy mini bag OEM' or 'cloud pouch wholesale'. MOQ 36pc+ for blanks."
+  },
+
+  // ── TUMBLERS & DRINKWARE ────────────────────────────────────────────────────
   {
     "name": "Gifts Central Philippines",
     "platform": "Website",
-    "products": ["Blank tote bags", "Tumblers", "Promotional items"],
-    "pricePerPiece": "₱80-150/pc (est.)",
-    "moq": "50-100pc (est.)",
+    "category": "Tumblers & Drinkware",
+    "products": ["Blank stainless tumblers", "Glass tumblers", "Promotional drinkware"],
+    "pricePerPiece": "₱80-200/pc",
+    "moq": "50pc (est.)",
     "location": "Nationwide PH",
     "rating": 4.5,
     "url": "https://www.giftscentral.com.ph",
     "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Best PH-side starting point for tumblers. Contact for exact MOQ + laser engraving capability."
+  },
+  {
+    "name": "Shopee PH — Blank Tumblers",
+    "platform": "Shopee",
+    "category": "Tumblers & Drinkware",
+    "products": ["Blank stainless tumblers (engravable)", "Glass cups with straw", "Bamboo tumblers"],
+    "pricePerPiece": "₱60-180/pc",
+    "moq": "1-20pc",
+    "location": "Various PH sellers",
+    "rating": 4.3,
+    "url": "https://shopee.ph/search?keyword=blank+tumbler+wholesale",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Lowest MOQ entry point. Search: 'blank engraving tumbler' or 'bamboo tumbler wholesale'. Good for sampling before bulk."
+  },
+  {
+    "name": "Alibaba — Iridescent Tumblers",
+    "platform": "Alibaba (China OEM)",
+    "category": "Tumblers & Drinkware",
+    "products": ["Iridescent straw cups", "Glitter tumbler cups", "Color-shift drinkware (sublimation-ready)"],
+    "pricePerPiece": "$1.41-$5/pc (equiv ₱80-290)",
+    "moq": "5-200pc",
+    "location": "China via Alibaba",
+    "rating": 4.4,
+    "url": "https://www.alibaba.com/showroom/iridescent-tumbler-cup.html",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Best match for BTV Beyond Boulevard tumbler style. Search: 'iridescent tumbler wholesale' or 'color shift cup OEM'. Filter by Trade Assurance."
+  },
+
+  // ── CAPS & HATS ─────────────────────────────────────────────────────────────
+  {
+    "name": "Acobs Global",
+    "platform": "Website",
+    "category": "Caps & Hats",
+    "products": ["Blank baseball caps", "Blank twill caps", "Blank bucket hats"],
+    "pricePerPiece": "₱60-120/pc",
+    "moq": 50,
+    "location": "Metro Manila",
+    "rating": 4.3,
+    "url": "https://acobsglobal.com",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Solid PH-side cap supplier. 50pc MOQ. Good for BTV twill cap / distressed cap style blanks."
+  },
+  {
+    "name": "Fabrica MNL — Caps",
+    "platform": "Website",
+    "category": "Caps & Hats",
+    "products": ["Blank caps (structured + unstructured)", "Blank bucket hats"],
+    "pricePerPiece": "₱80-150/pc",
+    "moq": 200,
+    "location": "Mandaluyong, Metro Manila",
+    "rating": 4.5,
+    "url": "https://www.fabricamnl.com/custom-cap.html",
+    "isPromoActive": false,
     "priority": "MEDIUM",
-    "notes": "Trusted supplier, wide range, contact for quotes"
+    "notes": "High MOQ (200pc) — best for scale. Manufacturer-direct pricing."
+  },
+  {
+    "name": "Alibaba — Blank Twill / Vintage Caps",
+    "platform": "Alibaba (China OEM)",
+    "category": "Caps & Hats",
+    "products": ["Blank 6-panel twill caps", "Vintage distressed caps", "Corduroy caps", "Bucket hats"],
+    "pricePerPiece": "$1.20-$3.50/pc (equiv ₱70-200)",
+    "moq": "50-100pc",
+    "location": "China via Alibaba",
+    "rating": 4.4,
+    "url": "https://www.alibaba.com/showroom/blank-baseball-cap.html",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Best match for BTV Classic Twill Cap and Vintage Distressed Cap. Search: 'blank embroidery cap OEM 6-panel twill' or 'vintage washed cap wholesale'."
+  },
+
+  // ── WALLETS & CARD HOLDERS ──────────────────────────────────────────────────
+  {
+    "name": "Shopee PH — Blank Wallets",
+    "platform": "Shopee",
+    "category": "Wallets & Card Holders",
+    "products": ["Blank canvas wallets", "Blank PU leather card holders", "Blank zip pouches (wallet-size)"],
+    "pricePerPiece": "₱40-120/pc",
+    "moq": "5-20pc",
+    "location": "Various PH sellers",
+    "rating": 4.2,
+    "url": "https://shopee.ph/search?keyword=blank+wallet+wholesale+embroidery",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Lowest entry for wallets. Search: 'blank canvas wallet' or 'blank zip pouch engravable'. Sample before committing bulk."
+  },
+  {
+    "name": "Alibaba — Leather Flat Pouches / Wallets",
+    "platform": "Alibaba (China OEM)",
+    "category": "Wallets & Card Holders",
+    "products": ["Blank leather flat pouches", "PU leather card holders", "Slim wallets (engravable)"],
+    "pricePerPiece": "$1.50-$5/pc (equiv ₱87-290)",
+    "moq": "50-100pc",
+    "location": "China via Alibaba",
+    "rating": 4.4,
+    "url": "https://www.alibaba.com/showroom/blank-leather-pouch.html",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Best match for BTV Leather Flat Pouch style. Search: 'blank leather flat pouch OEM' or 'engravable slim wallet wholesale'. Filter Trade Assurance."
+  },
+
+  // ── ACCESSORIES (Mirrors, Keyrings, Candle Holders) ─────────────────────────
+  {
+    "name": "Shopee PH — Pocket Mirrors",
+    "platform": "Shopee",
+    "category": "Accessories",
+    "products": ["Blank pocket mirrors (round/square)", "Compact mirrors", "Engravable mirrors"],
+    "pricePerPiece": "₱25-80/pc",
+    "moq": "10-50pc",
+    "location": "Various PH sellers",
+    "rating": 4.3,
+    "url": "https://shopee.ph/search?keyword=blank+pocket+mirror+wholesale",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Easiest to source PH-side. Search: 'pocket mirror blank engrave wholesale'. BTV pocket mirror dupe viable at ₱25-50/pc blank."
+  },
+  {
+    "name": "Lazada PH — Keyrings & Accessories",
+    "platform": "Lazada",
+    "category": "Accessories",
+    "products": ["Blank leather keyrings", "Metal keychain blanks", "Engravable key fobs"],
+    "pricePerPiece": "₱15-60/pc",
+    "moq": "10-50pc",
+    "location": "Various PH sellers",
+    "rating": 4.2,
+    "url": "https://www.lazada.com.ph/tag/blank-keychain-wholesale/",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Good for engraving blanks. Search: 'blank leather keychain' or 'metal keyring engravable'. Very low MOQ."
+  },
+  {
+    "name": "Alibaba — Accessories Blanks",
+    "platform": "Alibaba (China OEM)",
+    "category": "Accessories",
+    "products": ["Blank compact mirrors (engravable)", "Leather key fobs", "Candle tins (engravable)", "Metal card holders"],
+    "pricePerPiece": "$0.50-$2.50/pc (equiv ₱29-145)",
+    "moq": "50-200pc",
+    "location": "China via Alibaba",
+    "rating": 4.3,
+    "url": "https://www.alibaba.com/showroom/blank-compact-mirror.html",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Best for BTV pocket mirror + candle holder blanks. Search: 'blank compact mirror engrave OEM' or 'engravable candle tin wholesale'. Good margins at scale."
   }
 ];
 
@@ -241,7 +344,7 @@ window.PRODUCT_OPPORTUNITIES = [
 ];
 
 window.MARKET_DATA = {
-  "lastUpdated": "2026-02-27",
+  "lastUpdated": "2026-03-01",
   "businessName": "Project Percy PH",
   "tagline": "Personalized Embroidery Gifts PH | BTV × Blanc Nue inspired",
   "stats": [
@@ -299,7 +402,7 @@ window.MARKET_DATA = {
 
 // ===== COMPETITOR DEEP-DIVE DATA =====
 window.COMPETITOR_DETAIL = {
-  lastUpdated: "2026-02-27",
+  lastUpdated: "2026-03-01",
   competitors: [
     {
       id: 1,
@@ -403,7 +506,7 @@ window.COMPETITOR_DETAIL = {
 
 // ===== PRICING CALCULATOR DATA =====
 window.PRICING_DATA = {
-  lastUpdated: "2026-02-27",
+  lastUpdated: "2026-03-01",
   items: {
     tote_bag: {
       name: "Tote Bag",
@@ -466,7 +569,7 @@ window.PRICING_DATA = {
 
 // ===== SEASONAL ALERTS DATA =====
 window.SEASONAL_ALERTS = {
-  lastUpdated: "2026-02-27",
+  lastUpdated: "2026-03-01",
   currentMonth: 2, // February
   alerts: [
     {
@@ -476,7 +579,7 @@ window.SEASONAL_ALERTS = {
       urgencyLabel: "🔥 Hot Now",
       description: "Last Valentine's orders this week — final rush for late gifters",
       action: "Accept rush orders until Feb 28, charge ₱50 rush fee",
-      endsAt: "2026-02-28",
+      endsAt: "2026-03-01",
       daysLeft: 1
     },
     {
@@ -503,7 +606,7 @@ window.SEASONAL_ALERTS = {
 };
 
 window.SUPPLIERS_DATA = {
-  "lastUpdated": "2026-02-26",
+  "lastUpdated": "2026-03-01",
   "suppliers": [
     { "id": 1, "name": "Jmigs Embroidery", "platform": "Facebook", "category": "Towels / Caps / Robes", "items": "Bath towel, hand towel, face towel, handkerchief, bathrobe, caps", "pricePerPc": "₱50–₱150", "minOrder": "1 pc (retail)", "location": "Divisoria, Manila", "contact": "facebook.com/p/Jmigs-embroidery-100063576168941", "contactType": "facebook", "rating": "⭐ 17.1K followers", "priority": "TOP", "notes": "Physical store: Divisoria Mall 2F Stall 2D-01. All items free embroidery." },
     { "id": 2, "name": "Towel Republic PH", "platform": "Facebook", "category": "Towels / Bags / Caps", "items": "Towels, tote bags, caps, bathrobes — WITH free embroidery included", "pricePerPc": "₱60–₱250", "minOrder": "1 pc", "location": "Nationwide", "contact": "facebook.com/TowelRepublicPH", "contactType": "facebook", "rating": "⭐ Active page", "priority": "TOP", "notes": "Caps ₱220, Tote ₱250 with embroidery. Very active." },
