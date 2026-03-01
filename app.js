@@ -1585,20 +1585,22 @@ function renderSupplierIntelligence() {
   
   const grid = document.getElementById('suppliers-cards-grid');
   grid.innerHTML = suppliers.map(sup => `
-    <div class="supplier-intel-card" data-products="${(sup.products || []).join(',')}">
+    <div class="supplier-intel-card" data-category="${sup.category || ''}" data-products="${(sup.products || []).join(',')}">
       ${sup.isPromoActive ? '<div class="promo-banner">🔥 PROMO ACTIVE</div>' : ''}
-      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:10px">
-        <h3 style="font-size:16px;font-weight:700;color:#1E293B;margin:0">${sup.name}</h3>
-        ${platformBadge[sup.platform] || ''}
+      <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:6px">
+        <h3 style="font-size:15px;font-weight:700;color:#1E293B;margin:0">${sup.name}</h3>
+        ${sup.priority === 'HIGH' ? '<span style="background:#10B981;color:#fff;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700">⭐ TOP</span>' : ''}
       </div>
+      ${sup.category ? `<div style="font-size:11px;color:#8B5CF6;font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">${sup.category}</div>` : ''}
+      <div style="font-size:12px;color:#64748B;margin-bottom:8px">📍 ${sup.location} &nbsp;|&nbsp; 🏪 ${sup.platform}</div>
       <div style="margin-bottom:10px">
-        ${(sup.products || []).map(p => `<span style="background:#F1F5F9;color:#475569;padding:3px 8px;border-radius:4px;font-size:11px;margin-right:6px;display:inline-block;margin-bottom:4px">${p}</span>`).join('')}
+        ${(sup.products || []).map(p => `<span style="background:#F1F5F9;color:#475569;padding:3px 8px;border-radius:4px;font-size:11px;margin-right:4px;display:inline-block;margin-bottom:4px">${p}</span>`).join('')}
       </div>
-      <div style="font-size:13px;color:#64748B;margin-bottom:6px"><strong>Price/pc:</strong> ${sup.pricePerPiece}</div>
-      <div style="font-size:13px;color:#64748B;margin-bottom:6px"><strong>MOQ:</strong> ${sup.moq}</div>
-      <div style="font-size:13px;color:#64748B;margin-bottom:10px"><strong>Location:</strong> ${sup.location}</div>
+      <div style="font-size:13px;color:#64748B;margin-bottom:4px"><strong>Price/pc:</strong> ${sup.pricePerPiece}</div>
+      <div style="font-size:13px;color:#64748B;margin-bottom:8px"><strong>MOQ:</strong> ${sup.moq}</div>
+      ${sup.notes ? `<div style="font-size:12px;color:#475569;background:#F8FAFC;padding:8px;border-radius:6px;margin-bottom:10px;border-left:3px solid #8B5CF6">${sup.notes}</div>` : ''}
       <div style="display:flex;justify-content:space-between;align-items:center">
-        <div style="color:#F59E0B;font-size:14px">★ ${sup.rating}</div>
+        <div style="color:#F59E0B;font-size:13px">★ ${sup.rating}</div>
         <a href="${sup.url}" target="_blank" class="view-store-btn">View Store →</a>
       </div>
     </div>
@@ -1611,7 +1613,7 @@ function renderSupplierIntelligence() {
       btn.classList.add('active');
       const filter = btn.dataset.filter;
       document.querySelectorAll('.supplier-intel-card').forEach(card => {
-        if (filter === 'all' || card.dataset.products.includes(filter)) {
+        if (filter === 'all' || card.dataset.category === filter) {
           card.style.display = 'block';
         } else {
           card.style.display = 'none';
