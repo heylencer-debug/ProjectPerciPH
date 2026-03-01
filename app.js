@@ -67,6 +67,7 @@ function boot() {
 
   // Supplier Intelligence (data is in data.js, already loaded)
   renderSupplierIntelligence();
+  setupSupplierTabs();
 
   // Pricing Calculator (data is in data.js, already loaded)
   initPricingCalculator();
@@ -128,6 +129,16 @@ function initRealtime() {
   client.channel('prices-ch').on('postgres_changes',
     { event: '*', schema: 'public', table: 'competitor_prices' }, () => {
       if (document.getElementById('price-tracker-body')) renderPriceTracker();
+    }).subscribe();
+
+  client.channel('supplier-products-ch').on('postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'supplier_products' }, function(payload) {
+      var grid = document.getElementById('supplier-products-grid');
+      var page = document.getElementById('page-supplier-intel');
+      if (grid && page && page.classList.contains('active')) {
+        var card = renderSupplierProductCard(payload.new);
+        grid.insertAdjacentHTML('afterbegin', card);
+      }
     }).subscribe();
 
   client.channel('competitor-posts-ch').on('postgres_changes',
@@ -273,7 +284,7 @@ function setupNav() {
       document.getElementById('page-' + page).classList.add('active');
 
       // Supabase-powered tabs — render on activation
-      if (page === 'supplier-intel') renderPriceTracker();
+      if (page === 'supplier-intel') { loadSupplierProducts(); renderPriceTracker(); }
       if (page === 'competitor-feed') loadCompetitorFeed();
     });
   });
@@ -1768,6 +1779,87 @@ async function populateCFFilters() {
     sel.innerHTML = '<option value="">All Competitors</option>'
       + competitors.map(function(c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
   } catch(e) {}
+}
+
+// ===== SUPPLIER PRODUCT CATALOG =====
+var SP_OFFSET = 0;
+var SP_LIMIT = 32;
+
+async function loadSupplierProducts() {
+  SP_OFFSET = 0;
+  var grid = document.getElementById('supplier-products-grid');
+  if (grid) grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">Loading...</p>';
+  await fetchSupplierProducts(true);
+}
+
+async function fetchSupplierProducts(reset) {
+  var category = document.getElementById('sp-category-filter') ? document.getElementById('sp-category-filter').value : '';
+  var platform = document.getElementById('sp-platform-filter') ? document.getElementById('sp-platform-filter').value : '';
+  var customization = document.getElementById('sp-customization-filter') ? document.getElementById('sp-customization-filter').value : '';
+  var url = SB_URL + '/rest/v1/supplier_products?order=scraped_at.desc&limit=' + SP_LIMIT + '&offset=' + SP_OFFSET;
+  if (category) url += '&category=eq.' + encodeURIComponent(category);
+  if (platform) url += '&platform=eq.' + encodeURIComponent(platform);
+  if (customization) url += '&customization=eq.' + encodeURIComponent(customization);
+  try {
+    var res = await fetch(url, { headers: SB_HDRS });
+    var products = await res.json();
+    var grid = document.getElementById('supplier-products-grid');
+    var countEl = document.getElementById('sp-count');
+    if (!Array.isArray(products)) {
+      if (grid) grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">No products yet. Ethel is scraping...</p>';
+      return;
+    }
+    if (products.length === 0 && reset) {
+      if (grid) grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">No products yet. Check back after Ethel runs at 8AM.</p>';
+      if (countEl) countEl.textContent = '0';
+      return;
+    }
+    var html = products.map(function(p) { return renderSupplierProductCard(p); }).join('');
+    if (reset) { if (grid) grid.innerHTML = html; } else { if (grid) grid.innerHTML += html; }
+    if (countEl) countEl.textContent = (SP_OFFSET + products.length).toString();
+    var btn = document.getElementById('sp-load-more');
+    if (btn) btn.style.display = products.length < SP_LIMIT ? 'none' : 'inline-block';
+    SP_OFFSET += products.length;
+  } catch(e) { console.error('Supplier products error:', e); }
+}
+
+function renderSupplierProductCard(p) {
+  var platformClass = 'sp-platform-' + (p.platform || 'alibaba');
+  var platformLabel = (p.platform || '').toUpperCase();
+  var imageHtml = p.image_url
+    ? '<img src="' + p.image_url + '" alt="' + (p.product_name || '') + '" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=sp-image-placeholder>\u{1F6CD}\uFE0F</div>\'">'
+    : '<div class="sp-image-placeholder">\u{1F6CD}\uFE0F</div>';
+  var viewBtn = p.product_url
+    ? '<a href="' + p.product_url + '" target="_blank" class="sp-view-btn">View Listing \u2192</a>'
+    : '';
+  return '<div class="supplier-product-card">'
+    + '<div class="sp-image-wrap">' + imageHtml + '</div>'
+    + '<div class="sp-info">'
+    + '<span class="sp-platform-badge ' + platformClass + '">' + platformLabel + '</span>'
+    + '<div class="sp-name">' + (p.product_name || '\u2014') + '</div>'
+    + '<div class="sp-price">' + (p.price || '\u2014') + '</div>'
+    + (p.moq ? '<div class="sp-moq">MOQ: ' + p.moq + '</div>' : '')
+    + (p.customization ? '<div class="sp-customization">\u2713 ' + p.customization + '</div>' : '')
+    + viewBtn
+    + '</div>'
+    + '</div>';
+}
+
+async function loadMoreSupplierProducts() {
+  await fetchSupplierProducts(false);
+}
+
+function setupSupplierTabs() {
+  document.querySelectorAll('.supplier-tab').forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.supplier-tab').forEach(function(t) { t.classList.remove('active'); });
+      document.querySelectorAll('.supplier-tab-content').forEach(function(c) { c.style.display = 'none'; });
+      tab.classList.add('active');
+      var target = document.getElementById('supplier-tab-' + tab.dataset.tab);
+      if (target) target.style.display = 'block';
+      if (tab.dataset.tab === 'products') loadSupplierProducts();
+    });
+  });
 }
 
 // ===== STARTUP =====
