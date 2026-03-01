@@ -20,6 +20,7 @@ async function init() {
   if (window.MARKET_DATA && window.SUPPLIERS_DATA) {
     marketData = window.MARKET_DATA;
     suppliersData = window.SUPPLIERS_DATA;
+    await loadFromSupabase(); // overlay with live Supabase data if available
     boot();
   } else {
     try {
@@ -72,9 +73,128 @@ function boot() {
 
   // Setup nav with lazy loading hooks
   setupNav();
+
+  // Supabase Realtime — live updates
+  initRealtime();
   
   // Hide loader after critical render
   hideLoader();
+}
+
+// ===== SUPABASE CONFIG =====
+// Loaded from data/sb.js (gitignored key file)
+const SB_URL = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.url) || '';
+const SB_KEY = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.key) || '';
+const SB_HDRS = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+
+async function sbFetch(table, query) {
+  try {
+    const res = await fetch(`${SB_URL}/rest/v1/${table}${query ? '?' + query : ''}`, { headers: SB_HDRS });
+    return await res.json();
+  } catch(e) { console.warn('[Supabase]', table, e.message); return []; }
+}
+
+// ===== ITEM 1 — SUPABASE REALTIME =====
+function initRealtime() {
+  if (typeof window === 'undefined' || !window.supabase) return;
+  const client = window.supabase.createClient(SB_URL, SB_KEY);
+
+  client.channel('btv').on('postgres_changes',
+    { event: '*', schema: 'public', table: 'btv_products' }, () => {
+      const p = document.getElementById('page-btv');
+      if (p && p.classList.contains('active')) renderBtvCatalog();
+    }).subscribe();
+
+  client.channel('intel').on('postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'intel_feed' }, () => {
+      const badge = document.querySelector('[data-page="supplier-intel"] .nav-badge');
+      if (badge) {
+        const orig = badge.textContent;
+        badge.textContent = 'NEW'; badge.style.background = '#E94560';
+        setTimeout(() => { badge.textContent = orig; badge.style.background = '#8B5CF6'; }, 5000);
+      }
+    }).subscribe();
+
+  client.channel('competitors-ch').on('postgres_changes',
+    { event: '*', schema: 'public', table: 'competitors' }, () => {
+      const p = document.getElementById('page-market');
+      if (p && p.classList.contains('active')) renderCompetitors();
+    }).subscribe();
+
+  client.channel('prices-ch').on('postgres_changes',
+    { event: '*', schema: 'public', table: 'competitor_prices' }, () => {
+      if (document.getElementById('price-tracker-body')) renderPriceTracker();
+    }).subscribe();
+
+  console.log('[Realtime] Dashboard subscribed ✅');
+}
+
+// ===== ITEM 2 — SUPABASE DATA LOADING =====
+async function loadFromSupabase() {
+  try {
+    const [stats, comps, supps, opps] = await Promise.all([
+      sbFetch('market_stats', 'order=sort_order'),
+      sbFetch('competitors', 'order=market_reach.desc'),
+      sbFetch('suppliers', 'order=rating.desc'),
+      sbFetch('product_opportunities', 'order=demand_level')
+    ]);
+
+    if (stats && stats.length && !stats.error) {
+      marketData.stats = stats;
+    }
+    if (comps && comps.length && !comps.error) {
+      marketData.competitors = comps;
+    }
+    if (supps && supps.length && !supps.error) {
+      suppliersData.suppliers = supps.map(s => ({
+        name: s.name, platform: s.platform, products: s.products || [],
+        pricePerPiece: s.price_per_piece, moq: s.moq,
+        location: s.location, rating: s.rating, url: s.url,
+        isPromoActive: s.is_promo_active
+      }));
+    }
+    if (opps && opps.length && !opps.error) {
+      window.PRODUCT_OPPORTUNITIES = opps.map(o => ({
+        product: o.product, source: o.source,
+        demandLevel: o.demand_level, suggestedPriceRange: o.suggested_price_range,
+        supplierFound: o.supplier_found
+      }));
+    }
+    console.log('[Supabase] Data loaded — stats:', stats.length, 'comps:', comps.length, 'supps:', supps.length);
+  } catch(e) {
+    console.warn('[Supabase] loadFromSupabase failed, using static data:', e.message);
+  }
+}
+
+// ===== ITEM 5 — COMPETITOR PRICE TRACKER =====
+async function renderPriceTracker() {
+  const tbody = document.getElementById('price-tracker-body');
+  if (!tbody) return;
+  const cat = document.getElementById('price-cat-filter')?.value || '';
+  const platform = document.getElementById('price-platform-filter')?.value || '';
+  let q = 'order=competitor.asc,price.asc&limit=100';
+  if (cat) q += `&category=eq.${cat}`;
+  if (platform) q += `&platform=eq.${platform}`;
+  const rows = await sbFetch('competitor_prices', q);
+  if (!rows.length || rows.error) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:#94A3B8">No price data yet — Ethel adds entries daily at 7AM PH</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(r => {
+    const gap = (r.our_price && r.price) ? r.our_price - r.price : null;
+    const gapHtml = gap === null ? '—'
+      : gap >= 0 ? `<span style="color:#10B981;font-weight:600">+S$${gap.toFixed(2)}</span>`
+      : `<span style="color:#EF4444;font-weight:600">-S$${Math.abs(gap).toFixed(2)}</span>`;
+    return `<tr>
+      <td><strong>${r.competitor}</strong></td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.product}">${r.product}</td>
+      <td><span class="badge">${r.category || '—'}</span></td>
+      <td>S$${r.price?.toFixed(2) || '—'}</td>
+      <td>${r.our_price ? 'S$' + r.our_price.toFixed(2) : '—'}</td>
+      <td>${gapHtml}</td>
+      <td style="color:#64748B;font-size:11px">${r.platform || '—'}</td>
+    </tr>`;
+  }).join('');
 }
 
 function hideLoader() {
@@ -135,6 +255,9 @@ function setupNav() {
       // Show the page
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + page).classList.add('active');
+
+      // Supabase-powered tabs — render on activation
+      if (page === 'supplier-intel') renderPriceTracker();
     });
   });
 }
