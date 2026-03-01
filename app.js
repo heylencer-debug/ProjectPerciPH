@@ -10,7 +10,8 @@ const lazyState = {
   feed: { loaded: false, rendered: false },
   calendar: { loaded: false, rendered: false },
   captions: { loaded: false, rendered: false },
-  catalog: { loaded: false, rendered: false }
+  catalog: { loaded: false, rendered: false },
+  btv: { loaded: false, rendered: false }
 };
 
 // ===== INIT =====
@@ -106,7 +107,8 @@ function setupNav() {
     calendar:       ['Content Calendar',        'March 2026 posting schedule — 30 planned posts across all platforms'],
     captions:       ['Captions Library',        '30 ready-to-use captions for Instagram, TikTok & Facebook'],
     pricing:        ['Pricing Calculator',      'Calculate costs, margins & competitive pricing in real-time'],
-    catalog:        ['Product Catalog',         'Your SKUs, pricing tiers, margins & competitor comparison']
+    catalog:        ['Product Catalog',         'Your SKUs, pricing tiers, margins & competitor comparison'],
+    btv:            ['BTV Catalog',             'Beyond The Vines — 262 products from beyondthevines.com']
   };
 
   document.querySelectorAll('.nav-item').forEach(item => {
@@ -165,7 +167,8 @@ function loadScript(page) {
       feed: 'data/feed.js',
       calendar: 'data/calendar.js',
       captions: 'data/calendar.js',
-      catalog: 'data/catalog.js'
+      catalog: 'data/catalog.js',
+      btv: 'data/btv-products.js'
     };
 
     const src = scriptMap[page];
@@ -179,7 +182,8 @@ function loadScript(page) {
       feed: 'FEED_DATA',
       calendar: 'CALENDAR_DATA',
       captions: 'CAPTIONS_DATA',
-      catalog: 'CATALOG_DATA'
+      catalog: 'CATALOG_DATA',
+      btv: 'BTV_PRODUCTS'
     };
     
     if (window[globalMap[page]]) {
@@ -226,6 +230,12 @@ function renderTab(page) {
         renderCompetitorPricing();
         renderBundles();
         renderRecommendations();
+      }
+      break;
+    case 'btv':
+      if (window.BTV_PRODUCTS) {
+        renderBtvCatalog();
+        setupBtvFilters();
       }
       break;
   }
@@ -816,6 +826,173 @@ function renderBundles() {
         <span class="bundle-tag">${b.tag}</span>
       </div>
     </div>`).join('');
+}
+
+// ===== BTV CATALOG =====
+let btvPage = 1;
+const BTV_PER_PAGE = 60;
+let btvFiltered = [];
+
+async function renderBtvCatalog() {
+  const page = document.getElementById('page-btv');
+  if (!page) return;
+
+  // Try Supabase first, fall back to window.BTV_PRODUCTS
+  let products = [];
+  let usedSupabase = false;
+
+  if (window.db) {
+    try {
+      page.querySelector('#btv-grid').innerHTML = '<div style="padding:40px;text-align:center;color:#94A3B8;font-size:13px;">Loading from Supabase…</div>';
+      const rows = await window.db.select('btv_products', 'order=category.asc,title.asc');
+      if (rows && rows.length) {
+        // Normalize field names from Supabase schema
+        products = rows.map(r => ({
+          id: r.id,
+          title: r.title,
+          category: r.category,
+          price_min: r.price_min,
+          price_max: r.price_max,
+          available: r.available,
+          image_primary: r.image_url,
+          url: r.product_url,
+          variants_count: r.variants_count || 1,
+        }));
+        usedSupabase = true;
+      }
+    } catch (err) {
+      console.warn('[BTV] Supabase load failed, falling back to local:', err.message);
+    }
+  }
+
+  if (!products.length && window.BTV_PRODUCTS) {
+    products = window.BTV_PRODUCTS;
+  }
+
+  if (!products.length) {
+    page.querySelector('#btv-grid').innerHTML = '<div class="btv-empty">No BTV products loaded.</div>';
+    return;
+  }
+
+  const meta = window.BTV_META || {};
+  if (!usedSupabase) {} // meta still valid from local
+
+  // Sync date
+  const syncEl = document.getElementById('btv-sync-date');
+  if (syncEl && meta.last_updated) {
+    const d = new Date(meta.last_updated);
+    syncEl.textContent = 'Last synced: ' + d.toLocaleDateString('en-PH', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // Category counts from meta or computed
+  const catCounts = meta.categories || {};
+  const cats = Object.keys(catCounts).length
+    ? Object.keys(catCounts).sort((a, b) => catCounts[b] - catCounts[a])
+    : [...new Set(products.map(p => p.category))].sort();
+
+  // Populate category select
+  const catSelect = document.getElementById('btv-category-filter');
+  catSelect.innerHTML = '<option value="">All Categories</option>' +
+    cats.map(c => {
+      const n = catCounts[c] || products.filter(p => p.category === c).length;
+      return `<option value="${c}">${c.charAt(0).toUpperCase() + c.slice(1)} (${n})</option>`;
+    }).join('');
+
+  // Category pills
+  const pillsEl = document.getElementById('btv-category-pills');
+  pillsEl.innerHTML = `<button class="filter-pill active" data-cat="">All (${products.length})</button>` +
+    cats.map(c => {
+      const n = catCounts[c] || products.filter(p => p.category === c).length;
+      return `<button class="filter-pill" data-cat="${c}">${c.charAt(0).toUpperCase() + c.slice(1)} (${n})</button>`;
+    }).join('');
+
+  pillsEl.querySelectorAll('.filter-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      pillsEl.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('btv-category-filter').value = btn.dataset.cat;
+      applyBtvFilters();
+    });
+  });
+
+  applyBtvFilters();
+}
+
+function applyBtvFilters() {
+  const products = window.BTV_PRODUCTS;
+  const search = (document.getElementById('btv-search').value || '').toLowerCase();
+  const cat = document.getElementById('btv-category-filter').value;
+  const avail = document.getElementById('btv-availability-filter').value;
+
+  btvFiltered = products.filter(p => {
+    if (search && !p.title.toLowerCase().includes(search)) return false;
+    if (cat && p.category !== cat) return false;
+    if (avail !== '' && String(p.available) !== avail) return false;
+    return true;
+  });
+
+  btvPage = 1;
+  document.getElementById('btv-count').textContent = btvFiltered.length;
+  renderBtvGrid();
+}
+
+function renderBtvGrid() {
+  const grid = document.getElementById('btv-grid');
+  const shown = btvFiltered.slice(0, btvPage * BTV_PER_PAGE);
+
+  grid.innerHTML = shown.map(p => {
+    const priceStr = p.price_min === p.price_max
+      ? (p.price_min > 0 ? `S$${p.price_min.toFixed(2)}` : 'Free')
+      : `S$${p.price_min.toFixed(2)}–${p.price_max.toFixed(2)}`;
+    const availClass = p.available ? 'btv-avail' : 'btv-unavail';
+    const availText = p.available ? 'In Stock' : 'Sold Out';
+    const desc = p.description_plain
+      ? p.description_plain.substring(0, 80) + (p.description_plain.length > 80 ? '…' : '')
+      : '';
+
+    const imgBlock = p.image_primary
+      ? `<div class="btv-card-img"><img src="${p.image_primary}" alt="${p.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=btv-no-img>No image</div>'"></div>`
+      : '<div class="btv-no-img">No image</div>';
+    return `
+    <div class="btv-card">
+      ${imgBlock}
+      <div class="btv-card-body">
+        <div class="btv-cat-tag">${p.category}</div>
+        <div class="btv-card-title">${p.title}</div>
+        <div class="btv-card-meta">
+          <span class="btv-price">${priceStr}</span>
+          <span class="${availClass}">${availText}</span>
+        </div>
+        <a class="btv-card-link" href="${p.url}" target="_blank" rel="noopener">View on BTV ↗</a>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Load more button
+  const wrap = document.getElementById('btv-load-more-wrap');
+  if (shown.length < btvFiltered.length) {
+    wrap.style.display = 'block';
+    document.getElementById('btv-load-more').textContent = `Load More (${shown.length} of ${btvFiltered.length})`;
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+function setupBtvFilters() {
+  document.getElementById('btv-search').addEventListener('input', applyBtvFilters);
+  document.getElementById('btv-category-filter').addEventListener('change', () => {
+    // Sync pill state
+    const val = document.getElementById('btv-category-filter').value;
+    document.querySelectorAll('#btv-category-pills .filter-pill').forEach(b => {
+      b.classList.toggle('active', b.dataset.cat === val);
+    });
+    applyBtvFilters();
+  });
+  document.getElementById('btv-availability-filter').addEventListener('change', applyBtvFilters);
+  document.getElementById('btv-load-more').addEventListener('click', () => {
+    btvPage++;
+    renderBtvGrid();
+  });
 }
 
 // ===== V2: GRADUATION COUNTDOWN =====
