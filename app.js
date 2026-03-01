@@ -213,9 +213,11 @@ function setupMobile() {
 
 // ===== DATES =====
 function setDates() {
-  const d = marketData.lastUpdated;
-  document.getElementById('sidebar-date').textContent = formatDate(d);
-  document.getElementById('header-date').textContent = formatDate(d);
+  const d = marketData ? marketData.lastUpdated : new Date().toISOString();
+  const el1 = document.getElementById('sidebar-date');
+  const el2 = document.getElementById('header-date');
+  if (el1) el1.textContent = formatDate(d);
+  if (el2) el2.textContent = formatDate(d);
 }
 function formatDate(d) {
   const date = new Date(d);
@@ -251,9 +253,9 @@ function setupNav() {
       document.getElementById('page-title').textContent = titles[page][0];
       document.getElementById('page-sub').textContent = titles[page][1];
       if (page === 'suppliers') {
-        document.getElementById('header-date').textContent = formatDate(suppliersData.lastUpdated);
+        document.getElementById('header-date').textContent = suppliersData ? formatDate(suppliersData.lastUpdated) : '';
       } else {
-        document.getElementById('header-date').textContent = formatDate(marketData.lastUpdated);
+        document.getElementById('header-date').textContent = marketData ? formatDate(marketData.lastUpdated) : '';
       }
       
       // Lazy load tab data if needed
@@ -418,6 +420,7 @@ function renderTab(page) {
 // ===== STATS =====
 function renderStats() {
   const grid = document.getElementById('stats-grid');
+  if (!grid || !marketData || !marketData.stats) return;
   grid.innerHTML = marketData.stats.map(s => `
     <div class="stat-card">
       <span class="stat-icon">${s.icon}</span>
