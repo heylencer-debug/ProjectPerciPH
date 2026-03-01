@@ -4,13 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Project Percy PH — Embroidery Intelligence</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
-  <script src="data/data.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js" defer></script>
-  <script src="data/sb.js" defer></script>
-  <!-- Feed, Calendar, Catalog lazy-loaded on tab activation -->
+  <!-- Preconnect for faster DNS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fhfqjcvwcxizbioftvdw.supabase.co" />
+  <!-- Fonts: swap prevents blocking -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- Critical CSS only -->
   <link rel="stylesheet" href="style.css" />
+  <!-- sb.js has Supabase anon key — load early but non-blocking -->
+  <script src="data/sb.js" defer></script>
+  <!-- chart.js, supabase, data.js, feed.js — loaded dynamically when needed -->
   <style>
     @keyframes loadbar { from { width: 20%; margin-left: 0; } to { width: 60%; margin-left: 40%; } }
   </style>
