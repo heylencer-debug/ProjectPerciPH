@@ -27,30 +27,35 @@ const lazyState = {
 
 // ===== INIT — boots immediately, loads data lazily =====
 async function init() {
-  // Boot immediately with empty data — home tab renders from Supabase
-  boot();
-  // Then load data.js in background for static-data tabs
-  loadScript('data/data.js').then(() => {
+  try {
+    boot();
+  } catch(e) {
+    console.error('boot() error:', e);
+    hideLoader(); // Always unblock the UI
+  }
+  // Load data.js in background for static-data tabs
+  loadScript('data/data.js').then(function() {
     marketData = window.MARKET_DATA || null;
     suppliersData = window.SUPPLIERS_DATA || null;
-  }).catch(e => console.warn('data.js load failed:', e));
+  }).catch(function(e) { console.warn('data.js load failed:', e); });
 }
 
 function boot() {
-  // Paint only what's visible — home/market tab
-  setDates();
-  setupNav();
-  setupMobile();
-  setupSupplierTabs();
+  try { setDates(); } catch(e) {}
+  try { setupNav(); } catch(e) {}
+  try { setupMobile(); } catch(e) {}
+  try { setupSupplierTabs(); } catch(e) {}
+
+  // Always hide loader — no matter what
   hideLoader();
 
   // Non-blocking deferred work
-  setTimeout(() => {
-    renderEthelFeed();
-    setInterval(renderEthelFeed, 60000);
-  }, 500);
-
-  setTimeout(() => initRealtime(), 1000);
+  setTimeout(function() {
+    try { renderEthelFeed(); setInterval(renderEthelFeed, 60000); } catch(e) {}
+  }, 800);
+  setTimeout(function() {
+    try { initRealtime(); } catch(e) {}
+  }, 1500);
 }
 
 // ===== SUPABASE CONFIG =====
