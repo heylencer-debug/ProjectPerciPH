@@ -75,6 +75,9 @@ function boot() {
   // Setup nav with lazy loading hooks
   setupNav();
 
+  // Mobile hamburger + overlay + close-on-nav
+  setupMobile();
+
   // Ethel Activity Feed
   renderEthelFeed();
   setInterval(renderEthelFeed, 60000);
@@ -229,6 +232,35 @@ function hideLoader() {
     loader.classList.add('hidden');
     setTimeout(() => loader.remove(), 300);
   }
+}
+
+// ===== MOBILE SETUP =====
+function setupMobile() {
+  var hamburger = document.getElementById('hamburger-btn') || document.getElementById('mobile-menu-toggle');
+  var overlay = document.getElementById('sidebar-overlay') || document.getElementById('mobile-overlay');
+  if (hamburger) {
+    hamburger.addEventListener('click', function() {
+      document.body.classList.toggle('sidebar-open');
+    });
+  }
+  if (overlay) {
+    overlay.addEventListener('click', function() {
+      document.body.classList.remove('sidebar-open');
+    });
+  }
+  // Close sidebar on nav item click (mobile)
+  document.querySelectorAll('.nav-item').forEach(function(item) {
+    item.addEventListener('click', function() {
+      if (window.innerWidth <= 768) {
+        document.body.classList.remove('sidebar-open');
+        // Also close via existing toggleMobileMenu if sidebar is open
+        var sidebar = document.querySelector('.sidebar');
+        if (sidebar && sidebar.classList.contains('mobile-open')) {
+          if (typeof toggleMobileMenu === 'function') toggleMobileMenu();
+        }
+      }
+    });
+  });
 }
 
 // ===== DATES =====
