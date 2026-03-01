@@ -119,6 +119,10 @@
         <span class="nav-icon">🛍️</span> BTV Catalog
         <span class="nav-badge" style="background:#10B981">262</span>
       </a>
+      <div class="nav-label" style="margin-top:12px">INTELLIGENCE</div>
+      <a href="#" class="nav-item" data-page="competitor-feed">
+        <span class="nav-icon">📡</span> Competitor Feed
+      </a>
     </nav>
 
     <div class="sidebar-footer">
@@ -783,6 +787,62 @@
       <!-- Load More -->
       <div class="btv-load-more-wrap" id="btv-load-more-wrap" style="display:none">
         <button class="btv-load-more-btn" id="btv-load-more">Load More</button>
+      </div>
+
+    </section>
+
+    <!-- PAGE: COMPETITOR FEED -->
+    <section id="page-competitor-feed" class="page">
+
+      <!-- Page header -->
+      <div class="page-header">
+        <div class="page-label">MARKET INTELLIGENCE</div>
+        <h1 class="page-title">COMPETITOR FEED</h1>
+        <p class="page-subtitle">Live social posts from competing brands — powered by Ethel</p>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="stats-bar" id="cf-stats-bar">
+        <div class="stat-card">
+          <div class="stat-number" id="cf-total-posts">—</div>
+          <div class="stat-label">TOTAL POSTS</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="cf-competitors-count">—</div>
+          <div class="stat-label">COMPETITORS</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="cf-avg-engagement">—</div>
+          <div class="stat-label">AVG ENGAGEMENT</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number" id="cf-last-scraped">—</div>
+          <div class="stat-label">LAST SCRAPED</div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filter-row" style="margin-bottom:24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <select id="cf-competitor-filter" class="filter-select">
+          <option value="">All Competitors</option>
+        </select>
+        <select id="cf-platform-filter" class="filter-select">
+          <option value="">All Platforms</option>
+          <option value="instagram">Instagram</option>
+          <option value="tiktok">TikTok</option>
+          <option value="shopee">Shopee</option>
+        </select>
+        <button class="btn-primary" onclick="loadCompetitorFeed()">Refresh</button>
+      </div>
+
+      <!-- Post grid -->
+      <div id="competitor-feed-grid" class="competitor-feed-grid">
+        <p style="color:#6B7280;text-align:center;padding:48px">Loading competitor posts...</p>
+      </div>
+
+      <!-- Load more -->
+      <div style="text-align:center;margin-top:24px">
+        <button class="btn-secondary" id="cf-load-more" onclick="loadMoreCompetitorPosts()" style="display:none">Load More</button>
       </div>
 
     </section>
