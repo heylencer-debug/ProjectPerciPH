@@ -130,6 +130,17 @@ function initRealtime() {
       if (document.getElementById('price-tracker-body')) renderPriceTracker();
     }).subscribe();
 
+  client.channel('competitor-posts-ch').on('postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'competitor_posts' }, (payload) => {
+      const grid = document.getElementById('competitor-feed-grid');
+      const page = document.getElementById('page-competitor-feed');
+      if (grid && page && page.classList.contains('active')) {
+        const card = renderCompetitorPostCard(payload.new);
+        grid.insertAdjacentHTML('afterbegin', card);
+        updateCFStats();
+      }
+    }).subscribe();
+
   console.log('[Realtime] Dashboard subscribed ✅');
 }
 
@@ -232,7 +243,8 @@ function setupNav() {
     captions:       ['Captions Library',        '30 ready-to-use captions for Instagram, TikTok & Facebook'],
     pricing:        ['Pricing Calculator',      'Calculate costs, margins & competitive pricing in real-time'],
     catalog:        ['Product Catalog',         'Your SKUs, pricing tiers, margins & competitor comparison'],
-    btv:            ['BTV Catalog',             'Beyond The Vines — 262 products from beyondthevines.com']
+    btv:            ['BTV Catalog',             'Beyond The Vines — 262 products from beyondthevines.com'],
+    'competitor-feed': ['Competitor Feed',     'Live social posts from competing brands — powered by Ethel']
   };
 
   document.querySelectorAll('.nav-item').forEach(item => {
@@ -262,6 +274,7 @@ function setupNav() {
 
       // Supabase-powered tabs — render on activation
       if (page === 'supplier-intel') renderPriceTracker();
+      if (page === 'competitor-feed') loadCompetitorFeed();
     });
   });
 }
@@ -1646,6 +1659,115 @@ async function renderEthelFeed() {
   } catch(e) {
     console.error('Ethel feed error:', e);
   }
+}
+
+// ===== COMPETITOR FEED =====
+var CF_OFFSET = 0;
+var CF_LIMIT = 24;
+
+async function loadCompetitorFeed() {
+  CF_OFFSET = 0;
+  var grid = document.getElementById('competitor-feed-grid');
+  grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">Loading...</p>';
+  await fetchCompetitorPosts(true);
+  await updateCFStats();
+  populateCFFilters();
+}
+
+async function fetchCompetitorPosts(reset) {
+  var competitor = document.getElementById('cf-competitor-filter') ? document.getElementById('cf-competitor-filter').value : '';
+  var platform = document.getElementById('cf-platform-filter') ? document.getElementById('cf-platform-filter').value : '';
+  var url = SB_URL + '/rest/v1/competitor_posts?order=scraped_at.desc&limit=' + CF_LIMIT + '&offset=' + CF_OFFSET;
+  if (competitor) url += '&competitor=eq.' + encodeURIComponent(competitor);
+  if (platform) url += '&platform=eq.' + encodeURIComponent(platform);
+  try {
+    var res = await fetch(url, { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } });
+    var posts = await res.json();
+    var grid = document.getElementById('competitor-feed-grid');
+    if (!Array.isArray(posts)) { grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">No posts yet. Ethel is scraping...</p>'; return; }
+    if (posts.length === 0 && reset) { grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">No posts yet. Ethel is scraping...</p>'; return; }
+    var html = posts.map(function(p) { return renderCompetitorPostCard(p); }).join('');
+    if (reset) { grid.innerHTML = html; } else { grid.innerHTML += html; }
+    var loadMoreBtn = document.getElementById('cf-load-more');
+    if (loadMoreBtn) loadMoreBtn.style.display = posts.length < CF_LIMIT ? 'none' : 'inline-block';
+    CF_OFFSET += posts.length;
+  } catch(e) {
+    console.error('Competitor feed error:', e);
+  }
+}
+
+function renderCompetitorPostCard(p) {
+  var platformClass = 'platform-' + (p.platform || 'instagram');
+  var platformLabel = (p.platform || 'instagram').toUpperCase();
+  var imageHtml = p.image_url
+    ? '<img src="' + p.image_url + '" alt="post" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=post-image-placeholder>📷</div>\'">'
+    : '<div class="post-image-placeholder">📷</div>';
+  var caption = p.caption ? p.caption.substring(0, 120) + (p.caption.length > 120 ? '...' : '') : '—';
+  var date = p.posted_at ? new Date(p.posted_at).toLocaleDateString('en-PH') : (p.scraped_at ? new Date(p.scraped_at).toLocaleDateString('en-PH') : '—');
+  var postLink = p.post_url ? 'href="' + p.post_url + '" target="_blank"' : '';
+  return '<div class="competitor-post-card">'
+    + '<div class="post-image-wrap">'
+    + (p.post_url ? '<a ' + postLink + '>' : '')
+    + imageHtml
+    + (p.post_url ? '</a>' : '')
+    + '</div>'
+    + '<div class="post-meta">'
+    + '<div class="post-competitor-row">'
+    + '<span class="post-competitor-name">' + (p.competitor || '—') + '</span>'
+    + '<span class="post-platform-badge ' + platformClass + '">' + platformLabel + '</span>'
+    + '</div>'
+    + '<div class="post-caption">' + caption + '</div>'
+    + '<div class="post-stats">'
+    + '<span class="post-stat">❤️ ' + (p.likes || 0).toLocaleString() + '</span>'
+    + '<span class="post-stat">💬 ' + (p.comments || 0).toLocaleString() + '</span>'
+    + (p.views ? '<span class="post-stat">👁 ' + p.views.toLocaleString() + '</span>' : '')
+    + '</div>'
+    + '<div class="post-date">' + date + '</div>'
+    + '</div>'
+    + '</div>';
+}
+
+async function loadMoreCompetitorPosts() {
+  await fetchCompetitorPosts(false);
+}
+
+async function updateCFStats() {
+  try {
+    var res = await fetch(SB_URL + '/rest/v1/competitor_posts?select=competitor,platform,likes,scraped_at', {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Prefer': 'count=exact' }
+    });
+    var posts = await res.json();
+    if (!Array.isArray(posts)) return;
+    var total = document.getElementById('cf-total-posts');
+    var compCount = document.getElementById('cf-competitors-count');
+    var avgEng = document.getElementById('cf-avg-engagement');
+    var lastScraped = document.getElementById('cf-last-scraped');
+    if (total) total.textContent = posts.length;
+    if (compCount) compCount.textContent = new Set(posts.map(function(p) { return p.competitor; })).size;
+    if (avgEng) {
+      var totalLikes = posts.reduce(function(a, p) { return a + (p.likes || 0); }, 0);
+      avgEng.textContent = posts.length ? Math.round(totalLikes / posts.length).toLocaleString() : '—';
+    }
+    if (lastScraped && posts.length) {
+      var latest = posts.sort(function(a,b) { return new Date(b.scraped_at) - new Date(a.scraped_at); })[0];
+      lastScraped.textContent = new Date(latest.scraped_at).toLocaleDateString('en-PH');
+    }
+  } catch(e) { console.error('CF stats error:', e); }
+}
+
+async function populateCFFilters() {
+  try {
+    var res = await fetch(SB_URL + '/rest/v1/competitor_posts?select=competitor', {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    var posts = await res.json();
+    if (!Array.isArray(posts)) return;
+    var competitors = Array.from(new Set(posts.map(function(p) { return p.competitor; }))).filter(Boolean);
+    var sel = document.getElementById('cf-competitor-filter');
+    if (!sel) return;
+    sel.innerHTML = '<option value="">All Competitors</option>'
+      + competitors.map(function(c) { return '<option value="' + c + '">' + c + '</option>'; }).join('');
+  } catch(e) {}
 }
 
 // ===== STARTUP =====
