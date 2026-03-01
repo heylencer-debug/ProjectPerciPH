@@ -12,8 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <!-- Critical CSS only -->
   <link rel="stylesheet" href="style.css" />
-  <!-- sb.js has Supabase anon key — load early but non-blocking -->
-  <script src="data/sb.js" defer></script>
+  <!-- sb.js has Supabase anon key — removed, now inlined in body before app.js -->
   <!-- chart.js, supabase, data.js, feed.js — loaded dynamically when needed -->
   <style>
     @keyframes loadbar { from { width: 20%; margin-left: 0; } to { width: 60%; margin-left: 40%; } }
@@ -931,6 +930,8 @@
     </a>
   </nav>
 
+  <!-- sb.js MUST load before app.js so SUPABASE_CONFIG is defined -->
+  <script src="data/sb.js"></script>
   <script src="app.js"></script>
   <script>
     // Mobile menu toggle
