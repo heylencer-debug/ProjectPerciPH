@@ -7,6 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
   <script src="data/data.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script src="data/sb.js"></script>
   <!-- Feed, Calendar, Catalog lazy-loaded on tab activation -->
   <link rel="stylesheet" href="style.css" />
   <style>
@@ -502,6 +504,39 @@
       <!-- SUPPLIER CARDS GRID -->
       <div class="suppliers-cards-grid" id="suppliers-cards-grid">
         <!-- Populated by script.js from window.SUPPLIERS -->
+      </div>
+
+      <!-- COMPETITOR PRICE TRACKER -->
+      <div class="section-card" style="margin-top:24px">
+        <div class="card-header">
+          <h2 class="card-title">📊 Competitor Price Tracker</h2>
+          <span class="card-sub">Ethel updates daily · <span style="color:#10B981">Green</span> = you have room · <span style="color:#EF4444">Red</span> = they're cheaper</span>
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+          <select id="price-cat-filter" class="filter-select" onchange="renderPriceTracker()">
+            <option value="">All Categories</option>
+            <option value="bag">Bags</option>
+            <option value="tumbler">Tumblers</option>
+            <option value="mirror">Mirrors</option>
+            <option value="cap">Caps</option>
+          </select>
+          <select id="price-platform-filter" class="filter-select" onchange="renderPriceTracker()">
+            <option value="">All Platforms</option>
+            <option value="shopee">Shopee</option>
+            <option value="lazada">Lazada</option>
+            <option value="website">Website</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr><th>Competitor</th><th>Product</th><th>Category</th><th>Their Price</th><th>Our Price</th><th>Gap</th><th>Platform</th></tr>
+            </thead>
+            <tbody id="price-tracker-body">
+              <tr><td colspan="7" style="text-align:center;padding:24px;color:#94A3B8">Open this tab to load prices</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
     </section>
