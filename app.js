@@ -3,69 +3,54 @@ let marketData = null;
 let suppliersData = null;
 let pricingChart = null;
 let seasonChart = null;
+const _rendered = {};
 
-// Lazy loading state - track which tabs have been loaded & rendered
-// Only lazy-load tabs whose data is in separate files
+// ===== DYNAMIC SCRIPT LOADER =====
+function loadScript(src) {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector('script[src="' + src + '"]')) { resolve(); return; }
+    const s = document.createElement('script');
+    s.src = src; s.async = true;
+    s.onload = resolve; s.onerror = reject;
+    document.head.appendChild(s);
+  });
+}
+
+// Lazy loading state
 const lazyState = {
-  feed: { loaded: false, rendered: false },
+  feed:     { loaded: false, rendered: false },
   calendar: { loaded: false, rendered: false },
   captions: { loaded: false, rendered: false },
-  catalog: { loaded: false, rendered: false },
-  btv: { loaded: false, rendered: false }
+  catalog:  { loaded: false, rendered: false },
+  btv:      { loaded: false, rendered: false }
 };
 
-// ===== INIT =====
+// ===== INIT — boots immediately, loads data lazily =====
 async function init() {
-  // Use embedded globals (works with file://) or fallback to fetch (works on server)
-  if (window.MARKET_DATA && window.SUPPLIERS_DATA) {
-    marketData = window.MARKET_DATA;
-    suppliersData = window.SUPPLIERS_DATA;
-    await loadFromSupabase(); // overlay with live Supabase data if available
-    boot();
-  } else {
-    try {
-      const [mRes, sRes] = await Promise.all([
-        fetch('data/market.json'),
-        fetch('data/suppliers.json')
-      ]);
-      marketData = await mRes.json();
-      suppliersData = await sRes.json();
-      boot();
-    } catch (err) {
-      console.error('Failed to load data:', err);
-      document.querySelector('.main').innerHTML = `<div style="padding:60px 40px;font-family:Inter,sans-serif;">
-        <div style="color:#E94560;font-size:22px;font-weight:700;margin-bottom:12px">⚠️ Data load error</div>
-        <p style="color:#4A5568">Could not load data files. Try opening via Chrome directly.</p>
-      </div>`;
-      hideLoader();
-    }
-  }
+  // Boot immediately with empty data — home tab renders from Supabase
+  boot();
+  // Then load data.js in background for static-data tabs
+  loadScript('data/data.js').then(() => {
+    marketData = window.MARKET_DATA || null;
+    suppliersData = window.SUPPLIERS_DATA || null;
+  }).catch(e => console.warn('data.js load failed:', e));
 }
 
 function boot() {
-  // Only render what's visible on first load (market/home tab)
+  // Paint only what's visible — home/market tab
   setDates();
-  updateGradCountdown();
-  renderStats();          // Home stats bar — fast, uses static data
-  renderSeasonalAlerts(); // Small widget
-  renderCharts();         // Only if charts are on the active tab
-
-  // Setup nav — all other tabs lazy-load on first click
   setupNav();
   setupMobile();
   setupSupplierTabs();
-
-  // Render market tab content (active on boot)
-  lazyLoadTab('market');
-
-  // Ethel feed on home — single Supabase call, non-blocking
-  renderEthelFeed();
-  setInterval(renderEthelFeed, 60000);
-
-  // Realtime — subscribe only (no heavy fetch)
-  initRealtime();
-
   hideLoader();
+
+  // Non-blocking deferred work
+  setTimeout(() => {
+    renderEthelFeed();
+    setInterval(renderEthelFeed, 60000);
+  }, 500);
+
+  setTimeout(() => initRealtime(), 1000);
 }
 
 // ===== SUPABASE CONFIG =====
@@ -293,38 +278,54 @@ async function lazyLoadTab(page) {
     return;
   }
 
-  // New: pages that use static data.js (already loaded) but were deferred
-  if (!window._rendered) window._rendered = {};
-  if (window._rendered[page]) return;
-  window._rendered[page] = true;
+  // Pages that need data.js — load it first if not ready
+  if (_rendered[page]) return;
+  _rendered[page] = true;
+
+  // Ensure data.js is loaded for static-data tabs
+  const needsData = ['market','competitors','suppliers','pricing'];
+  if (needsData.includes(page) && !window.MARKET_DATA) {
+    await loadScript('data/data.js');
+    marketData = window.MARKET_DATA || null;
+    suppliersData = window.SUPPLIERS_DATA || null;
+  }
 
   if (page === 'market') {
-    renderProductsTable();
-    renderCompetitors();
-    renderInsights();
-    renderProductOpportunities();
+    if (typeof renderStats === 'function') renderStats();
+    if (typeof renderSeasonalAlerts === 'function') renderSeasonalAlerts();
+    if (typeof updateGradCountdown === 'function') updateGradCountdown();
+    if (typeof renderProductsTable === 'function') renderProductsTable();
+    if (typeof renderCompetitors === 'function') renderCompetitors();
+    if (typeof renderInsights === 'function') renderInsights();
+    if (typeof renderProductOpportunities === 'function') renderProductOpportunities();
+    // Load Chart.js only when market tab opens
+    loadScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js').then(() => {
+      if (typeof renderCharts === 'function') renderCharts();
+    });
   }
   if (page === 'competitors') {
-    renderCompetitorDeepDive();
-    renderThreatMatrix();
-    renderAdvantages();
+    if (typeof renderCompetitorDeepDive === 'function') renderCompetitorDeepDive();
+    if (typeof renderThreatMatrix === 'function') renderThreatMatrix();
+    if (typeof renderAdvantages === 'function') renderAdvantages();
   }
   if (page === 'suppliers') {
-    renderSuppliers();
-    renderGroups();
-    renderTemplate();
-    setupFilters();
+    if (typeof renderSuppliers === 'function') renderSuppliers();
+    if (typeof renderGroups === 'function') renderGroups();
+    if (typeof renderTemplate === 'function') renderTemplate();
+    if (typeof setupFilters === 'function') setupFilters();
   }
   if (page === 'supplier-intel') {
-    renderSupplierIntelligence();
-    loadSupplierProducts();
-    renderPriceTracker();
+    if (typeof renderSupplierIntelligence === 'function') renderSupplierIntelligence();
+    if (typeof loadSupplierProducts === 'function') loadSupplierProducts();
+    if (typeof renderPriceTracker === 'function') renderPriceTracker();
   }
   if (page === 'pricing') {
-    initPricingCalculator();
+    loadScript('https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js').then(() => {
+      if (typeof initPricingCalculator === 'function') initPricingCalculator();
+    });
   }
   if (page === 'competitor-feed') {
-    loadCompetitorFeed();
+    if (typeof loadCompetitorFeed === 'function') loadCompetitorFeed();
   }
 }
 
