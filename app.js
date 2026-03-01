@@ -59,72 +59,46 @@ function boot() {
 }
 
 // ===== SUPABASE CONFIG =====
-// Loaded from data/sb.js (gitignored key file)
-const SB_URL = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.url) || '';
-const SB_KEY = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.key) || '';
-const SB_HDRS = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+// Config is read lazily to ensure sb.js has loaded first
+function getSbConfig() {
+  const cfg = window.SUPABASE_CONFIG || {};
+  return { url: cfg.url || '', key: cfg.key || '' };
+}
 
 async function sbFetch(table, query) {
+  const { url, key } = getSbConfig();
+  if (!url || !key) {
+    console.warn('[Supabase] Config not loaded — sb.js missing?');
+    return [];
+  }
+  const headers = { 'apikey': key, 'Authorization': 'Bearer ' + key, 'Content-Type': 'application/json' };
   try {
-    const res = await fetch(`${SB_URL}/rest/v1/${table}${query ? '?' + query : ''}`, { headers: SB_HDRS });
+    const res = await fetch(`${url}/rest/v1/${table}${query ? '?' + query : ''}`, { headers });
     return await res.json();
   } catch(e) { console.warn('[Supabase]', table, e.message); return []; }
 }
 
-// ===== ITEM 1 — SUPABASE REALTIME =====
+// ===== ITEM 1 — POLLING (replaces Supabase Realtime since library was removed) =====
 function initRealtime() {
-  if (typeof window === 'undefined' || !window.supabase) return;
-  const client = window.supabase.createClient(SB_URL, SB_KEY);
-
-  client.channel('btv').on('postgres_changes',
-    { event: '*', schema: 'public', table: 'btv_products' }, () => {
-      const p = document.getElementById('page-btv');
-      if (p && p.classList.contains('active')) renderBtvCatalog();
-    }).subscribe();
-
-  client.channel('intel').on('postgres_changes',
-    { event: 'INSERT', schema: 'public', table: 'intel_feed' }, () => {
-      const badge = document.querySelector('[data-page="supplier-intel"] .nav-badge');
-      if (badge) {
-        const orig = badge.textContent;
-        badge.textContent = 'NEW'; badge.style.background = '#E94560';
-        setTimeout(() => { badge.textContent = orig; badge.style.background = '#8B5CF6'; }, 5000);
+  // Supabase JS library was removed — use polling instead
+  // Poll active tabs every 60s for updates
+  setInterval(function() {
+    try {
+      const activePage = document.querySelector('.page.active');
+      if (!activePage) return;
+      const pageId = activePage.id;
+      if (pageId === 'page-btv' && typeof renderBtvCatalog === 'function') {
+        renderBtvCatalog();
       }
-    }).subscribe();
-
-  client.channel('competitors-ch').on('postgres_changes',
-    { event: '*', schema: 'public', table: 'competitors' }, () => {
-      const p = document.getElementById('page-market');
-      if (p && p.classList.contains('active')) renderCompetitors();
-    }).subscribe();
-
-  client.channel('prices-ch').on('postgres_changes',
-    { event: '*', schema: 'public', table: 'competitor_prices' }, () => {
-      if (document.getElementById('price-tracker-body')) renderPriceTracker();
-    }).subscribe();
-
-  client.channel('supplier-products-ch').on('postgres_changes',
-    { event: 'INSERT', schema: 'public', table: 'supplier_products' }, function(payload) {
-      var grid = document.getElementById('supplier-products-grid');
-      var page = document.getElementById('page-supplier-intel');
-      if (grid && page && page.classList.contains('active')) {
-        var card = renderSupplierProductCard(payload.new);
-        grid.insertAdjacentHTML('afterbegin', card);
+      if (pageId === 'page-competitor-feed' && typeof loadCompetitorFeed === 'function') {
+        loadCompetitorFeed();
       }
-    }).subscribe();
-
-  client.channel('competitor-posts-ch').on('postgres_changes',
-    { event: 'INSERT', schema: 'public', table: 'competitor_posts' }, (payload) => {
-      const grid = document.getElementById('competitor-feed-grid');
-      const page = document.getElementById('page-competitor-feed');
-      if (grid && page && page.classList.contains('active')) {
-        const card = renderCompetitorPostCard(payload.new);
-        grid.insertAdjacentHTML('afterbegin', card);
-        updateCFStats();
+      if (pageId === 'page-supplier-intel' && typeof loadSupplierProducts === 'function') {
+        loadSupplierProducts();
       }
-    }).subscribe();
-
-  console.log('[Realtime] Dashboard subscribed ✅');
+    } catch(e) { console.warn('[Polling]', e.message); }
+  }, 60000);
+  console.log('[Polling] Dashboard polling initialized ✅');
 }
 
 // ===== ITEM 2 — SUPABASE DATA LOADING =====
@@ -275,7 +249,7 @@ async function lazyLoadTab(page) {
   if (state) {
     if (state.loaded && state.rendered) return;
     if (!state.loaded) {
-      await loadScript(page);
+      await loadDataScript(page);
       state.loaded = true;
     }
     if (!state.rendered) {
@@ -336,8 +310,8 @@ async function lazyLoadTab(page) {
   }
 }
 
-// Dynamically load a data script
-function loadScript(page) {
+// Dynamically load a data script (renamed from loadScript to avoid conflict)
+function loadDataScript(page) {
   return new Promise((resolve, reject) => {
     const scriptMap = {
       feed: 'data/feed.js',
