@@ -2543,3 +2543,157 @@ body {
   .bulk-tiers { grid-template-columns: 1fr 1fr; }
   .cal-cell { min-height: 70px; }
 }
+
+/* ===== MOBILE RESPONSIVE — FINAL PASS ===== */
+
+/* Hamburger button (task-specified, unused if mobile-menu-toggle exists) */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  flex-direction: column;
+  gap: 5px;
+}
+.hamburger-btn span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #0A0A0A;
+  border-radius: 2px;
+}
+
+/* Mobile overlay (task-specified fallback) */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 99;
+}
+
+@media (max-width: 768px) {
+  /* Show hamburger (if hamburger-btn element exists) */
+  .hamburger-btn { display: flex; }
+
+  /* Sidebar open state (works with both class patterns) */
+  body.sidebar-open .sidebar { transform: translateX(0); }
+  body.sidebar-open .sidebar-overlay { display: block; }
+
+  /* Main content full width */
+  .main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+  .page {
+    padding: 16px !important;
+  }
+
+  /* Stats wrap 2-col (override 1fr → 2-col) */
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+  .stats-bar {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  /* All grids 2-col on mobile */
+  .btv-grid,
+  .supplier-products-grid,
+  .competitor-feed-grid,
+  .suppliers-cards-grid,
+  .opportunities-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Tables scrollable */
+  table { min-width: 500px; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; }
+
+  /* Filter rows wrap */
+  .filter-row, .filter-pills, [class*="filter"] {
+    flex-wrap: wrap !important;
+  }
+
+  /* Page headers scale */
+  .page-title { font-size: 22px !important; }
+  .section-title { font-size: 18px !important; }
+
+  /* Full width inputs with tap target */
+  select, input[type="text"], input[type="number"], .filter-select, .filter-input {
+    width: 100%;
+    min-height: 40px;
+  }
+
+  /* Stat numbers smaller */
+  .stat-number { font-size: 32px !important; }
+
+  /* Supplier tabs full width on mobile */
+  .supplier-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .supplier-tab {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .supplier-tab-content {
+    width: 100%;
+  }
+
+  /* Card images safe */
+  .sp-image-wrap img,
+  .btv-card-img img,
+  .post-media img {
+    object-fit: cover;
+    max-width: 100%;
+  }
+
+  /* Competitors grid 2-col instead of 1 */
+  .competitors-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Insights grid 2-col */
+  .insights-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Groups grid 2-col */
+  .groups-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* Captions grid 2-col */
+  .captions-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .btv-grid,
+  .supplier-products-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .competitor-feed-grid { grid-template-columns: 1fr !important; }
+  .stats-grid,
+  .stats-bar {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .competitors-grid,
+  .insights-grid,
+  .groups-grid,
+  .captions-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
