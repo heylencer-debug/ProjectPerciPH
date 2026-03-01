@@ -524,6 +524,7 @@
       <div class="supplier-tabs">
         <button class="supplier-tab active" data-tab="products">Product Catalog</button>
         <button class="supplier-tab" data-tab="suppliers">Supplier Directory</button>
+        <button class="supplier-tab" data-tab="source-by-product">Source by Product</button>
       </div>
 
       <!-- PRODUCT CATALOG TAB -->
@@ -570,6 +571,31 @@
         <div style="text-align:center;margin-top:24px">
           <button class="btn-secondary" id="sp-load-more" onclick="loadMoreSupplierProducts()" style="display:none">Load More</button>
         </div>
+      </div>
+
+      <!-- SOURCE BY PRODUCT TAB -->
+      <div id="supplier-tab-source-by-product" class="supplier-tab-content" style="display:none">
+
+        <p style="font-size:13px;color:#6B7280;margin-bottom:20px">
+          Click a product to find supplier listings across Alibaba, Shopee, Temu and Shein.
+        </p>
+
+        <!-- Reference product grid -->
+        <div id="reference-products-grid" class="reference-products-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Supplier listings panel (shown after clicking a product) -->
+        <div id="source-listings-panel" style="display:none;margin-top:28px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <h3 id="source-panel-title" style="font-size:18px;font-weight:800;color:#0A0A0A"></h3>
+            <button onclick="document.getElementById('source-listings-panel').style.display='none'" class="btn-secondary" style="padding:6px 14px;font-size:12px">Close</button>
+          </div>
+          <div id="source-listings-grid" class="supplier-products-grid">
+            <p style="color:#6B7280;text-align:center;padding:32px">Loading listings...</p>
+          </div>
+        </div>
+
       </div>
 
       <!-- SUPPLIER DIRECTORY TAB -->
