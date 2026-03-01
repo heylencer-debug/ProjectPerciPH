@@ -518,19 +518,74 @@
         </div>
       </div>
 
-      <!-- FILTER BUTTONS -->
-      <div class="filter-pills">
-        <button class="filter-pill active" data-filter="all">All</button>
-        <button class="filter-pill" data-filter="Bags & Pouches">🛍️ Bags & Pouches</button>
-        <button class="filter-pill" data-filter="Tumblers & Drinkware">🥤 Tumblers</button>
-        <button class="filter-pill" data-filter="Caps & Hats">🧢 Caps & Hats</button>
-        <button class="filter-pill" data-filter="Wallets & Card Holders">👛 Wallets</button>
-        <button class="filter-pill" data-filter="Accessories">✨ Accessories</button>
+      <!-- SUPPLIER TABS -->
+      <div class="supplier-tabs">
+        <button class="supplier-tab active" data-tab="products">Product Catalog</button>
+        <button class="supplier-tab" data-tab="suppliers">Supplier Directory</button>
       </div>
 
-      <!-- SUPPLIER CARDS GRID -->
-      <div class="suppliers-cards-grid" id="suppliers-cards-grid">
-        <!-- Populated by script.js from window.SUPPLIERS -->
+      <!-- PRODUCT CATALOG TAB -->
+      <div id="supplier-tab-products" class="supplier-tab-content">
+
+        <!-- Filter row -->
+        <div class="filter-row" style="margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap">
+          <select id="sp-category-filter" class="filter-select" onchange="loadSupplierProducts()">
+            <option value="">All Categories</option>
+            <option value="bag">Bags & Pouches</option>
+            <option value="tumbler">Tumblers</option>
+            <option value="cap">Caps & Hats</option>
+            <option value="wallet">Wallets</option>
+            <option value="accessory">Accessories</option>
+            <option value="patch">Patches</option>
+          </select>
+          <select id="sp-platform-filter" class="filter-select" onchange="loadSupplierProducts()">
+            <option value="">All Platforms</option>
+            <option value="alibaba">Alibaba</option>
+            <option value="shopee">Shopee</option>
+            <option value="temu">Temu</option>
+            <option value="shein">Shein</option>
+          </select>
+          <select id="sp-customization-filter" class="filter-select" onchange="loadSupplierProducts()">
+            <option value="">All Customizations</option>
+            <option value="embroidery">Embroidery</option>
+            <option value="engraving">Engraving</option>
+            <option value="patch">Patch</option>
+            <option value="sublimation">Sublimation</option>
+          </select>
+          <button class="btn-primary" onclick="loadSupplierProducts()">Refresh</button>
+        </div>
+
+        <!-- Stats row -->
+        <div style="display:flex;gap:24px;margin-bottom:20px">
+          <span style="font-size:13px;color:#6B7280">Showing <strong id="sp-count">—</strong> products</span>
+        </div>
+
+        <!-- Product grid -->
+        <div id="supplier-products-grid" class="supplier-products-grid">
+          <p style="color:#6B7280;text-align:center;padding:48px">Loading products...</p>
+        </div>
+
+        <div style="text-align:center;margin-top:24px">
+          <button class="btn-secondary" id="sp-load-more" onclick="loadMoreSupplierProducts()" style="display:none">Load More</button>
+        </div>
+      </div>
+
+      <!-- SUPPLIER DIRECTORY TAB -->
+      <div id="supplier-tab-suppliers" class="supplier-tab-content" style="display:none">
+        <!-- FILTER BUTTONS -->
+        <div class="filter-pills">
+          <button class="filter-pill active" data-filter="all">All</button>
+          <button class="filter-pill" data-filter="Bags & Pouches">🛍️ Bags & Pouches</button>
+          <button class="filter-pill" data-filter="Tumblers & Drinkware">🥤 Tumblers</button>
+          <button class="filter-pill" data-filter="Caps & Hats">🧢 Caps & Hats</button>
+          <button class="filter-pill" data-filter="Wallets & Card Holders">👛 Wallets</button>
+          <button class="filter-pill" data-filter="Accessories">✨ Accessories</button>
+        </div>
+
+        <!-- SUPPLIER CARDS GRID -->
+        <div class="suppliers-cards-grid" id="suppliers-cards-grid">
+          <!-- Populated by script.js from window.SUPPLIERS -->
+        </div>
       </div>
 
       <!-- COMPETITOR PRICE TRACKER -->
