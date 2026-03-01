@@ -74,9 +74,13 @@ function boot() {
   // Setup nav with lazy loading hooks
   setupNav();
 
+  // Ethel Activity Feed
+  renderEthelFeed();
+  setInterval(renderEthelFeed, 60000);
+
   // Supabase Realtime — live updates
   initRealtime();
-  
+
   // Hide loader after critical render
   hideLoader();
 }
@@ -1621,6 +1625,27 @@ function renderSupplierIntelligence() {
       });
     });
   });
+}
+
+// ===== ETHEL ACTIVITY FEED =====
+async function renderEthelFeed() {
+  try {
+    const rows = await sbFetch('agent_activity', 'agent=eq.ethel&order=created_at.desc&limit=20');
+    const tbody = document.getElementById('ethel-feed-body');
+    if (!tbody || !Array.isArray(rows)) return;
+    if (rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:#666;padding:24px">No Ethel activity yet.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(function(r) {
+      const ts = new Date(r.created_at).toLocaleString('en-PH', {timeZone: 'Asia/Manila'});
+      const action = r.action || '—';
+      const summary = r.summary || r.details || '—';
+      return '<tr><td>' + ts + '</td><td>' + action + '</td><td>' + summary + '</td></tr>';
+    }).join('');
+  } catch(e) {
+    console.error('Ethel feed error:', e);
+  }
 }
 
 // ===== STARTUP =====
