@@ -49,6 +49,11 @@ function boot() {
   // Always hide loader — no matter what
   hideLoader();
 
+  // Render the default active page (market) after data.js loads
+  setTimeout(function() {
+    try { lazyLoadTab('market'); } catch(e) { console.warn('market tab init:', e); }
+  }, 200);
+
   // Non-blocking deferred work
   setTimeout(function() {
     try { renderEthelFeed(); setInterval(renderEthelFeed, 60000); } catch(e) {}
