@@ -1712,12 +1712,25 @@ async function fetchCompetitorPosts(reset) {
   }
 }
 
+function getPostFallbackHtml(p) {
+  var colors = { instagram:'#E1306C', tiktok:'#010101', facebook:'#1877F2', shopee:'#EE4D2D' };
+  var icons  = { instagram:'📸', tiktok:'🎵', facebook:'📘', shopee:'🛒' };
+  var c = colors[p.platform] || '#6B7280';
+  var icon = icons[p.platform] || '📱';
+  var initials = (p.competitor || 'XX').replace(/[^a-zA-Z]/g,'').substring(0,2).toUpperCase();
+  return '<div class="post-image-fallback" style="background:' + c + '18;border-bottom:3px solid ' + c + '">'
+    + '<div class="post-fallback-icon">' + icon + '</div>'
+    + '<div class="post-fallback-initials" style="color:' + c + '">' + initials + '</div>'
+    + '<div class="post-fallback-platform" style="color:' + c + '">' + (p.platform||'').toUpperCase() + '</div>'
+    + '</div>';
+}
+
 function renderCompetitorPostCard(p) {
   var platformClass = 'platform-' + (p.platform || 'instagram');
   var platformLabel = (p.platform || 'instagram').toUpperCase();
   var imageHtml = p.image_url
-    ? '<img src="' + p.image_url + '" alt="post" loading="lazy" onerror="this.parentNode.innerHTML=\'<div class=post-image-placeholder>📷</div>\'">'
-    : '<div class="post-image-placeholder">📷</div>';
+    ? '<img src="' + p.image_url + '" alt="post" loading="lazy" onerror="this.outerHTML=getPostFallbackHtml(' + JSON.stringify(p).replace(/'/g,"\\'") + ')">'
+    : getPostFallbackHtml(p);
   var caption = p.caption ? p.caption.substring(0, 120) + (p.caption.length > 120 ? '...' : '') : '—';
   var date = p.posted_at ? new Date(p.posted_at).toLocaleDateString('en-PH') : (p.scraped_at ? new Date(p.scraped_at).toLocaleDateString('en-PH') : '—');
   var postLink = p.post_url ? 'href="' + p.post_url + '" target="_blank"' : '';
