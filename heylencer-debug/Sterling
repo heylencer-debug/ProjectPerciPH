@@ -1,986 +1,466 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project Percy PH — Embroidery Intelligence</title>
-  <!-- Preconnect for faster DNS -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preconnect" href="https://fhfqjcvwcxizbioftvdw.supabase.co" />
-  <!-- Fonts: swap prevents blocking -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  <!-- Critical CSS only -->
-  <link rel="stylesheet" href="style.css" />
-  <!-- sb.js has Supabase anon key — removed, now inlined in body before app.js -->
-  <!-- chart.js, supabase, data.js, feed.js — loaded dynamically when needed -->
-  <style>
-    @keyframes loadbar { from { width: 20%; margin-left: 0; } to { width: 60%; margin-left: 40%; } }
-  </style>
-  <script>
-    // Hard failsafe — loader always gone within 4s no matter what
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        var l = document.getElementById('loader');
-        if (l) { l.style.opacity='0'; l.style.transition='opacity 0.3s'; setTimeout(function(){ l.style.display='none'; }, 300); }
-      }, 4000);
-    });
-  </script>
-</head>
-<body>
-
-  <!-- LOADING SCREEN -->
-  <div id="loader" style="position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:9999;font-family:Inter,sans-serif;">
-    <div style="text-align:center">
-      <div style="font-size:13px;font-weight:700;letter-spacing:0.15em;color:#0A0A0A;margin-bottom:8px">PROJECT PERCY PH</div>
-      <div style="font-size:11px;color:#6B7280;letter-spacing:0.1em">LOADING DASHBOARD...</div>
-      <div style="width:120px;height:2px;background:#F0F0F0;margin:12px auto 0;border-radius:2px;overflow:hidden">
-        <div style="width:40%;height:100%;background:#FF6B6B;border-radius:2px;animation:loadbar 1s ease-in-out infinite alternate"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- MOBILE MENU TOGGLE -->
-  <button class="mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
-  <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileMenu()"></div>
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-logo">
-      <span class="logo-icon">⚔️</span>
-      <div>
-        <div class="logo-title">Project Percy PH</div>
-        <div class="logo-sub">Embroidery Intelligence</div>
-      </div>
-    </div>
-
-    <nav class="sidebar-nav">
-      <div class="nav-label">MENU</div>
-      <a href="#" class="nav-item active" data-page="market">
-        <span class="nav-icon">📊</span> Market Analysis
-      </a>
-      <a href="#" class="nav-item" data-page="competitors">
-        <span class="nav-icon">🏆</span> Competitors
-        <span class="nav-badge" style="background:#DC2626">5</span>
-      </a>
-      <a href="#" class="nav-item" data-page="suppliers">
-        <span class="nav-icon">🏪</span> Suppliers List
-      </a>
-      <a href="#" class="nav-item" data-page="supplier-intel">
-        <span class="nav-icon">🕵️</span> Supplier Intelligence
-        <span class="nav-badge" style="background:#8B5CF6">Ethel</span>
-      </a>
-      <a href="#" class="nav-item" data-page="feed">
-        <span class="nav-icon">📱</span> Social Feed
-        <span class="nav-badge" id="feed-badge">10</span>
-      </a>
-      <div class="nav-label" style="margin-top:12px">CONTENT</div>
-      <a href="#" class="nav-item" data-page="calendar">
-        <span class="nav-icon">📅</span> Content Calendar
-      </a>
-      <a href="#" class="nav-item" data-page="captions">
-        <span class="nav-icon">✍️</span> Captions Library
-        <span class="nav-badge" style="background:#A78BFA">30</span>
-      </a>
-      <div class="nav-label" style="margin-top:12px">BUSINESS</div>
-      <a href="#" class="nav-item" data-page="pricing">
-        <span class="nav-icon">💰</span> Pricing Calculator
-      </a>
-      <a href="#" class="nav-item" data-page="catalog">
-        <span class="nav-icon">📦</span> Product Catalog
-      </a>
-      <a href="#" class="nav-item" data-page="btv">
-        <span class="nav-icon">🛍️</span> BTV Catalog
-        <span class="nav-badge" style="background:#10B981">262</span>
-      </a>
-      <div class="nav-label" style="margin-top:12px">INTELLIGENCE</div>
-      <a href="#" class="nav-item" data-page="competitor-feed">
-        <span class="nav-icon">📡</span> Competitor Feed
-      </a>
-    </nav>
-
-    <div class="sidebar-footer">
-      <div class="footer-label">LAST UPDATED</div>
-      <div class="footer-date" id="sidebar-date">—</div>
-      <div class="footer-hint">Edit data/ files to update</div>
-    </div>
-  </aside>
-
-  <!-- MAIN CONTENT -->
-  <main class="main">
-
-    <!-- HEADER -->
-    <header class="topbar">
-      <div class="topbar-left">
-        <h1 class="page-title" id="page-title">Market Analysis</h1>
-        <p class="page-sub" id="page-sub">Philippines Embroidery Gift Market — Live Research Data</p>
-      </div>
-      <div class="topbar-right">
-        <div class="updated-badge">
-          <span class="badge-dot"></span>
-          Updated: <strong id="header-date">—</strong>
-        </div>
-      </div>
-    </header>
-
-    <!-- QUICK STATS BAR -->
-    <div class="quick-stats-bar" id="quick-stats-bar">
-      <div class="quick-stat">
-        <span class="quick-stat-icon">🏆</span>
-        <div class="quick-stat-content">
-          <div class="quick-stat-label">Top Product</div>
-          <div class="quick-stat-value">Bath Towels</div>
-        </div>
-      </div>
-      <div class="quick-stat">
-        <span class="quick-stat-icon">💎</span>
-        <div class="quick-stat-content">
-          <div class="quick-stat-label">Best Margin</div>
-          <div class="quick-stat-value">82% — Handkerchiefs</div>
-        </div>
-      </div>
-      <div class="quick-stat">
-        <span class="quick-stat-icon">📅</span>
-        <div class="quick-stat-content">
-          <div class="quick-stat-label">Peak Season</div>
-          <div class="quick-stat-value">Dec + Feb</div>
-        </div>
-      </div>
-      <div class="quick-stat highlight">
-        <span class="quick-stat-icon">🎓</span>
-        <div class="quick-stat-content">
-          <div class="quick-stat-label">Graduation Rush</div>
-          <div class="quick-stat-value" id="grad-countdown">2 days</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE: MARKET ANALYSIS -->
-    <section id="page-market" class="page active">
-
-      <!-- SEASONAL ALERTS BANNER -->
-      <div class="seasonal-alerts-banner" id="seasonal-alerts"></div>
-
-      <!-- STAT CARDS -->
-      <div class="stats-grid" id="stats-grid"></div>
-
-      <!-- TRENDING PRODUCTS -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">🔥 Trending Products</h2>
-          <span class="card-sub">Ranked by demand & profit potential</span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="products-table">
-            <thead>
-              <tr>
-                <th>#</th><th>Product</th><th>Demand</th><th>Price Range</th><th>Est. Margin</th><th>Trend</th>
-              </tr>
-            </thead>
-            <tbody id="products-body"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- CHARTS ROW -->
-      <div class="two-col">
-        <div class="section-card">
-          <div class="card-header">
-            <h2 class="card-title">💰 Pricing Benchmarks</h2>
-            <span class="card-sub">Competitor avg vs. your price vs. material cost</span>
-          </div>
-          <div class="chart-wrap">
-            <canvas id="pricingChart"></canvas>
-          </div>
-        </div>
-        <div class="section-card">
-          <div class="card-header">
-            <h2 class="card-title">📅 Seasonal Demand</h2>
-            <span class="card-sub">Monthly demand intensity (Jan–Dec)</span>
-          </div>
-          <div class="chart-wrap">
-            <canvas id="seasonChart"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <!-- COMPETITORS -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">🏆 Top Competitors</h2>
-          <span class="card-sub">Philippines embroidery & personalized gift market</span>
-        </div>
-        <div class="competitors-grid" id="competitors-grid"></div>
-      </div>
-
-      <!-- INSIGHTS -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">💡 Market Insights</h2>
-          <span class="card-sub">Key intelligence from live research</span>
-        </div>
-        <div class="insights-grid" id="insights-grid"></div>
-      </div>
-
-      <!-- PRODUCT OPPORTUNITIES (Ethel Intelligence) -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">🎯 Product Opportunities</h2>
-          <span class="card-sub">Discovered by Ethel 🕵️ — Intelligence Agent</span>
-        </div>
-        <div class="opportunities-grid" id="opportunities-grid">
-          <!-- Populated by script.js from window.PRODUCT_OPPORTUNITIES -->
-        </div>
-      </div>
-
-      <!-- ETHEL ACTIVITY FEED -->
-      <section class="ethel-feed-section">
-        <div class="section-header">
-          <span class="section-label">AGENT ACTIVITY</span>
-          <h2 class="section-title">ETHEL FEED</h2>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="ethel-feed-table">
-            <thead>
-              <tr>
-                <th>TIME</th>
-                <th>ACTION</th>
-                <th>SUMMARY</th>
-              </tr>
-            </thead>
-            <tbody id="ethel-feed-body">
-              <tr><td colspan="3" style="text-align:center;color:#666;padding:24px">Loading...</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-    </section>
-
-    <!-- PAGE: COMPETITORS DEEP-DIVE -->
-    <section id="page-competitors" class="page">
-      <!-- COMPETITOR CARDS -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">🏆 Competitor Analysis</h2>
-          <span class="card-sub">Know your competition — their strengths, weaknesses, and your advantages</span>
-        </div>
-        <div class="competitor-detail-grid" id="competitor-detail-grid"></div>
-      </div>
-
-      <!-- THREAT MATRIX -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">📊 Threat Matrix</h2>
-          <span class="card-sub">X = Market Reach · Y = Product Overlap — Bigger & higher = more dangerous</span>
-        </div>
-        <div class="threat-matrix-wrap">
-          <div class="threat-matrix" id="threat-matrix">
-            <div class="matrix-quadrant q1">
-              <span class="quadrant-label">High Overlap<br>Low Reach</span>
-            </div>
-            <div class="matrix-quadrant q2">
-              <span class="quadrant-label">⚠️ DANGER ZONE<br>High Overlap + High Reach</span>
-            </div>
-            <div class="matrix-quadrant q3">
-              <span class="quadrant-label">Low Priority</span>
-            </div>
-            <div class="matrix-quadrant q4">
-              <span class="quadrant-label">Watch<br>High Reach</span>
-            </div>
-            <div class="matrix-axis-x">Market Reach →</div>
-            <div class="matrix-axis-y">Product Overlap ↑</div>
-            <!-- Dots will be injected by JS -->
-          </div>
-          <div class="matrix-legend" id="matrix-legend"></div>
-        </div>
-      </div>
-
-      <!-- MY ADVANTAGES -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">⚔️ Your Competitive Advantages</h2>
-          <span class="card-sub">Why customers should choose Project Percy PH over competitors</span>
-        </div>
-        <div class="advantages-list" id="advantages-list"></div>
-      </div>
-    </section>
-
-    <!-- PAGE: PRICING CALCULATOR -->
-    <section id="page-pricing" class="page">
-      <div class="pricing-layout">
-        <!-- CALCULATOR -->
-        <div class="section-card pricing-calculator-card">
-          <div class="card-header">
-            <h2 class="card-title">💰 Pricing Calculator</h2>
-            <span class="card-sub">Calculate costs, margins, and suggested prices</span>
-          </div>
-          <div class="pricing-calculator">
-            <div class="calc-inputs">
-              <div class="calc-field">
-                <label>Item Type</label>
-                <select id="calc-item" class="calc-select">
-                  <option value="tote_bag">🛍️ Tote Bag</option>
-                  <option value="towel">🧴 Bath Towel</option>
-                  <option value="cap">🧢 Cap</option>
-                  <option value="polo">👔 Polo Shirt</option>
-                  <option value="handkerchief">🧣 Handkerchief</option>
-                </select>
-              </div>
-              <div class="calc-field">
-                <label>Quantity</label>
-                <input type="number" id="calc-qty" class="calc-input" value="1" min="1" max="100">
-              </div>
-              <div class="calc-field">
-                <label>Embroidery Complexity</label>
-                <select id="calc-complexity" class="calc-select">
-                  <option value="simple">Simple Name/Text</option>
-                  <option value="pet">Pet Portrait (+80%)</option>
-                  <option value="face">Face Portrait (+100%)</option>
-                  <option value="couple">Couple Silhouette (+120%)</option>
-                </select>
-              </div>
-            </div>
-            <div class="calc-results" id="calc-results">
-              <!-- Results injected by JS -->
-            </div>
-          </div>
-        </div>
-
-        <!-- PRICE COMPARISON BAR -->
-        <div class="section-card">
-          <div class="card-header">
-            <h2 class="card-title">📊 Price Comparison</h2>
-            <span class="card-sub">Your price vs competitor average</span>
-          </div>
-          <div class="price-comparison" id="price-comparison">
-            <!-- Comparison bar injected by JS -->
-          </div>
-        </div>
-
-        <!-- BULK PRICING TIERS -->
-        <div class="section-card">
-          <div class="card-header">
-            <h2 class="card-title">📦 Bulk Pricing Tiers</h2>
-            <span class="card-sub">Discounted rates for volume orders</span>
-          </div>
-          <div class="bulk-tiers" id="bulk-tiers">
-            <!-- Tiers injected by JS -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- PAGE: SUPPLIERS LIST -->
-    <section id="page-suppliers" class="page">
-
-      <!-- FILTERS -->
-      <div class="filters-bar">
-        <input type="text" id="supplier-search" class="filter-input" placeholder="🔍  Search supplier, item, location..." />
-        <select id="filter-category" class="filter-select">
-          <option value="">All Categories</option>
-          <option>Tote Bags</option>
-          <option>Towels</option>
-          <option>Caps</option>
-          <option>Shirts</option>
-          <option>Handkerchiefs</option>
-          <option>Robes</option>
-        </select>
-        <select id="filter-platform" class="filter-select">
-          <option value="">All Platforms</option>
-          <option>Facebook</option>
-          <option>Shopee</option>
-          <option>Lazada</option>
-          <option>Website</option>
-        </select>
-        <div class="filter-count"><span id="supplier-count">—</span> suppliers</div>
-      </div>
-
-      <!-- SUPPLIER TABLE -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">🏪 Supplier Directory</h2>
-          <span class="card-sub">Click any row to highlight · All data from live research Feb 2026</span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table suppliers-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Supplier</th>
-                <th>Platform</th>
-                <th>Category</th>
-                <th>Items</th>
-                <th>Price/pc</th>
-                <th>Min Order</th>
-                <th>Location</th>
-                <th>Rating</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="suppliers-body"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- FACEBOOK GROUPS -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">👥 Facebook Groups to Join</h2>
-          <span class="card-sub">Post your sourcing needs — suppliers will respond within 24h</span>
-        </div>
-        <div class="groups-grid" id="groups-grid"></div>
-      </div>
-
-      <!-- MESSAGE TEMPLATE -->
-      <div class="section-card">
-        <div class="card-header">
-          <h2 class="card-title">✉️ Supplier Inquiry Template</h2>
-          <span class="card-sub">Copy and send to any supplier</span>
-        </div>
-        <div class="template-wrap">
-          <textarea id="msg-template" class="template-box" readonly></textarea>
-          <button class="copy-btn" id="copy-btn" onclick="copyTemplate()">📋 Copy Message</button>
-          <div class="copy-success" id="copy-success">✅ Copied to clipboard!</div>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- PAGE: SUPPLIER INTELLIGENCE (Ethel) -->
-    <section id="page-supplier-intel" class="page">
-
-      <!-- HEADER & LAST UPDATED -->
-      <div class="ethel-header">
-        <div>
-          <h2 style="font-size:24px;font-weight:700;margin:0;color:#fff">🕵️ Supplier Intelligence</h2>
-          <p style="margin:4px 0 0 0;color:#94A3B8;font-size:14px">Curated by Ethel — Intelligence Agent</p>
-        </div>
-        <div class="updated-badge" style="background:#1E293B">
-          <span class="badge-dot" style="background:#8B5CF6"></span>
-          Last synced: <strong id="ethel-updated">—</strong>
-        </div>
-      </div>
-
-      <!-- STATS BAR -->
-      <div class="supplier-stats-bar" id="supplier-stats-bar">
-        <div class="supplier-stat">
-          <span class="stat-icon">🏪</span>
-          <div>
-            <div class="stat-label">Total Suppliers</div>
-            <div class="stat-value" id="total-suppliers">—</div>
-          </div>
-        </div>
-        <div class="supplier-stat">
-          <span class="stat-icon">💰</span>
-          <div>
-            <div class="stat-label">Avg Price/pc</div>
-            <div class="stat-value" id="avg-price">—</div>
-          </div>
-        </div>
-        <div class="supplier-stat">
-          <span class="stat-icon">📦</span>
-          <div>
-            <div class="stat-label">Lowest MOQ</div>
-            <div class="stat-value" id="lowest-moq">—</div>
-          </div>
-        </div>
-        <div class="supplier-stat">
-          <span class="stat-icon">🔥</span>
-          <div>
-            <div class="stat-label">Active Promos</div>
-            <div class="stat-value" id="active-promos">—</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SUPPLIER TABS -->
-      <div class="supplier-tabs">
-        <button class="supplier-tab active" data-tab="products">Product Catalog</button>
-        <button class="supplier-tab" data-tab="suppliers">Supplier Directory</button>
-        <button class="supplier-tab" data-tab="source-by-product">Source by Product</button>
-      </div>
-
-      <!-- PRODUCT CATALOG TAB -->
-      <div id="supplier-tab-products" class="supplier-tab-content">
-
-        <!-- Filter row -->
-        <div class="filter-row" style="margin-bottom:20px;display:flex;gap:10px;flex-wrap:wrap">
-          <select id="sp-category-filter" class="filter-select" onchange="loadSupplierProducts()">
-            <option value="">All Categories</option>
-            <option value="bag">Bags & Pouches</option>
-            <option value="tumbler">Tumblers</option>
-            <option value="cap">Caps & Hats</option>
-            <option value="wallet">Wallets</option>
-            <option value="accessory">Accessories</option>
-            <option value="patch">Patches</option>
-          </select>
-          <select id="sp-platform-filter" class="filter-select" onchange="loadSupplierProducts()">
-            <option value="">All Platforms</option>
-            <option value="alibaba">Alibaba</option>
-            <option value="shopee">Shopee</option>
-            <option value="temu">Temu</option>
-            <option value="shein">Shein</option>
-          </select>
-          <select id="sp-customization-filter" class="filter-select" onchange="loadSupplierProducts()">
-            <option value="">All Customizations</option>
-            <option value="embroidery">Embroidery</option>
-            <option value="engraving">Engraving</option>
-            <option value="patch">Patch</option>
-            <option value="sublimation">Sublimation</option>
-          </select>
-          <button class="btn-primary" onclick="loadSupplierProducts()">Refresh</button>
-        </div>
-
-        <!-- Stats row -->
-        <div style="display:flex;gap:24px;margin-bottom:20px">
-          <span style="font-size:13px;color:#6B7280">Showing <strong id="sp-count">—</strong> products</span>
-        </div>
-
-        <!-- Product grid -->
-        <div id="supplier-products-grid" class="supplier-products-grid">
-          <p style="color:#6B7280;text-align:center;padding:48px">Loading products...</p>
-        </div>
-
-        <div style="text-align:center;margin-top:24px">
-          <button class="btn-secondary" id="sp-load-more" onclick="loadMoreSupplierProducts()" style="display:none">Load More</button>
-        </div>
-      </div>
-
-      <!-- SOURCE BY PRODUCT TAB -->
-      <div id="supplier-tab-source-by-product" class="supplier-tab-content" style="display:none">
-
-        <p style="font-size:13px;color:#6B7280;margin-bottom:20px">
-          Click a product to find supplier listings across Alibaba, Shopee, Temu and Shein.
-        </p>
-
-        <!-- Reference product grid -->
-        <div id="reference-products-grid" class="reference-products-grid">
-          <!-- Populated by JS -->
-        </div>
-
-        <!-- Supplier listings panel (shown after clicking a product) -->
-        <div id="source-listings-panel" style="display:none;margin-top:28px">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
-            <h3 id="source-panel-title" style="font-size:18px;font-weight:800;color:#0A0A0A"></h3>
-            <button onclick="document.getElementById('source-listings-panel').style.display='none'" class="btn-secondary" style="padding:6px 14px;font-size:12px">Close</button>
-          </div>
-          <div id="source-listings-grid" class="supplier-products-grid">
-            <p style="color:#6B7280;text-align:center;padding:32px">Loading listings...</p>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- SUPPLIER DIRECTORY TAB -->
-      <div id="supplier-tab-suppliers" class="supplier-tab-content" style="display:none">
-        <!-- FILTER BUTTONS -->
-        <div class="filter-pills">
-          <button class="filter-pill active" data-filter="all">All</button>
-          <button class="filter-pill" data-filter="Bags & Pouches">🛍️ Bags & Pouches</button>
-          <button class="filter-pill" data-filter="Tumblers & Drinkware">🥤 Tumblers</button>
-          <button class="filter-pill" data-filter="Caps & Hats">🧢 Caps & Hats</button>
-          <button class="filter-pill" data-filter="Wallets & Card Holders">👛 Wallets</button>
-          <button class="filter-pill" data-filter="Accessories">✨ Accessories</button>
-        </div>
-
-        <!-- SUPPLIER CARDS GRID -->
-        <div class="suppliers-cards-grid" id="suppliers-cards-grid">
-          <!-- Populated by script.js from window.SUPPLIERS -->
-        </div>
-      </div>
-
-      <!-- COMPETITOR PRICE TRACKER -->
-      <div class="section-card" style="margin-top:24px">
-        <div class="card-header">
-          <h2 class="card-title">📊 Competitor Price Tracker</h2>
-          <span class="card-sub">Ethel updates daily · <span style="color:#10B981">Green</span> = you have room · <span style="color:#EF4444">Red</span> = they're cheaper</span>
-        </div>
-        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
-          <select id="price-cat-filter" class="filter-select" onchange="renderPriceTracker()">
-            <option value="">All Categories</option>
-            <option value="bag">Bags</option>
-            <option value="tumbler">Tumblers</option>
-            <option value="mirror">Mirrors</option>
-            <option value="cap">Caps</option>
-          </select>
-          <select id="price-platform-filter" class="filter-select" onchange="renderPriceTracker()">
-            <option value="">All Platforms</option>
-            <option value="shopee">Shopee</option>
-            <option value="lazada">Lazada</option>
-            <option value="website">Website</option>
-          </select>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr><th>Competitor</th><th>Product</th><th>Category</th><th>Their Price</th><th>Our Price</th><th>Gap</th><th>Platform</th></tr>
-            </thead>
-            <tbody id="price-tracker-body">
-              <tr><td colspan="7" style="text-align:center;padding:24px;color:#94A3B8">Open this tab to load prices</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- PAGE: SOCIAL FEED -->
-    <section id="page-feed" class="page">
-
-      <!-- FEED CONTROLS -->
-      <div class="feed-controls">
-        <div class="feed-filters">
-          <button class="feed-filter-btn active" data-filter="all">All Posts</button>
-          <button class="feed-filter-btn" data-filter="competitor">🏆 Competitors</button>
-          <button class="feed-filter-btn" data-filter="trend">📈 Trends</button>
-          <button class="feed-filter-btn" data-filter="wedding">💍 Wedding</button>
-        </div>
-        <div class="feed-platform-filters">
-          <button class="platform-btn active" data-platform="all">All</button>
-          <button class="platform-btn" data-platform="TikTok">🎵 TikTok</button>
-          <button class="platform-btn" data-platform="Facebook">👥 Facebook</button>
-          <button class="platform-btn" data-platform="Instagram">📸 Instagram</button>
-        </div>
-      </div>
-
-      <!-- FEED + SIDEBAR LAYOUT -->
-      <div class="feed-layout">
-
-        <!-- POSTS FEED -->
-        <div class="feed-main">
-          <div class="feed-header">
-            <h2 class="card-title">📱 Competitor & Trend Feed</h2>
-            <span class="feed-count"><span id="feed-post-count">0</span> posts · Updated daily at 8AM</span>
-          </div>
-          <div id="feed-posts"></div>
-        </div>
-
-        <!-- SIDEBAR: PROFILES TO WATCH -->
-        <div class="feed-sidebar">
-          <div class="section-card">
-            <div class="card-header">
-              <h2 class="card-title">👁️ Watch List</h2>
-            </div>
-            <div id="competitor-profiles"></div>
-          </div>
-
-          <!-- INTEL SUMMARY -->
-          <div class="section-card" style="margin-top:16px">
-            <div class="card-header">
-              <h2 class="card-title">🧠 Key Insights</h2>
-            </div>
-            <div class="intel-list">
-              <div class="intel-item">
-                <span class="intel-icon">🔥</span>
-                <span>TikTok embroidery content gets <strong>100K–400K views</strong> — start filming your process</span>
-              </div>
-              <div class="intel-item">
-                <span class="intel-icon">💍</span>
-                <span>On-site embroidery at <strong>wedding fairs</strong> = zero competition in Cebu right now</span>
-              </div>
-              <div class="intel-item">
-                <span class="intel-icon">🌙</span>
-                <span><strong>Sleepwear + embroidery</strong> = 267K views. Robes/pajamas are underserved</span>
-              </div>
-              <div class="intel-item">
-                <span class="intel-icon">✈️</span>
-                <span><strong>OFW pasalubong</strong> market: worldwide shipping + personalized PH gifts = big niche</span>
-              </div>
-              <div class="intel-item">
-                <span class="intel-icon">🏷️</span>
-                <span>UNIQLO charges <strong>premium prices</strong> for same service — you can undercut by 40%</span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- PAGE: CONTENT CALENDAR -->
-    <section id="page-calendar" class="page">
-      <div class="cal-header-bar">
-        <div class="cal-month-title" id="cal-month-title">March 2026</div>
-        <div class="cal-legend">
-          <span class="cal-leg"><span class="leg-dot pillar-art-gifting"></span>🎁 Art of Gifting</span>
-          <span class="cal-leg"><span class="leg-dot pillar-craft"></span>🧵 Craft & Process</span>
-          <span class="cal-leg"><span class="leg-dot pillar-filipino"></span>🇵🇭 Filipino Gift Culture</span>
-          <span class="cal-leg"><span class="leg-dot pillar-inspo"></span>💡 Gift Inspo</span>
-          <span class="cal-leg"><span class="leg-dot pillar-brand"></span>👤 Behind the Brand</span>
-          <span class="cal-leg"><span class="leg-dot pillar-promo"></span>📢 Promotional</span>
-        </div>
-      </div>
-      <div class="cal-layout">
-        <div class="cal-grid-wrap">
-          <div class="cal-grid" id="cal-grid"></div>
-        </div>
-        <!-- SIDE PANEL FOR SELECTED DAY -->
-        <div class="cal-side-panel" id="cal-side-panel">
-          <div class="cal-panel-header">
-            <span class="cal-panel-day" id="cal-panel-day">—</span>
-            <span class="cal-panel-status" id="cal-panel-status">—</span>
-          </div>
-          <div class="cal-panel-content" id="cal-panel-content">
-            <p class="cal-panel-hint">Click a day to see content details</p>
-          </div>
-        </div>
-      </div>
-      <div class="section-card" style="margin-top:24px">
-        <div class="card-header">
-          <h2 class="card-title">📋 All Scheduled Posts</h2>
-          <span class="card-sub">Click any row to expand the full caption · Track status: Draft / Ready / Posted</span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="cal-table">
-            <thead>
-              <tr><th>Day</th><th>Platform</th><th>Type</th><th>Time</th><th>Pillar</th><th>Status</th><th>Content Preview</th></tr>
-            </thead>
-            <tbody id="cal-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- PAGE: CAPTIONS LIBRARY -->
-    <section id="page-captions" class="page">
-      <div class="filters-bar">
-        <input type="text" id="caption-search" class="filter-input" placeholder="🔍  Search caption, keyword, CTA..." />
-        <select id="caption-platform" class="filter-select">
-          <option value="">All Platforms</option>
-          <option>Instagram</option>
-          <option>TikTok</option>
-          <option>Facebook</option>
-        </select>
-        <select id="caption-pillar" class="filter-select">
-          <option value="">All Pillars</option>
-          <option value="tease">Tease</option>
-          <option value="process">Process</option>
-          <option value="product">Product</option>
-          <option value="giftinspo">Gift Inspo</option>
-          <option value="engagement">Engagement</option>
-          <option value="brand">Brand</option>
-          <option value="promo">Promo</option>
-        </select>
-        <div class="filter-count"><span id="caption-count">30</span> captions</div>
-      </div>
-      <div class="captions-grid" id="captions-grid"></div>
-    </section>
-
-    <!-- PAGE: PRODUCT CATALOG -->
-    <section id="page-catalog" class="page">
-      <!-- RECOMMENDATION CARD -->
-      <div class="recommendation-card" id="recommendation-card">
-        <div class="rec-header">
-          <span class="rec-icon">🎯</span>
-          <div>
-            <div class="rec-title">Which product should I sell first?</div>
-            <div class="rec-sub">Top 3 products by margin + demand score</div>
-          </div>
-        </div>
-        <div class="rec-products" id="rec-products">
-          <!-- Injected by JS -->
-        </div>
-      </div>
-
-      <!-- PRODUCT CARDS -->
-      <div class="catalog-grid" id="catalog-grid"></div>
-
-      <!-- COMPETITOR PRICING -->
-      <div class="section-card" style="margin-top:24px">
-        <div class="card-header">
-          <h2 class="card-title">📊 Competitor Price Comparison</h2>
-          <span class="card-sub" id="comp-insight"></span>
-        </div>
-        <div class="table-wrap">
-          <table class="data-table" id="comp-pricing-table">
-            <thead><tr id="comp-pricing-head"></tr></thead>
-            <tbody id="comp-pricing-body"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- BUNDLE IDEAS -->
-      <div class="section-card" style="margin-top:24px">
-        <div class="card-header">
-          <h2 class="card-title">🎁 Bundle Ideas</h2>
-          <span class="card-sub">Pre-built packages that increase average order value</span>
-        </div>
-        <div class="bundles-grid" id="bundles-grid"></div>
-      </div>
-    </section>
-
-    <!-- PAGE: BTV CATALOG -->
-    <!-- PAGE: BTV CATALOG -->
-    <section id="page-btv" class="page">
-
-      <!-- Toolbar -->
-      <div class="btv-toolbar">
-        <div class="btv-meta-bar">
-          <div class="btv-meta-title">
-            <a href="https://beyondthevines.com" target="_blank" rel="noopener">Beyond The Vines</a>
-            &nbsp;·&nbsp; <span id="btv-count">—</span> products
-          </div>
-          <span class="btv-sync-badge" id="btv-sync-date">Last synced: —</span>
-        </div>
-        <div class="btv-controls">
-          <input type="text" id="btv-search" class="filter-input" placeholder="🔍  Search products..." />
-          <select id="btv-category-filter" class="filter-select">
-            <option value="">All Categories</option>
-          </select>
-          <select id="btv-availability-filter" class="filter-select">
-            <option value="">All Availability</option>
-            <option value="true">✓ In Stock</option>
-            <option value="false">✗ Sold Out</option>
-          </select>
-        </div>
-        <div class="btv-category-pills" id="btv-category-pills"></div>
-      </div>
-
-      <!-- Product Grid -->
-      <div class="btv-grid" id="btv-grid"></div>
-
-      <!-- Load More -->
-      <div class="btv-load-more-wrap" id="btv-load-more-wrap" style="display:none">
-        <button class="btv-load-more-btn" id="btv-load-more">Load More</button>
-      </div>
-
-    </section>
-
-    <!-- PAGE: COMPETITOR FEED -->
-    <section id="page-competitor-feed" class="page">
-
-      <!-- Page header -->
-      <div class="page-header">
-        <div class="page-label">MARKET INTELLIGENCE</div>
-        <h1 class="page-title">COMPETITOR FEED</h1>
-        <p class="page-subtitle">Live social posts from competing brands — powered by Ethel</p>
-      </div>
-
-      <!-- Stats bar -->
-      <div class="stats-bar" id="cf-stats-bar">
-        <div class="stat-card">
-          <div class="stat-number" id="cf-total-posts">—</div>
-          <div class="stat-label">TOTAL POSTS</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="cf-competitors-count">—</div>
-          <div class="stat-label">COMPETITORS</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="cf-avg-engagement">—</div>
-          <div class="stat-label">AVG ENGAGEMENT</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number" id="cf-last-scraped">—</div>
-          <div class="stat-label">LAST SCRAPED</div>
-        </div>
-      </div>
-
-      <!-- Filters -->
-      <div class="filter-row" style="margin-bottom:24px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-        <select id="cf-competitor-filter" class="filter-select">
-          <option value="">All Competitors</option>
-        </select>
-        <select id="cf-platform-filter" class="filter-select">
-          <option value="">All Platforms</option>
-          <option value="instagram">Instagram</option>
-          <option value="tiktok">TikTok</option>
-          <option value="shopee">Shopee</option>
-        </select>
-        <button class="btn-primary" onclick="loadCompetitorFeed()">Refresh</button>
-      </div>
-
-      <!-- Post grid -->
-      <div id="competitor-feed-grid" class="competitor-feed-grid">
-        <p style="color:#6B7280;text-align:center;padding:48px">Loading competitor posts...</p>
-      </div>
-
-      <!-- Load more -->
-      <div style="text-align:center;margin-top:24px">
-        <button class="btn-secondary" id="cf-load-more" onclick="loadMoreCompetitorPosts()" style="display:none">Load More</button>
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- MOBILE BOTTOM NAVIGATION -->
-  <nav class="mobile-nav" id="mobile-nav">
-    <a href="#" class="mobile-nav-item active" data-page="market">
-      <span class="mobile-nav-icon">📊</span>
-      <span>Market</span>
-    </a>
-    <a href="#" class="mobile-nav-item" data-page="competitors">
-      <span class="mobile-nav-icon">🏆</span>
-      <span>Rivals</span>
-    </a>
-    <a href="#" class="mobile-nav-item" data-page="suppliers">
-      <span class="mobile-nav-icon">🏪</span>
-      <span>Suppliers</span>
-    </a>
-    <a href="#" class="mobile-nav-item" data-page="feed">
-      <span class="mobile-nav-icon">📱</span>
-      <span>Feed</span>
-    </a>
-    <a href="#" class="mobile-nav-item" onclick="toggleMobileMenu(); return false;">
-      <span class="mobile-nav-icon">☰</span>
-      <span>More</span>
-    </a>
-  </nav>
-
-  <!-- sb.js MUST load before app.js so SUPABASE_CONFIG is defined -->
-  <script src="data/sb.js"></script>
-  <script src="app.js"></script>
-  <script>
-    // Mobile menu toggle
-    function toggleMobileMenu() {
-      const sidebar = document.querySelector('.sidebar');
-      const overlay = document.getElementById('mobile-overlay');
-      const toggle = document.getElementById('mobile-menu-toggle');
-      
-      sidebar.classList.toggle('mobile-open');
-      overlay.classList.toggle('active');
-      toggle.textContent = sidebar.classList.contains('mobile-open') ? '✕' : '☰';
+// ===== SOCIAL FEED DATA =====
+// Updated daily by Perci at 8 AM Manila time
+// Posts are COMPETITOR-ONLY — brands/sellers in the PH embroidery gift space
+// Add new posts at the TOP. Keep max 20.
+
+window.FEED_DATA = {
+  "lastUpdated": "2026-03-02",
+  "feedPosts": [
+    {
+      "id": 33,
+      "account": "UNIQLO Philippines",
+      "handle": "@uniqlophofficial",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "🌸 AIRism is HERE for PH summer! New AIRism Cotton Crew Neck T-Shirts just dropped — 20% off launch promo. Beat the heat in breathable fabric perfect for Manila or the beach. Shop now at uniqlo.com/ph. #UNIQLOAIRism #SummerPH #UNIQLOph",
+      "hashtags": ["#UNIQLOAIRism", "#SummerPH", "#UNIQLOph", "#AIRismPH", "#BeatTheHeat"],
+      "engagement": "~12K likes, 450 comments",
+      "date": "2026-03-02",
+      "daysAgo": "Today",
+      "url": "https://www.tiktok.com/@uniqloph",
+      "category": "competitor",
+      "insight": "UNIQLO is pivoting from IWD to summer/AIRism — signaling they're wrapping up seasonal gifting push. This is your window: while UNIQLO shifts gears, stay loud on IWD embroidered gifts. Position Percy PH as the personalized alternative they can't offer online.",
+      "isHot": false
+    },
+    {
+      "id": 32,
+      "account": "UNIQLO Philippines",
+      "handle": "@uniqlophofficial",
+      "platform": "Instagram",
+      "type": "post",
+      "mediaType": "instagram",
+      "mediaId": "uniqlophofficial",
+      "thumbnail": "",
+      "content": "New Spring 2026 arrivals are in-store now at SM Megamall! 🌸 Oversized shirts, linen pants, and more. In-store event teaser for March 8 — come and celebrate IWD with us! #UNIQLOPH #Spring2026 #WomensDay2026",
+      "hashtags": ["#UNIQLOPH", "#Spring2026", "#WomensDay2026", "#SMStore", "#NewArrivals"],
+      "engagement": "~18K likes, 620 comments",
+      "date": "2026-03-02",
+      "daysAgo": "Today",
+      "url": "https://www.instagram.com/uniqlophofficial",
+      "category": "competitor",
+      "insight": "UNIQLO PH is hosting an IWD in-store event on March 8 at Megamall — this drives foot traffic to malls, not online. Capitalize on the non-Luzon market: 'No UNIQLO branch near you? Ship custom embroidered IWD gifts straight to her door from Percy PH.' Target Visayas/Mindanao buyers.",
+      "isHot": false
+    },
+    {
+      "id": 31,
+      "account": "Keepsakes PH",
+      "handle": "@keepsakes.ph",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "🐾 NEW: Pet Memorial line is here! Engraved paw-print stones with your pet's photo. Sales up 20% since launch! If you lost a fur baby, honor them with something forever. 😢❤️ #KeepsakesPH #PetMemorial #RainbowBridge",
+      "hashtags": ["#KeepsakesPH", "#PetMemorial", "#RainbowBridge", "#PetLoss", "#CustomGiftPH"],
+      "engagement": "~60K views, 5.5K likes",
+      "date": "2026-03-02",
+      "daysAgo": "Today",
+      "url": "https://www.tiktok.com/@keepsakes.ph",
+      "category": "competitor",
+      "insight": "Keepsakes PH's pet memorial line is going viral (60K views) — this is a niche Percy PH hasn't tapped. Consider: custom embroidered pet name on a towel or tote as a simpler, lower-cost pet memorial gift angle. 'Stitch their name, keep their memory' — test as a TikTok hook.",
+      "isHot": true
+    },
+    {
+      "id": 30,
+      "account": "Keepsakes PH",
+      "handle": "@keepsakes.ph",
+      "platform": "Instagram",
+      "type": "post",
+      "mediaType": "instagram",
+      "mediaId": "keepsakes.ph",
+      "thumbnail": "",
+      "content": "💌 Love Letters Eternalized! Custom leather-bound love letter books — perfect for Valentine's latecomers and IWD! 10% off with code HEART2026. Turn handwritten notes into forever keepsakes. Order now! #KeepsakesPH #CustomGifts #WomensDay2026",
+      "hashtags": ["#KeepsakesPH", "#LoveLetters", "#CustomGifts", "#WomensDay2026", "#PersonalizedPH"],
+      "engagement": "~1.2K likes, 150 comments",
+      "date": "2026-03-02",
+      "daysAgo": "Today",
+      "url": "https://www.instagram.com/keepsakes.ph",
+      "category": "competitor",
+      "insight": "Keepsakes PH is extending Valentine's momentum with a 10% IWD discount code — smart evergreen play. They're NOT in embroidery, so no direct threat here. Monitor if they add embroidery products in the future. For now, their 'personalized forever gift' framing is worth borrowing for your IWD messaging.",
+      "isHot": false
+    },
+    {
+      "id": 29,
+      "account": "Lucky Loops Official",
+      "handle": "@luckyloopsofficial",
+      "platform": "Instagram",
+      "type": "post",
+      "mediaType": "instagram",
+      "mediaId": "luckyloopsofficial",
+      "thumbnail": "",
+      "content": "6 DAYS TO GO! 🌸 Women's Day countdown is ON — last call for custom embroidered gifts! Handkerchiefs, tote bags, towels with her name or a heartfelt message. Order by March 5 to guarantee delivery before March 8. Slots are VERY LIMITED! DM us now! #WomensDay2026 #LastCall",
+      "hashtags": ["#WomensDay2026", "#IWD2026", "#LastCall", "#CustomEmbroidery", "#GiftForHer"],
+      "engagement": "Active — urgency push",
+      "date": "2026-03-02",
+      "daysAgo": "Today",
+      "url": "https://www.instagram.com/luckyloopsofficial",
+      "category": "competitor",
+      "insight": "⚠️ Lucky Loops is cutting off IWD orders at March 5 — they're managing capacity. This is your opening: if you can fulfill up to March 6 or 7, post 'We still have IWD slots open — order until March 6!' and capture their overflow customers who missed the deadline.",
+      "isHot": true
+    },
+    {
+      "id": 28,
+      "account": "Lucky Loops Official",
+      "handle": "@luckyloopsofficial",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "7 DAYS TO GO! 🌸 International Women's Day is March 8 — still time to order your custom embroidered gift for her! Tote bags, towels, handkerchiefs with her name or a special message. DM us NOW to reserve your slot before it's too late! 🧵 #WomensDay2026 #GiftForHer",
+      "hashtags": ["#WomensDay2026", "#IWD2026", "#GiftForHer", "#PersonalizedEmbroidery", "#EmbroideryGiftPH"],
+      "engagement": "Posted today — ramping up",
+      "date": "2026-03-01",
+      "daysAgo": "Today",
+      "url": "https://www.tiktok.com/@luckyloopsofficial",
+      "category": "competitor",
+      "insight": "⚠️ Lucky Loops is running a 7-day IWD countdown — urgency marketing to push last-minute orders. Match this NOW: post your own '7 Days Left' IWD story or TikTok today. Add a 'FREE name card with every IWD order' hook to differentiate.",
+      "isHot": true
+    },
+    {
+      "id": 27,
+      "account": "GoMommy Printz",
+      "handle": "@_gomommyprintz",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "MARCH NA! 🌸🎓 Dalawang season sa isang buwan — Women's Day (March 8) at Graduation Season! Order your custom embroidered gifts ngayon — tote bags, towels, caps. Same week turnaround pa! DM or comment your order. Nationwide shipping! 🧵✨",
+      "hashtags": ["#MarchGifts", "#WomensDay2026", "#GraduationSeason", "#CustomEmbroidery", "#Gomommyprintz"],
+      "engagement": "Multi-platform push — active",
+      "date": "2026-03-01",
+      "daysAgo": "Today",
+      "url": "https://www.tiktok.com/@_gomommyprintz",
+      "category": "competitor",
+      "insight": "⚠️ GoMommy Printz is double-stacking IWD + Graduation in one March push — smart. They're capturing both audiences simultaneously. Counter with your own 'March Double Deal' bundle: IWD tote bag + Grad towel set. List it on Shopee today.",
+      "isHot": true
+    },
+    {
+      "id": 26,
+      "account": "Towel Republic PH",
+      "handle": "@towelrepublicph",
+      "platform": "Facebook",
+      "type": "post",
+      "mediaType": "facebook",
+      "mediaId": "towelrepublicph",
+      "thumbnail": "",
+      "content": "🌸 WOMEN'S DAY SPECIAL — March 8 is around the corner! Gift her a personalized embroidered towel with her name. Perfect for the special woman in your life — moms, wives, sisters, bestfriends! Bundle of 3 at discounted price. Message us or shop on Shopee! 🎁",
+      "hashtags": ["#WomensDayPH", "#CustomTowel", "#EmbroideredGift", "#GiftForHer", "#TowelRepublicPH"],
+      "engagement": "Established Facebook audience",
+      "date": "2026-03-01",
+      "daysAgo": "Today",
+      "url": "https://www.facebook.com/towelrepublicph",
+      "category": "competitor",
+      "insight": "Towel Republic is promoting IWD towel bundles — directly competing with your core product. Their edge: established Facebook presence. Your edge: you can offer faster custom design mockups and Shopee's checkout experience. Counter with a 'Gift Her a Personalized Towel' Shopee listing featuring IWD-themed designs.",
+      "isHot": false
+    },
+    {
+      "id": 25,
+      "account": "UNIQLO Philippines",
+      "handle": "@uniqlophofficial",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "March is HERE and so is the perfect gift for her! 🌸 RE.UNIQLO embroidery service — customize her name or a special message on UNIQLO pieces. In-store at select branches. International Women's Day is March 8 — order early! #UNIQLOPH #IWD2026",
+      "hashtags": ["#UNIQLOPH", "#REUNIQLOEmbroidery", "#WomensDay2026", "#IWD2026", "#GiftForHer"],
+      "engagement": "High — large brand reach",
+      "date": "2026-03-01",
+      "daysAgo": "Today",
+      "url": "https://www.tiktok.com/@uniqlophofficial",
+      "category": "competitor",
+      "insight": "UNIQLO is pushing IWD + RE.UNIQLO embroidery — they're converting their Valentine's momentum into March. Reminder: their IWD price is ₱290–₱590/item, in-store only. Your IWD pitch: 'Same beautiful embroidery, any item you own, shipped to her door — at a better price.'",
+      "isHot": false
+    },
+    {
+      "id": 24,
+      "account": "KZ Crafty",
+      "handle": "@kzcrafty",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "🌸🎓 MARCH DOUBLE DEALS! Women's Day + Graduation season = our busiest month! Custom embroidered souvenirs for both — personalized tote bags, caps, towels. Bulk orders welcome. DM for pricing! Nationwide delivery. #WomensDay #GraduationPH #SouvenirPH",
+      "hashtags": ["#MarchDeals", "#WomensDay2026", "#GraduationSouvenir2026", "#SouvenirShopPH", "#CustomEmbroidery"],
+      "engagement": "Growing niche audience",
+      "date": "2026-03-01",
+      "daysAgo": "Today",
+      "url": "https://www.tiktok.com/@kzcrafty",
+      "category": "competitor",
+      "insight": "KZ Crafty is explicitly bundling IWD + Graduation into 'March Double Deals' — they're aggressively targeting both. They're a direct threat in the souvenir segment. Your defense: undercut them on price for bulk grad orders (10pc+) and match on IWD individual gifts. Get a Shopee listing up this week.",
+      "isHot": true
+    },
+    {
+      "id": 23,
+      "account": "Lucky Loops Official",
+      "handle": "@luckyloopsofficial",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "💐 International Women's Day is March 8! Give her something she'll keep forever — custom embroidered gifts with her name, a quote, or a flower design. Tote bags, towels, handkerchiefs. Order now before slots fill up! 🌸🧵 #WomensDay2026 #PersonalizedGifts",
+      "hashtags": ["#WomensDay2026", "#GiftForHer", "#PersonalizedEmbroidery", "#IWD2026", "#EmbroideryGiftPH"],
+      "engagement": "Posted today — early engagement",
+      "date": "2026-02-28",
+      "daysAgo": "Today",
+      "url": "https://www.tiktok.com/@luckyloopsofficial",
+      "category": "competitor",
+      "insight": "⚠️ Lucky Loops is already pivoting to IWD (March 8) — only 8 days away! They're first movers on this angle. Launch your own IWD promo TODAY: 'Gift Her Something Stitched with Love — Custom Embroidery for Women's Day.' Tote bag + handkerchief bundle = perfect IWD set.",
+      "isHot": true
+    },
+    {
+      "id": 22,
+      "account": "SM Store Official",
+      "handle": "@smstore",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "March is HERE and so is Custom Labs! 🎓✨ Graduation season is officially open at SM Custom Labs. Walk in, customize your grad's fit — polos, tote bags, caps with names & batch year. Available at select SM branches. Starts at ₱150. See you there! 🧵",
+      "hashtags": ["#SMCustomLabs", "#GraduationSeason2026", "#CustomEmbroidery", "#Batch2026", "#SMStore"],
+      "engagement": "High — SM brand scale",
+      "date": "2026-02-28",
+      "daysAgo": "Today",
+      "url": "https://www.tiktok.com/@smstore",
+      "category": "competitor",
+      "insight": "SM Custom Labs is officially opening graduation season today — expect their content to go viral next week. They have store foot traffic but NO online ordering. Attack with: 'Can't go to SM? We ship your custom embroidered grad gift nationwide.' Target SM Custom Labs searchers on Shopee.",
+      "isHot": true
+    },
+    {
+      "id": 21,
+      "account": "GoMommy Printz",
+      "handle": "@_gomommyprintz",
+      "platform": "Instagram",
+      "type": "post",
+      "mediaType": "instagram",
+      "mediaId": "_gomommyprintz",
+      "thumbnail": "",
+      "content": "💪 To all the hardworking moms, sisters, and women — International Women's Day is coming! Celebrate her with a personalized embroidered gift. Custom tote bags, towels, and more. DM us to order! 🌸 #IWD2026 #GiftForMom",
+      "hashtags": ["#IWD2026", "#WomensDay", "#GiftForMom", "#PersonalizedGifts", "#EmbroideryPH"],
+      "engagement": "Multi-platform active",
+      "date": "2026-02-28",
+      "daysAgo": "Today",
+      "url": "https://www.instagram.com/_gomommyprintz",
+      "category": "competitor",
+      "insight": "GoMommy Printz is running IWD content across platforms today — their multi-channel presence amplifies reach fast. They cover Batangas market well. For Cebu and Visayas customers, you're the closer, faster alternative. Use 'FREE design mockup in 24 hrs' as your IWD offer hook.",
+      "isHot": false
+    },
+    {
+      "id": 20,
+      "account": "Keepsakes PH",
+      "handle": "@keepsakes.ph",
+      "platform": "Instagram",
+      "type": "post",
+      "mediaType": "instagram",
+      "mediaId": "keepsakes.ph",
+      "thumbnail": "",
+      "content": "March is a month for celebrating women, graduates, and new beginnings 🌸🎓 We're now open for March orders — curated gift sets for Women's Day, graduation, and milestones. Slots are limited. Book via link in bio.",
+      "hashtags": ["#KeepsakesPH", "#WomensDay2026", "#GraduationGifts", "#MarchGifts", "#PersonalizedGifts"],
+      "engagement": "8,700 followers — steady",
+      "date": "2026-02-28",
+      "daysAgo": "Today",
+      "url": "https://www.instagram.com/keepsakes.ph",
+      "category": "competitor",
+      "insight": "Keepsakes.ph is bundling Women's Day + Graduation into one March campaign — smart seasonal stacking. Their weakness: no embroidery at all. Your play: 'Custom Embroidered March Gift Sets' — same bundle concept but with the premium embroidery touch they can't offer.",
+      "isHot": false
+    },
+    {
+      "id": 19,
+      "account": "KZ Crafty",
+      "handle": "@kzcrafty",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "🎓 GRADUATION SOUVENIR IDEAS 2026! Personalized embroidered items for your batch — towels, tote bags, caps with names & batch year. Bulk orders available nationwide! DM us for quotation 🧵✨ #SouvenirShopPH",
+      "hashtags": ["#GraduationSouvenir2026", "#SouvenirShopPH", "#EmbroideryPH", "#Batch2026", "#CustomGifts"],
+      "engagement": "Growing — niche souvenir market",
+      "date": "2026-02-27",
+      "daysAgo": "Today",
+      "url": "https://www.tiktok.com/@kzcrafty",
+      "category": "competitor",
+      "insight": "⚠️ KZ Crafty is now pushing graduation souvenir content on TikTok — they're targeting the ₱100–₱200/unit bulk souvenir segment. Position against them by offering free custom design mockups with bulk orders (10 pcs+) to capture the same customers.",
+      "isHot": true
+    },
+    {
+      "id": 18,
+      "account": "Towel Republic PH",
+      "handle": "@towelrepublicph",
+      "platform": "Facebook",
+      "type": "post",
+      "mediaType": "facebook",
+      "mediaId": "towelrepublicph",
+      "thumbnail": "",
+      "content": "Graduation season is HERE! 🎓 Order your custom embroidered towels, caps, and bags for your batch souvenir needs. Fast turnaround, bulk discounts available! Available in all colors. Message us or visit our Shopee store. 🧵",
+      "hashtags": ["#TowelRepublicPH", "#GraduationGifts", "#CustomEmbroidery", "#BulkOrders", "#SouvenirPH"],
+      "engagement": "Established Facebook presence",
+      "date": "2026-02-27",
+      "daysAgo": "Today",
+      "url": "https://www.facebook.com/towelrepublicph",
+      "category": "competitor",
+      "insight": "Towel Republic is directly competing in the towel + cap + bag trifecta — the exact product set for graduation souvenirs. Differentiate with faster turnaround promise (3–5 days vs their typical 7–10) and free name tag with every bulk order.",
+      "isHot": true
+    },
+    {
+      "id": 17,
+      "account": "Keepsakes PH",
+      "handle": "@keepsakes.ph",
+      "platform": "Instagram",
+      "type": "post",
+      "mediaType": "instagram",
+      "mediaId": "keepsakes.ph",
+      "thumbnail": "",
+      "content": "March is almost here and you know what that means — GRADUATION SEASON! 🌟 We're now taking orders for custom keepsake gift sets. Personalized, meaningful, and perfectly packaged. Perfect for your grad, your classmates, and everyone who made school worth it. 🎓💛",
+      "hashtags": ["#KeepsakesPH", "#GraduationGift", "#PersonalizedGifts", "#CustomGift", "#GiftIdeasPH"],
+      "engagement": "8,700 followers — steady engagement",
+      "date": "2026-02-26",
+      "daysAgo": "Yesterday",
+      "url": "https://www.instagram.com/keepsakes.ph",
+      "category": "competitor",
+      "insight": "Keepsakes.ph is marketing gift SETS for graduation — bundling approach. They're not embroidery-specific which is your edge. Counter with: 'Custom Embroidered Graduation Gift Set' (towel + tote + handkerchief) listed as a bundle on Shopee.",
+      "isHot": false
+    },
+    {
+      "id": 16,
+      "account": "UNIQLO Philippines",
+      "handle": "@uniqlophofficial",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "Valentine's is over but the gifting isn't! 🎁 RE.UNIQLO embroidery service is still running at select branches. Great for graduation gifts, personal milestones, and everyday keepsakes. Customize your UNIQLO item in-store today. 🧵",
+      "hashtags": ["#UNIQLOPH", "#REUNIQLOEmbroidery", "#GraduationGift", "#CustomEmbroidery", "#PersonalizedGifts"],
+      "engagement": "High — large brand reach",
+      "date": "2026-02-26",
+      "daysAgo": "Yesterday",
+      "url": "https://www.tiktok.com/@uniqlophofficial",
+      "category": "competitor",
+      "insight": "UNIQLO is pivoting RE.UNIQLO from Valentine's to graduation — confirming the season shift is NOW. Their limit: in-store only (Metro Manila branches), ₱290–₱590/item, UNIQLO products only. You win on: any item, any design, shipped nationwide, better price.",
+      "isHot": false
+    },
+    {
+      "id": 15,
+      "account": "Lucky Loops Official",
+      "handle": "@luckyloopsofficial",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "🎓 Graduation Gift Ideas 2026! Custom embroidered keepsakes — names, batch year, and school colors stitched into tote bags, caps, and towels. Perfect pasalubong for your grad! Order now before rush season!",
+      "hashtags": ["#GraduationGift2026", "#PersonalizedEmbroidery", "#GiftIdeasPH", "#Batch2026", "#EmbroideryGift"],
+      "engagement": "Active — ramping up",
+      "date": "2026-02-25",
+      "daysAgo": "1 day ago",
+      "url": "https://www.tiktok.com/@luckyloopsofficial",
+      "category": "competitor",
+      "insight": "⚠️ ALERT: Lucky Loops is pivoting from Valentine's to graduation content — they're first movers this season. Graduation = Mar–Jun peak. Launch your own #Batch2026 embroidery promo NOW before they own that keyword.",
+      "isHot": true
+    },
+    {
+      "id": 14,
+      "account": "SM Store Official",
+      "handle": "@smstore",
+      "platform": "TikTok",
+      "type": "video",
+      "mediaType": "tiktok_link",
+      "mediaId": "",
+      "thumbnail": "",
+      "content": "✨ Custom Labs is BACK for graduation season! Embroider names and batch years on your fave fits — available at SM Megamall, SM Aura, SM North EDSA, and more SM stores nationwide. Same-day service, starts at ₱150. 🎓",
+      "hashtags": ["#SMCustomLabs", "#GraduationGift", "#CustomEmbroidery", "#SMStore", "#Batch2026"],
+      "engagement": "Expected high — SM scale",
+      "date": "2026-02-25",
+      "daysAgo": "1 day ago",
+      "url": "https://www.tiktok.com/@smstore",
+      "category": "competitor",
+      "insight": "SM is pushing Custom Labs for graduation at ₱150/item. They have in-store convenience but NO nationwide shipping. Beat them by offering doorstep delivery and lower prices for bulk grad orders (batch of 10+).",
+      "isHot": true
+    },
+  ],
+  "competitorProfiles": [
+    {
+      "name": "Lucky Loops Official",
+      "category": "Direct Competitor",
+      "platforms": [
+        { "platform": "TikTok", "handle": "@luckyloopsofficial", "url": "https://www.tiktok.com/@luckyloopsofficial", "followers": "Growing fast" }
+      ],
+      "postFrequency": "Weekly",
+      "contentStyle": "Short video gift reveals, couple-focused",
+      "threat": "High"
+    },
+    {
+      "name": "UNIQLO Philippines",
+      "category": "Big Brand",
+      "platforms": [
+        { "platform": "TikTok", "handle": "@uniqlophofficial", "url": "https://www.tiktok.com/@uniqlophofficial", "followers": "Large" },
+        { "platform": "Instagram", "handle": "@uniqloph", "url": "https://www.instagram.com/uniqloph", "followers": "Large" }
+      ],
+      "postFrequency": "Daily",
+      "contentStyle": "In-store embroidery demos, lifestyle, seasonal campaigns",
+      "threat": "Medium (premium price, physical stores only)"
+    },
+    {
+      "name": "SM Store",
+      "category": "Big Brand",
+      "platforms": [
+        { "platform": "TikTok", "handle": "@smstore", "url": "https://www.tiktok.com/@smstore", "followers": "Large" }
+      ],
+      "postFrequency": "Daily",
+      "contentStyle": "Process videos, product reveals, aesthetic short-form",
+      "threat": "Low (different market segment)"
+    },
+    {
+      "name": "Keepsakes.ph",
+      "category": "Indirect Competitor",
+      "platforms": [
+        { "platform": "Instagram", "handle": "@keepsakes.ph", "url": "https://www.instagram.com/keepsakes.ph", "followers": "8,700+" }
+      ],
+      "postFrequency": "Regular",
+      "contentStyle": "Gift sets, lifestyle photos, occasion-based posts",
+      "threat": "Medium (no embroidery — steal their audience)"
+    },
+    {
+      "name": "GoMommy Printz",
+      "category": "Direct Competitor",
+      "platforms": [
+        { "platform": "TikTok", "handle": "@_gomommyprintz", "url": "https://www.tiktok.com/@_gomommyprintz", "followers": "Growing" },
+        { "platform": "Instagram", "handle": "@_gomommyprintz", "url": "https://www.instagram.com/_gomommyprintz", "followers": "Growing" },
+        { "platform": "Facebook", "handle": "GoMommy Printz", "url": "https://www.facebook.com/gomommyprintz", "followers": "Growing" }
+      ],
+      "postFrequency": "Active",
+      "contentStyle": "Product posts, bulk order promos, multi-platform reposts",
+      "threat": "High"
+    },
+    {
+      "name": "KZ Crafty",
+      "category": "Direct Competitor",
+      "platforms": [
+        { "platform": "TikTok", "handle": "@kzcrafty", "url": "https://www.tiktok.com/discover/affordable-souvenir-shop-in-the-philippines", "followers": "Active" }
+      ],
+      "postFrequency": "Regular",
+      "contentStyle": "Affordable souvenirs, custom embroidery, nationwide shipping",
+      "threat": "High"
+    },
+    {
+      "name": "MUJI Philippines",
+      "category": "Big Brand",
+      "platforms": [
+        { "platform": "TikTok", "handle": "@mujiphilippines", "url": "https://www.tiktok.com/discover/embroidery-shop-in-bacoor-cavite", "followers": "Large" },
+        { "platform": "Instagram", "handle": "@mujiphilippines", "url": "https://www.instagram.com/mujiphilippines", "followers": "Large" }
+      ],
+      "postFrequency": "Regular",
+      "contentStyle": "In-store services, minimalist aesthetic, product demos",
+      "threat": "Low (in-store only, premium BGC pricing)"
     }
-    
-    // Mobile bottom nav sync with page changes
-    document.addEventListener('DOMContentLoaded', () => {
-      const mobileNavItems = document.querySelectorAll('.mobile-nav-item[data-page]');
-      const sidebarNavItems = document.querySelectorAll('.nav-item[data-page]');
-      
-      // Sync mobile nav with sidebar nav
-      mobileNavItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-          e.preventDefault();
-          const page = item.dataset.page;
-          
-          // Update active state
-          mobileNavItems.forEach(i => i.classList.remove('active'));
-          item.classList.add('active');
-          
-          // Trigger sidebar nav click
-          const sidebarItem = document.querySelector(`.nav-item[data-page="${page}"]`);
-          if (sidebarItem) {
-            sidebarItem.click();
-          }
-        });
-      });
-      
-      // Sync sidebar nav with mobile nav
-      sidebarNavItems.forEach(item => {
-        const originalClick = item.onclick;
-        item.addEventListener('click', () => {
-          const page = item.dataset.page;
-          const mobileItem = document.querySelector(`.mobile-nav-item[data-page="${page}"]`);
-          if (mobileItem) {
-            mobileNavItems.forEach(i => i.classList.remove('active'));
-            mobileItem.classList.add('active');
-          }
-        });
-      });
-    });
-  </script>
-</body>
-</html>
+  ]
+};
