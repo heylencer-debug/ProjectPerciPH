@@ -1,466 +1,639 @@
-// ===== SOCIAL FEED DATA =====
-// Updated daily by Perci at 8 AM Manila time
-// Posts are COMPETITOR-ONLY — brands/sellers in the PH embroidery gift space
-// Add new posts at the TOP. Keep max 20.
+// ===== EMBEDDED DATA (edit this file to update the dashboard) =====
+// Also update data/market.json and data/suppliers.json for record-keeping
 
-window.FEED_DATA = {
-  "lastUpdated": "2026-03-02",
-  "feedPosts": [
-    {
-      "id": 33,
-      "account": "UNIQLO Philippines",
-      "handle": "@uniqlophofficial",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "🌸 AIRism is HERE for PH summer! New AIRism Cotton Crew Neck T-Shirts just dropped — 20% off launch promo. Beat the heat in breathable fabric perfect for Manila or the beach. Shop now at uniqlo.com/ph. #UNIQLOAIRism #SummerPH #UNIQLOph",
-      "hashtags": ["#UNIQLOAIRism", "#SummerPH", "#UNIQLOph", "#AIRismPH", "#BeatTheHeat"],
-      "engagement": "~12K likes, 450 comments",
-      "date": "2026-03-02",
-      "daysAgo": "Today",
-      "url": "https://www.tiktok.com/@uniqloph",
-      "category": "competitor",
-      "insight": "UNIQLO is pivoting from IWD to summer/AIRism — signaling they're wrapping up seasonal gifting push. This is your window: while UNIQLO shifts gears, stay loud on IWD embroidered gifts. Position Percy PH as the personalized alternative they can't offer online.",
-      "isHot": false
-    },
-    {
-      "id": 32,
-      "account": "UNIQLO Philippines",
-      "handle": "@uniqlophofficial",
-      "platform": "Instagram",
-      "type": "post",
-      "mediaType": "instagram",
-      "mediaId": "uniqlophofficial",
-      "thumbnail": "",
-      "content": "New Spring 2026 arrivals are in-store now at SM Megamall! 🌸 Oversized shirts, linen pants, and more. In-store event teaser for March 8 — come and celebrate IWD with us! #UNIQLOPH #Spring2026 #WomensDay2026",
-      "hashtags": ["#UNIQLOPH", "#Spring2026", "#WomensDay2026", "#SMStore", "#NewArrivals"],
-      "engagement": "~18K likes, 620 comments",
-      "date": "2026-03-02",
-      "daysAgo": "Today",
-      "url": "https://www.instagram.com/uniqlophofficial",
-      "category": "competitor",
-      "insight": "UNIQLO PH is hosting an IWD in-store event on March 8 at Megamall — this drives foot traffic to malls, not online. Capitalize on the non-Luzon market: 'No UNIQLO branch near you? Ship custom embroidered IWD gifts straight to her door from Percy PH.' Target Visayas/Mindanao buyers.",
-      "isHot": false
-    },
-    {
-      "id": 31,
-      "account": "Keepsakes PH",
-      "handle": "@keepsakes.ph",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "🐾 NEW: Pet Memorial line is here! Engraved paw-print stones with your pet's photo. Sales up 20% since launch! If you lost a fur baby, honor them with something forever. 😢❤️ #KeepsakesPH #PetMemorial #RainbowBridge",
-      "hashtags": ["#KeepsakesPH", "#PetMemorial", "#RainbowBridge", "#PetLoss", "#CustomGiftPH"],
-      "engagement": "~60K views, 5.5K likes",
-      "date": "2026-03-02",
-      "daysAgo": "Today",
-      "url": "https://www.tiktok.com/@keepsakes.ph",
-      "category": "competitor",
-      "insight": "Keepsakes PH's pet memorial line is going viral (60K views) — this is a niche Percy PH hasn't tapped. Consider: custom embroidered pet name on a towel or tote as a simpler, lower-cost pet memorial gift angle. 'Stitch their name, keep their memory' — test as a TikTok hook.",
-      "isHot": true
-    },
-    {
-      "id": 30,
-      "account": "Keepsakes PH",
-      "handle": "@keepsakes.ph",
-      "platform": "Instagram",
-      "type": "post",
-      "mediaType": "instagram",
-      "mediaId": "keepsakes.ph",
-      "thumbnail": "",
-      "content": "💌 Love Letters Eternalized! Custom leather-bound love letter books — perfect for Valentine's latecomers and IWD! 10% off with code HEART2026. Turn handwritten notes into forever keepsakes. Order now! #KeepsakesPH #CustomGifts #WomensDay2026",
-      "hashtags": ["#KeepsakesPH", "#LoveLetters", "#CustomGifts", "#WomensDay2026", "#PersonalizedPH"],
-      "engagement": "~1.2K likes, 150 comments",
-      "date": "2026-03-02",
-      "daysAgo": "Today",
-      "url": "https://www.instagram.com/keepsakes.ph",
-      "category": "competitor",
-      "insight": "Keepsakes PH is extending Valentine's momentum with a 10% IWD discount code — smart evergreen play. They're NOT in embroidery, so no direct threat here. Monitor if they add embroidery products in the future. For now, their 'personalized forever gift' framing is worth borrowing for your IWD messaging.",
-      "isHot": false
-    },
-    {
-      "id": 29,
-      "account": "Lucky Loops Official",
-      "handle": "@luckyloopsofficial",
-      "platform": "Instagram",
-      "type": "post",
-      "mediaType": "instagram",
-      "mediaId": "luckyloopsofficial",
-      "thumbnail": "",
-      "content": "6 DAYS TO GO! 🌸 Women's Day countdown is ON — last call for custom embroidered gifts! Handkerchiefs, tote bags, towels with her name or a heartfelt message. Order by March 5 to guarantee delivery before March 8. Slots are VERY LIMITED! DM us now! #WomensDay2026 #LastCall",
-      "hashtags": ["#WomensDay2026", "#IWD2026", "#LastCall", "#CustomEmbroidery", "#GiftForHer"],
-      "engagement": "Active — urgency push",
-      "date": "2026-03-02",
-      "daysAgo": "Today",
-      "url": "https://www.instagram.com/luckyloopsofficial",
-      "category": "competitor",
-      "insight": "⚠️ Lucky Loops is cutting off IWD orders at March 5 — they're managing capacity. This is your opening: if you can fulfill up to March 6 or 7, post 'We still have IWD slots open — order until March 6!' and capture their overflow customers who missed the deadline.",
-      "isHot": true
-    },
-    {
-      "id": 28,
-      "account": "Lucky Loops Official",
-      "handle": "@luckyloopsofficial",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "7 DAYS TO GO! 🌸 International Women's Day is March 8 — still time to order your custom embroidered gift for her! Tote bags, towels, handkerchiefs with her name or a special message. DM us NOW to reserve your slot before it's too late! 🧵 #WomensDay2026 #GiftForHer",
-      "hashtags": ["#WomensDay2026", "#IWD2026", "#GiftForHer", "#PersonalizedEmbroidery", "#EmbroideryGiftPH"],
-      "engagement": "Posted today — ramping up",
-      "date": "2026-03-01",
-      "daysAgo": "Today",
-      "url": "https://www.tiktok.com/@luckyloopsofficial",
-      "category": "competitor",
-      "insight": "⚠️ Lucky Loops is running a 7-day IWD countdown — urgency marketing to push last-minute orders. Match this NOW: post your own '7 Days Left' IWD story or TikTok today. Add a 'FREE name card with every IWD order' hook to differentiate.",
-      "isHot": true
-    },
-    {
-      "id": 27,
-      "account": "GoMommy Printz",
-      "handle": "@_gomommyprintz",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "MARCH NA! 🌸🎓 Dalawang season sa isang buwan — Women's Day (March 8) at Graduation Season! Order your custom embroidered gifts ngayon — tote bags, towels, caps. Same week turnaround pa! DM or comment your order. Nationwide shipping! 🧵✨",
-      "hashtags": ["#MarchGifts", "#WomensDay2026", "#GraduationSeason", "#CustomEmbroidery", "#Gomommyprintz"],
-      "engagement": "Multi-platform push — active",
-      "date": "2026-03-01",
-      "daysAgo": "Today",
-      "url": "https://www.tiktok.com/@_gomommyprintz",
-      "category": "competitor",
-      "insight": "⚠️ GoMommy Printz is double-stacking IWD + Graduation in one March push — smart. They're capturing both audiences simultaneously. Counter with your own 'March Double Deal' bundle: IWD tote bag + Grad towel set. List it on Shopee today.",
-      "isHot": true
-    },
-    {
-      "id": 26,
-      "account": "Towel Republic PH",
-      "handle": "@towelrepublicph",
-      "platform": "Facebook",
-      "type": "post",
-      "mediaType": "facebook",
-      "mediaId": "towelrepublicph",
-      "thumbnail": "",
-      "content": "🌸 WOMEN'S DAY SPECIAL — March 8 is around the corner! Gift her a personalized embroidered towel with her name. Perfect for the special woman in your life — moms, wives, sisters, bestfriends! Bundle of 3 at discounted price. Message us or shop on Shopee! 🎁",
-      "hashtags": ["#WomensDayPH", "#CustomTowel", "#EmbroideredGift", "#GiftForHer", "#TowelRepublicPH"],
-      "engagement": "Established Facebook audience",
-      "date": "2026-03-01",
-      "daysAgo": "Today",
-      "url": "https://www.facebook.com/towelrepublicph",
-      "category": "competitor",
-      "insight": "Towel Republic is promoting IWD towel bundles — directly competing with your core product. Their edge: established Facebook presence. Your edge: you can offer faster custom design mockups and Shopee's checkout experience. Counter with a 'Gift Her a Personalized Towel' Shopee listing featuring IWD-themed designs.",
-      "isHot": false
-    },
-    {
-      "id": 25,
-      "account": "UNIQLO Philippines",
-      "handle": "@uniqlophofficial",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "March is HERE and so is the perfect gift for her! 🌸 RE.UNIQLO embroidery service — customize her name or a special message on UNIQLO pieces. In-store at select branches. International Women's Day is March 8 — order early! #UNIQLOPH #IWD2026",
-      "hashtags": ["#UNIQLOPH", "#REUNIQLOEmbroidery", "#WomensDay2026", "#IWD2026", "#GiftForHer"],
-      "engagement": "High — large brand reach",
-      "date": "2026-03-01",
-      "daysAgo": "Today",
-      "url": "https://www.tiktok.com/@uniqlophofficial",
-      "category": "competitor",
-      "insight": "UNIQLO is pushing IWD + RE.UNIQLO embroidery — they're converting their Valentine's momentum into March. Reminder: their IWD price is ₱290–₱590/item, in-store only. Your IWD pitch: 'Same beautiful embroidery, any item you own, shipped to her door — at a better price.'",
-      "isHot": false
-    },
-    {
-      "id": 24,
-      "account": "KZ Crafty",
-      "handle": "@kzcrafty",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "🌸🎓 MARCH DOUBLE DEALS! Women's Day + Graduation season = our busiest month! Custom embroidered souvenirs for both — personalized tote bags, caps, towels. Bulk orders welcome. DM for pricing! Nationwide delivery. #WomensDay #GraduationPH #SouvenirPH",
-      "hashtags": ["#MarchDeals", "#WomensDay2026", "#GraduationSouvenir2026", "#SouvenirShopPH", "#CustomEmbroidery"],
-      "engagement": "Growing niche audience",
-      "date": "2026-03-01",
-      "daysAgo": "Today",
-      "url": "https://www.tiktok.com/@kzcrafty",
-      "category": "competitor",
-      "insight": "KZ Crafty is explicitly bundling IWD + Graduation into 'March Double Deals' — they're aggressively targeting both. They're a direct threat in the souvenir segment. Your defense: undercut them on price for bulk grad orders (10pc+) and match on IWD individual gifts. Get a Shopee listing up this week.",
-      "isHot": true
-    },
-    {
-      "id": 23,
-      "account": "Lucky Loops Official",
-      "handle": "@luckyloopsofficial",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "💐 International Women's Day is March 8! Give her something she'll keep forever — custom embroidered gifts with her name, a quote, or a flower design. Tote bags, towels, handkerchiefs. Order now before slots fill up! 🌸🧵 #WomensDay2026 #PersonalizedGifts",
-      "hashtags": ["#WomensDay2026", "#GiftForHer", "#PersonalizedEmbroidery", "#IWD2026", "#EmbroideryGiftPH"],
-      "engagement": "Posted today — early engagement",
-      "date": "2026-02-28",
-      "daysAgo": "Today",
-      "url": "https://www.tiktok.com/@luckyloopsofficial",
-      "category": "competitor",
-      "insight": "⚠️ Lucky Loops is already pivoting to IWD (March 8) — only 8 days away! They're first movers on this angle. Launch your own IWD promo TODAY: 'Gift Her Something Stitched with Love — Custom Embroidery for Women's Day.' Tote bag + handkerchief bundle = perfect IWD set.",
-      "isHot": true
-    },
-    {
-      "id": 22,
-      "account": "SM Store Official",
-      "handle": "@smstore",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "March is HERE and so is Custom Labs! 🎓✨ Graduation season is officially open at SM Custom Labs. Walk in, customize your grad's fit — polos, tote bags, caps with names & batch year. Available at select SM branches. Starts at ₱150. See you there! 🧵",
-      "hashtags": ["#SMCustomLabs", "#GraduationSeason2026", "#CustomEmbroidery", "#Batch2026", "#SMStore"],
-      "engagement": "High — SM brand scale",
-      "date": "2026-02-28",
-      "daysAgo": "Today",
-      "url": "https://www.tiktok.com/@smstore",
-      "category": "competitor",
-      "insight": "SM Custom Labs is officially opening graduation season today — expect their content to go viral next week. They have store foot traffic but NO online ordering. Attack with: 'Can't go to SM? We ship your custom embroidered grad gift nationwide.' Target SM Custom Labs searchers on Shopee.",
-      "isHot": true
-    },
-    {
-      "id": 21,
-      "account": "GoMommy Printz",
-      "handle": "@_gomommyprintz",
-      "platform": "Instagram",
-      "type": "post",
-      "mediaType": "instagram",
-      "mediaId": "_gomommyprintz",
-      "thumbnail": "",
-      "content": "💪 To all the hardworking moms, sisters, and women — International Women's Day is coming! Celebrate her with a personalized embroidered gift. Custom tote bags, towels, and more. DM us to order! 🌸 #IWD2026 #GiftForMom",
-      "hashtags": ["#IWD2026", "#WomensDay", "#GiftForMom", "#PersonalizedGifts", "#EmbroideryPH"],
-      "engagement": "Multi-platform active",
-      "date": "2026-02-28",
-      "daysAgo": "Today",
-      "url": "https://www.instagram.com/_gomommyprintz",
-      "category": "competitor",
-      "insight": "GoMommy Printz is running IWD content across platforms today — their multi-channel presence amplifies reach fast. They cover Batangas market well. For Cebu and Visayas customers, you're the closer, faster alternative. Use 'FREE design mockup in 24 hrs' as your IWD offer hook.",
-      "isHot": false
-    },
-    {
-      "id": 20,
-      "account": "Keepsakes PH",
-      "handle": "@keepsakes.ph",
-      "platform": "Instagram",
-      "type": "post",
-      "mediaType": "instagram",
-      "mediaId": "keepsakes.ph",
-      "thumbnail": "",
-      "content": "March is a month for celebrating women, graduates, and new beginnings 🌸🎓 We're now open for March orders — curated gift sets for Women's Day, graduation, and milestones. Slots are limited. Book via link in bio.",
-      "hashtags": ["#KeepsakesPH", "#WomensDay2026", "#GraduationGifts", "#MarchGifts", "#PersonalizedGifts"],
-      "engagement": "8,700 followers — steady",
-      "date": "2026-02-28",
-      "daysAgo": "Today",
-      "url": "https://www.instagram.com/keepsakes.ph",
-      "category": "competitor",
-      "insight": "Keepsakes.ph is bundling Women's Day + Graduation into one March campaign — smart seasonal stacking. Their weakness: no embroidery at all. Your play: 'Custom Embroidered March Gift Sets' — same bundle concept but with the premium embroidery touch they can't offer.",
-      "isHot": false
-    },
-    {
-      "id": 19,
-      "account": "KZ Crafty",
-      "handle": "@kzcrafty",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "🎓 GRADUATION SOUVENIR IDEAS 2026! Personalized embroidered items for your batch — towels, tote bags, caps with names & batch year. Bulk orders available nationwide! DM us for quotation 🧵✨ #SouvenirShopPH",
-      "hashtags": ["#GraduationSouvenir2026", "#SouvenirShopPH", "#EmbroideryPH", "#Batch2026", "#CustomGifts"],
-      "engagement": "Growing — niche souvenir market",
-      "date": "2026-02-27",
-      "daysAgo": "Today",
-      "url": "https://www.tiktok.com/@kzcrafty",
-      "category": "competitor",
-      "insight": "⚠️ KZ Crafty is now pushing graduation souvenir content on TikTok — they're targeting the ₱100–₱200/unit bulk souvenir segment. Position against them by offering free custom design mockups with bulk orders (10 pcs+) to capture the same customers.",
-      "isHot": true
-    },
-    {
-      "id": 18,
-      "account": "Towel Republic PH",
-      "handle": "@towelrepublicph",
-      "platform": "Facebook",
-      "type": "post",
-      "mediaType": "facebook",
-      "mediaId": "towelrepublicph",
-      "thumbnail": "",
-      "content": "Graduation season is HERE! 🎓 Order your custom embroidered towels, caps, and bags for your batch souvenir needs. Fast turnaround, bulk discounts available! Available in all colors. Message us or visit our Shopee store. 🧵",
-      "hashtags": ["#TowelRepublicPH", "#GraduationGifts", "#CustomEmbroidery", "#BulkOrders", "#SouvenirPH"],
-      "engagement": "Established Facebook presence",
-      "date": "2026-02-27",
-      "daysAgo": "Today",
-      "url": "https://www.facebook.com/towelrepublicph",
-      "category": "competitor",
-      "insight": "Towel Republic is directly competing in the towel + cap + bag trifecta — the exact product set for graduation souvenirs. Differentiate with faster turnaround promise (3–5 days vs their typical 7–10) and free name tag with every bulk order.",
-      "isHot": true
-    },
-    {
-      "id": 17,
-      "account": "Keepsakes PH",
-      "handle": "@keepsakes.ph",
-      "platform": "Instagram",
-      "type": "post",
-      "mediaType": "instagram",
-      "mediaId": "keepsakes.ph",
-      "thumbnail": "",
-      "content": "March is almost here and you know what that means — GRADUATION SEASON! 🌟 We're now taking orders for custom keepsake gift sets. Personalized, meaningful, and perfectly packaged. Perfect for your grad, your classmates, and everyone who made school worth it. 🎓💛",
-      "hashtags": ["#KeepsakesPH", "#GraduationGift", "#PersonalizedGifts", "#CustomGift", "#GiftIdeasPH"],
-      "engagement": "8,700 followers — steady engagement",
-      "date": "2026-02-26",
-      "daysAgo": "Yesterday",
-      "url": "https://www.instagram.com/keepsakes.ph",
-      "category": "competitor",
-      "insight": "Keepsakes.ph is marketing gift SETS for graduation — bundling approach. They're not embroidery-specific which is your edge. Counter with: 'Custom Embroidered Graduation Gift Set' (towel + tote + handkerchief) listed as a bundle on Shopee.",
-      "isHot": false
-    },
-    {
-      "id": 16,
-      "account": "UNIQLO Philippines",
-      "handle": "@uniqlophofficial",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "Valentine's is over but the gifting isn't! 🎁 RE.UNIQLO embroidery service is still running at select branches. Great for graduation gifts, personal milestones, and everyday keepsakes. Customize your UNIQLO item in-store today. 🧵",
-      "hashtags": ["#UNIQLOPH", "#REUNIQLOEmbroidery", "#GraduationGift", "#CustomEmbroidery", "#PersonalizedGifts"],
-      "engagement": "High — large brand reach",
-      "date": "2026-02-26",
-      "daysAgo": "Yesterday",
-      "url": "https://www.tiktok.com/@uniqlophofficial",
-      "category": "competitor",
-      "insight": "UNIQLO is pivoting RE.UNIQLO from Valentine's to graduation — confirming the season shift is NOW. Their limit: in-store only (Metro Manila branches), ₱290–₱590/item, UNIQLO products only. You win on: any item, any design, shipped nationwide, better price.",
-      "isHot": false
-    },
-    {
-      "id": 15,
-      "account": "Lucky Loops Official",
-      "handle": "@luckyloopsofficial",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "🎓 Graduation Gift Ideas 2026! Custom embroidered keepsakes — names, batch year, and school colors stitched into tote bags, caps, and towels. Perfect pasalubong for your grad! Order now before rush season!",
-      "hashtags": ["#GraduationGift2026", "#PersonalizedEmbroidery", "#GiftIdeasPH", "#Batch2026", "#EmbroideryGift"],
-      "engagement": "Active — ramping up",
-      "date": "2026-02-25",
-      "daysAgo": "1 day ago",
-      "url": "https://www.tiktok.com/@luckyloopsofficial",
-      "category": "competitor",
-      "insight": "⚠️ ALERT: Lucky Loops is pivoting from Valentine's to graduation content — they're first movers this season. Graduation = Mar–Jun peak. Launch your own #Batch2026 embroidery promo NOW before they own that keyword.",
-      "isHot": true
-    },
-    {
-      "id": 14,
-      "account": "SM Store Official",
-      "handle": "@smstore",
-      "platform": "TikTok",
-      "type": "video",
-      "mediaType": "tiktok_link",
-      "mediaId": "",
-      "thumbnail": "",
-      "content": "✨ Custom Labs is BACK for graduation season! Embroider names and batch years on your fave fits — available at SM Megamall, SM Aura, SM North EDSA, and more SM stores nationwide. Same-day service, starts at ₱150. 🎓",
-      "hashtags": ["#SMCustomLabs", "#GraduationGift", "#CustomEmbroidery", "#SMStore", "#Batch2026"],
-      "engagement": "Expected high — SM scale",
-      "date": "2026-02-25",
-      "daysAgo": "1 day ago",
-      "url": "https://www.tiktok.com/@smstore",
-      "category": "competitor",
-      "insight": "SM is pushing Custom Labs for graduation at ₱150/item. They have in-store convenience but NO nationwide shipping. Beat them by offering doorstep delivery and lower prices for bulk grad orders (batch of 10+).",
-      "isHot": true
-    },
+// ===== ETHEL INTELLIGENCE DATA =====
+// Populated by Ethel 🕵️ — last updated: auto
+
+window.SUPPLIERS = [
+  // ── BAGS & POUCHES ──────────────────────────────────────────────────────────
+  {
+    "name": "JC Canvas PH",
+    "platform": "Website + Shopee",
+    "category": "Bags & Pouches",
+    "products": ["Blank canvas tote bags", "Eco bags", "Canvas pouches"],
+    "pricePerPiece": "₱65/pc (20-100pc)",
+    "moq": 10,
+    "location": "Cebu, PH 🔥 LOCAL",
+    "rating": 4.6,
+    "url": "https://jccanvasph.com",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "CEBU LOCAL — lowest MOQ (10pcs), established since 2017. Best first contact for tote bags."
+  },
+  {
+    "name": "Craft Clothing PH",
+    "platform": "Website + Shopee",
+    "category": "Bags & Pouches",
+    "products": ["Blank canvas totes", "Canvas pouches", "Eco bags"],
+    "pricePerPiece": "₱80-150/pc",
+    "moq": 12,
+    "location": "Manila, NCR",
+    "rating": 4.7,
+    "url": "https://www.craftclothing.ph",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Free shipping ₱50K+ NCR orders. Good for canvas pouches similar to BTV colourblock style."
+  },
+  {
+    "name": "Fabrica MNL",
+    "platform": "Website",
+    "category": "Bags & Pouches",
+    "products": ["Blank canvas totes (6x8\" to 16x18\")", "Nylon flat pouches"],
+    "pricePerPiece": "₱70-130/pc",
+    "moq": 100,
+    "location": "Mandaluyong, Metro Manila",
+    "rating": 4.5,
+    "url": "https://www.fabricamnl.com",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Direct manufacturer. Good quality but high MOQ (100pc totes). Best for scaling up."
+  },
+  {
+    "name": "Divisoria / Tutuban",
+    "platform": "Physical (in-person)",
+    "category": "Bags & Pouches",
+    "products": ["Blank canvas bags", "Nylon pouches", "Zipper bags", "Fabric pouches"],
+    "pricePerPiece": "₱40-120/pc",
+    "moq": "10-50pc (varies by stall)",
+    "location": "Divisoria, Manila",
+    "rating": 4.2,
+    "url": "https://www.tutubancenter.com",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Sourcing trip required. Bring cash. Best prices PH-side for bags + pouches in small batches."
+  },
+  {
+    "name": "Alibaba — Puffy/Dumpling-style Pouches",
+    "platform": "Alibaba (China OEM)",
+    "category": "Bags & Pouches",
+    "products": ["Cloud dumpling pouches (PU leather)", "Colourblock nylon pouches", "Puffy mini bags"],
+    "pricePerPiece": "$2-6/pc (equiv ₱115-350)",
+    "moq": "36-100pc",
+    "location": "Guangdong / Taiwan via Alibaba",
+    "rating": 4.3,
+    "url": "https://www.alibaba.com/showroom/dumpling-bag.html",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Closest match to BTV Dumpling Bag / Bubble Pouch style. Search: 'puffy mini bag OEM' or 'cloud pouch wholesale'. MOQ 36pc+ for blanks."
+  },
+
+  // ── TUMBLERS & DRINKWARE ────────────────────────────────────────────────────
+  {
+    "name": "Gifts Central Philippines",
+    "platform": "Website",
+    "category": "Tumblers & Drinkware",
+    "products": ["Blank stainless tumblers", "Glass tumblers", "Promotional drinkware"],
+    "pricePerPiece": "₱80-200/pc",
+    "moq": "50pc (est.)",
+    "location": "Nationwide PH",
+    "rating": 4.5,
+    "url": "https://www.giftscentral.com.ph",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Best PH-side starting point for tumblers. Contact for exact MOQ + laser engraving capability."
+  },
+  {
+    "name": "Shopee PH — Blank Tumblers",
+    "platform": "Shopee",
+    "category": "Tumblers & Drinkware",
+    "products": ["Blank stainless tumblers (engravable)", "Glass cups with straw", "Bamboo tumblers"],
+    "pricePerPiece": "₱60-180/pc",
+    "moq": "1-20pc",
+    "location": "Various PH sellers",
+    "rating": 4.3,
+    "url": "https://shopee.ph/search?keyword=blank+tumbler+wholesale",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Lowest MOQ entry point. Search: 'blank engraving tumbler' or 'bamboo tumbler wholesale'. Good for sampling before bulk."
+  },
+  {
+    "name": "Alibaba — Iridescent Tumblers",
+    "platform": "Alibaba (China OEM)",
+    "category": "Tumblers & Drinkware",
+    "products": ["Iridescent straw cups", "Glitter tumbler cups", "Color-shift drinkware (sublimation-ready)"],
+    "pricePerPiece": "$1.41-$5/pc (equiv ₱80-290)",
+    "moq": "5-200pc",
+    "location": "China via Alibaba",
+    "rating": 4.4,
+    "url": "https://www.alibaba.com/showroom/iridescent-tumbler-cup.html",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Best match for BTV Beyond Boulevard tumbler style. Search: 'iridescent tumbler wholesale' or 'color shift cup OEM'. Filter by Trade Assurance."
+  },
+
+  // ── CAPS & HATS ─────────────────────────────────────────────────────────────
+  {
+    "name": "Acobs Global",
+    "platform": "Website",
+    "category": "Caps & Hats",
+    "products": ["Blank baseball caps", "Blank twill caps", "Blank bucket hats"],
+    "pricePerPiece": "₱60-120/pc",
+    "moq": 50,
+    "location": "Metro Manila",
+    "rating": 4.3,
+    "url": "https://acobsglobal.com",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Solid PH-side cap supplier. 50pc MOQ. Good for BTV twill cap / distressed cap style blanks."
+  },
+  {
+    "name": "Fabrica MNL — Caps",
+    "platform": "Website",
+    "category": "Caps & Hats",
+    "products": ["Blank caps (structured + unstructured)", "Blank bucket hats"],
+    "pricePerPiece": "₱80-150/pc",
+    "moq": 200,
+    "location": "Mandaluyong, Metro Manila",
+    "rating": 4.5,
+    "url": "https://www.fabricamnl.com/custom-cap.html",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "High MOQ (200pc) — best for scale. Manufacturer-direct pricing."
+  },
+  {
+    "name": "Alibaba — Blank Twill / Vintage Caps",
+    "platform": "Alibaba (China OEM)",
+    "category": "Caps & Hats",
+    "products": ["Blank 6-panel twill caps", "Vintage distressed caps", "Corduroy caps", "Bucket hats"],
+    "pricePerPiece": "$1.20-$3.50/pc (equiv ₱70-200)",
+    "moq": "50-100pc",
+    "location": "China via Alibaba",
+    "rating": 4.4,
+    "url": "https://www.alibaba.com/showroom/blank-baseball-cap.html",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Best match for BTV Classic Twill Cap and Vintage Distressed Cap. Search: 'blank embroidery cap OEM 6-panel twill' or 'vintage washed cap wholesale'."
+  },
+
+  // ── WALLETS & CARD HOLDERS ──────────────────────────────────────────────────
+  {
+    "name": "Shopee PH — Blank Wallets",
+    "platform": "Shopee",
+    "category": "Wallets & Card Holders",
+    "products": ["Blank canvas wallets", "Blank PU leather card holders", "Blank zip pouches (wallet-size)"],
+    "pricePerPiece": "₱40-120/pc",
+    "moq": "5-20pc",
+    "location": "Various PH sellers",
+    "rating": 4.2,
+    "url": "https://shopee.ph/search?keyword=blank+wallet+wholesale+embroidery",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Lowest entry for wallets. Search: 'blank canvas wallet' or 'blank zip pouch engravable'. Sample before committing bulk."
+  },
+  {
+    "name": "Alibaba — Leather Flat Pouches / Wallets",
+    "platform": "Alibaba (China OEM)",
+    "category": "Wallets & Card Holders",
+    "products": ["Blank leather flat pouches", "PU leather card holders", "Slim wallets (engravable)"],
+    "pricePerPiece": "$1.50-$5/pc (equiv ₱87-290)",
+    "moq": "50-100pc",
+    "location": "China via Alibaba",
+    "rating": 4.4,
+    "url": "https://www.alibaba.com/showroom/blank-leather-pouch.html",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Best match for BTV Leather Flat Pouch style. Search: 'blank leather flat pouch OEM' or 'engravable slim wallet wholesale'. Filter Trade Assurance."
+  },
+
+  // ── ACCESSORIES (Mirrors, Keyrings, Candle Holders) ─────────────────────────
+  {
+    "name": "Shopee PH — Pocket Mirrors",
+    "platform": "Shopee",
+    "category": "Accessories",
+    "products": ["Blank pocket mirrors (round/square)", "Compact mirrors", "Engravable mirrors"],
+    "pricePerPiece": "₱25-80/pc",
+    "moq": "10-50pc",
+    "location": "Various PH sellers",
+    "rating": 4.3,
+    "url": "https://shopee.ph/search?keyword=blank+pocket+mirror+wholesale",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Easiest to source PH-side. Search: 'pocket mirror blank engrave wholesale'. BTV pocket mirror dupe viable at ₱25-50/pc blank."
+  },
+  {
+    "name": "Lazada PH — Keyrings & Accessories",
+    "platform": "Lazada",
+    "category": "Accessories",
+    "products": ["Blank leather keyrings", "Metal keychain blanks", "Engravable key fobs"],
+    "pricePerPiece": "₱15-60/pc",
+    "moq": "10-50pc",
+    "location": "Various PH sellers",
+    "rating": 4.2,
+    "url": "https://www.lazada.com.ph/tag/blank-keychain-wholesale/",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Good for engraving blanks. Search: 'blank leather keychain' or 'metal keyring engravable'. Very low MOQ."
+  },
+  {
+    "name": "Alibaba — Accessories Blanks",
+    "platform": "Alibaba (China OEM)",
+    "category": "Accessories",
+    "products": ["Blank compact mirrors (engravable)", "Leather key fobs", "Candle tins (engravable)", "Metal card holders"],
+    "pricePerPiece": "$0.50-$2.50/pc (equiv ₱29-145)",
+    "moq": "50-200pc",
+    "location": "China via Alibaba",
+    "rating": 4.3,
+    "url": "https://www.alibaba.com/showroom/blank-compact-mirror.html",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Best for BTV pocket mirror + candle holder blanks. Search: 'blank compact mirror engrave OEM' or 'engravable candle tin wholesale'. Good margins at scale."
+  }
+];
+
+window.PRODUCT_OPPORTUNITIES = [
+  {
+    "product": "🔥 Embroidered Pet Portrait Tote Bags",
+    "source": "Competitor gap — no one specializes in vivid custom pet embroidery",
+    "demandLevel": "CRITICAL",
+    "suggestedPriceRange": "₱650-900",
+    "supplierFound": true,
+    "supplier": "JC Canvas PH (Cebu local, 10pc MOQ)",
+    "urgency": "Launch IMMEDIATELY as hero product",
+    "notes": "Pet parents will pay premium. No PH competitor doing high-quality pet portraits on premium totes."
+  },
+  {
+    "product": "❤️ Embroidered Couple Portrait/Name Tote Bags",
+    "source": "Wedding/anniversary gift market + Valentine's demand",
+    "demandLevel": "High",
+    "suggestedPriceRange": "₱550-850",
+    "supplierFound": true,
+    "supplier": "JC Canvas PH, Craft Clothing",
+    "urgency": "High — Valentine's season",
+    "notes": "Embroidered couple silhouettes or cartoon portraits — more artistic than generic text."
+  },
+  {
+    "product": "👶 Embroidered Baby/Birth Gift Towels",
+    "source": "Baby shower, christening, new parent gifts — no competitor owns this niche",
+    "demandLevel": "Medium-High",
+    "suggestedPriceRange": "₱450-700",
+    "supplierFound": true,
+    "supplier": "Lazada Face Towel Wholesale (12pc sets, 100% cotton)",
+    "urgency": "Medium — strong gifting occasion",
+    "notes": "Custom baby portraits or name + birthdate with soft pastel thread — premium keepsake."
+  },
+  {
+    "product": "🧢 Embroidered Custom Face Caps (Pet or Human)",
+    "source": "Cap market exists but generic — no one doing custom face embroidery",
+    "demandLevel": "Medium-High",
+    "suggestedPriceRange": "₱550-850",
+    "supplierFound": true,
+    "supplier": "Acobs Global (50pc MOQ), Fabrica MNL (200pc MOQ)",
+    "urgency": "Medium — launch after totes proven (higher MOQ)",
+    "notes": "Pet face or human portrait on cap front — unique in PH market."
+  },
+  {
+    "product": "🌸 Initial Monogram + Floral Wreath Tote Bags",
+    "source": "2025 trend: custom monograms with natural motifs",
+    "demandLevel": "High",
+    "suggestedPriceRange": "₱500-750",
+    "supplierFound": true,
+    "supplier": "JC Canvas PH, Craft Clothing",
+    "urgency": "High — trendy, fast market entry",
+    "notes": "Elegant initial letter (A-Z) with floral wreath in pastel thread — 26 template designs = scalable."
+  },
+  {
+    "product": "👯 Best Friends 'BFFAE' Matching Tote Bags",
+    "source": "Gen Z friendship market, social media trend",
+    "demandLevel": "Medium-High",
+    "suggestedPriceRange": "₱500-700 each (₱1,200-1,400 pair)",
+    "supplierFound": true,
+    "supplier": "JC Canvas PH, Craft Clothing",
+    "urgency": "Medium — strong Instagram virality potential",
+    "notes": "Embroidered friend silhouettes + custom names — sold as matching set. Target students, young pros."
+  },
+  {
+    "product": "👔 Family Crest/Name Embroidered Polo Shirts",
+    "source": "Family reunions, gifts for parents/grandparents",
+    "demandLevel": "Medium",
+    "suggestedPriceRange": "₱700-1,200",
+    "supplierFound": true,
+    "supplier": "Shirt Planet, Newasia Garment (100pc MOQ), Fabrica MNL (50pc MOQ)",
+    "urgency": "Low-Medium — test after totes proven",
+    "notes": "Custom family name crest or family portrait on back — emotional family identity product."
+  },
+  {
+    "product": "✨ Premium Holographic/Iridescent Totes + Embroidery",
+    "source": "BTV Glazed Poofy Bag aesthetic — glossy holographic with embroidery",
+    "demandLevel": "Medium",
+    "suggestedPriceRange": "₱950-1,500",
+    "supplierFound": false,
+    "supplier": "Need to source holographic blanks — check Alibaba or Craft Clothing holographic option",
+    "urgency": "Low — premium positioning, harder to source",
+    "notes": "BRAND differentiation product (BTV vibe). Launch after standard totes proven. High Instagram appeal."
+  },
+  {
+    "product": "♈ Embroidered Zodiac Sign Tote Bags or Caps",
+    "source": "Gen Z/millennial astrology trend",
+    "demandLevel": "Medium",
+    "suggestedPriceRange": "₱550-800",
+    "supplierFound": true,
+    "supplier": "JC Canvas PH (totes), Acobs Global (caps)",
+    "urgency": "Low-Medium — niche market",
+    "notes": "Embroidered zodiac constellation + symbol — 12 template designs, good for repeat production."
+  },
+  {
+    "product": "💬 Embroidered Quote/Lettering Tote Bags",
+    "source": "2025 trend: expressive lettering",
+    "demandLevel": "Medium-High",
+    "suggestedPriceRange": "₱500-750",
+    "supplierFound": true,
+    "supplier": "JC Canvas PH, Craft Clothing",
+    "urgency": "Medium — easy to produce, trend-aligned",
+    "notes": "Embroidered quotes in elegant script or bold typography — more premium than printed. 10-20 curated quotes."
+  }
+];
+
+window.MARKET_DATA = {
+  "lastUpdated": "2026-03-01",
+  "businessName": "Project Percy PH",
+  "tagline": "Personalized Embroidery Gifts PH | BTV × Blanc Nue inspired",
+  "stats": [
+    { "label": "Market Growth Rate", "value": "9–10%", "sub": "annually (PH market)", "trend": "up", "icon": "📈" },
+    { "label": "Top Platform", "value": "Shopee PH", "sub": "#2 most profitable niche 2025", "trend": "neutral", "icon": "🛒" },
+    { "label": "Peak Season", "value": "Dec & Feb", "sub": "Christmas & Valentine's", "trend": "neutral", "icon": "🎁" },
+    { "label": "Avg Profit Margin", "value": "75–85%", "sub": "on embroidered items", "trend": "up", "icon": "💰" }
   ],
-  "competitorProfiles": [
+  "trendingProducts": [
+    { "rank": 1, "product": "Embroidered Bath Towels + Name", "demand": "Very High", "priceRange": "₱350–₱500", "margin": 75, "trend": "rising", "emoji": "🔥" },
+    { "rank": 2, "product": "Custom Polo / T-Shirt Embroidery", "demand": "Very High", "priceRange": "₱400–₱700", "margin": 70, "trend": "rising", "emoji": "🔥" },
+    { "rank": 3, "product": "Embroidered Canvas Tote Bags", "demand": "High", "priceRange": "₱400–₱650", "margin": 80, "trend": "rising", "emoji": "🔥" },
+    { "rank": 4, "product": "Personalized Caps / Hats", "demand": "High", "priceRange": "₱350–₱600", "margin": 72, "trend": "rising", "emoji": "🔥" },
+    { "rank": 5, "product": "Wedding / Debut Souvenirs", "demand": "High", "priceRange": "₱150–₱400", "margin": 75, "trend": "stable", "emoji": "⚡" },
+    { "rank": 6, "product": "Baby Items (Onesie / Bib)", "demand": "High", "priceRange": "₱600–₱1,200", "margin": 78, "trend": "rising", "emoji": "⚡" },
+    { "rank": 7, "product": "Custom Hoodies / Sweatshirts", "demand": "Growing", "priceRange": "₱600–₱1,000", "margin": 68, "trend": "rising", "emoji": "📈" },
+    { "rank": 8, "product": "Embroidered Handkerchiefs", "demand": "Growing", "priceRange": "₱150–₱300", "margin": 82, "trend": "stable", "emoji": "📈" },
+    { "rank": 9, "product": "Couple Pillowcases", "demand": "Growing", "priceRange": "₱400–₱900", "margin": 76, "trend": "rising", "emoji": "📈" },
+    { "rank": 10, "product": "Embroidered Aprons", "demand": "Emerging", "priceRange": "₱400–₱900", "margin": 74, "trend": "rising", "emoji": "🌱" }
+  ],
+  "competitors": [
+    { "name": "Keepsakes.ph", "platform": "Instagram", "followers": "8.7K", "focus": "Custom gift sets (general)", "weakness": "Not embroidery-specific", "threat": "Medium" },
+    { "name": "Stitched Lab Studio", "platform": "TikTok", "followers": "Viral", "focus": "Apparel embroidery only", "weakness": "No towels, bags, or home items", "threat": "High" },
+    { "name": "Artbox Studio", "platform": "Website", "followers": "—", "focus": "Events & corporate gifts", "weakness": "No embroidery at all", "threat": "Low" },
+    { "name": "Treen Manila", "platform": "Website + Shopee", "followers": "—", "focus": "Wooden / laser-cut items", "weakness": "Zero embroidery", "threat": "Low" },
+    { "name": "Jmigs Embroidery", "platform": "Facebook", "followers": "17.1K", "focus": "All embroidery items", "weakness": "Physical store only, no online shop", "threat": "Medium" }
+  ],
+  "pricingBenchmarks": {
+    "labels": ["Bath Towel", "Tote Bag", "Cap", "Polo Shirt", "Handkerchief"],
+    "competitorAvg": [450, 550, 500, 600, 250],
+    "yourSuggestedPrice": [400, 480, 420, 550, 200],
+    "materialCost": [110, 50, 75, 160, 30]
+  },
+  "seasonalDemand": [
+    { "month": "Jan", "level": 2, "label": "New Year gifts" },
+    { "month": "Feb", "level": 5, "label": "🔥 Valentine's Day" },
+    { "month": "Mar", "level": 3, "label": "Graduation season starts" },
+    { "month": "Apr", "level": 3, "label": "Summer events" },
+    { "month": "May", "level": 4, "label": "🔥 Mother's Day" },
+    { "month": "Jun", "level": 4, "label": "Graduation peak" },
+    { "month": "Jul", "level": 2, "label": "Off-peak" },
+    { "month": "Aug", "level": 2, "label": "Off-peak" },
+    { "month": "Sep", "level": 3, "label": "Ber months start" },
+    { "month": "Oct", "level": 3, "label": "Pre-Christmas orders" },
+    { "month": "Nov", "level": 4, "label": "Christmas rush begins" },
+    { "month": "Dec", "level": 5, "label": "🔥 Christmas peak" }
+  ],
+  "insights": [
+    { "icon": "🎓", "title": "Graduation Season = Next Big Wave (Mar–Jun 2026)", "body": "Graduation season is starting. Embroidered tote bags with names/batch years, custom caps, and personalized towels are peak graduation gifts. Competitors are already pivoting — Lucky Loops, SM Custom Labs, GoMommy Printz all ramping up. Get your graduation promo ready NOW.", "type": "opportunity" },
+    { "icon": "🎯", "title": "No Dominant Embroidery Brand in PH", "body": "Google AI confirmed: no single brand owns the embroidery gifting space in the Philippines. The market is fragmented — your opportunity to become the go-to name.", "type": "opportunity" },
+    { "icon": "🚀", "title": "Shopee Ranks Personalized Gifts #2 Most Profitable Niche (2025)", "body": "Per sitegiant.ph (Mar 2025), Personalized Gifts & Custom Accessories is the #2 most profitable product category to sell on Shopee Philippines this year.", "type": "market" },
+    { "icon": "📱", "title": "TikTok Embroidery Content = 383K+ Views", "body": "SM Store's embroidery TikTok got 383,800 views in 6 months. UNIQLO PH's Valentine's embroidery post went viral 2 weeks ago. Video content drives this niche.", "type": "trend" }
+  ]
+};
+
+// ===== COMPETITOR DEEP-DIVE DATA =====
+window.COMPETITOR_DETAIL = {
+  lastUpdated: "2026-03-01",
+  competitors: [
     {
-      "name": "Lucky Loops Official",
-      "category": "Direct Competitor",
-      "platforms": [
-        { "platform": "TikTok", "handle": "@luckyloopsofficial", "url": "https://www.tiktok.com/@luckyloopsofficial", "followers": "Growing fast" }
+      id: 1,
+      name: "Keepsakes.ph",
+      platform: "Instagram",
+      platformIcon: "📸",
+      followers: "8.7K",
+      focus: "General gifts & custom gift sets — NOT embroidery specific",
+      weakness: "No embroidery focus at all — they do general personalized gifts but don't specialize in thread work",
+      threat: "Medium",
+      marketReach: 55,
+      productOverlap: 30,
+      yourAdvantages: [
+        "You specialize in embroidery — they don't",
+        "Your personalization is stitched, not printed",
+        "You can steal their gift set audience by adding embroidery"
       ],
-      "postFrequency": "Weekly",
-      "contentStyle": "Short video gift reveals, couple-focused",
-      "threat": "High"
+      profileUrl: "https://www.instagram.com/keepsakes.ph"
     },
     {
-      "name": "UNIQLO Philippines",
-      "category": "Big Brand",
-      "platforms": [
-        { "platform": "TikTok", "handle": "@uniqlophofficial", "url": "https://www.tiktok.com/@uniqlophofficial", "followers": "Large" },
-        { "platform": "Instagram", "handle": "@uniqloph", "url": "https://www.instagram.com/uniqloph", "followers": "Large" }
+      id: 2,
+      name: "Stitched Lab Studio",
+      platform: "TikTok",
+      platformIcon: "🎵",
+      followers: "Viral (Growing fast)",
+      focus: "Apparel embroidery only — shirts, hoodies, jackets",
+      weakness: "No bags, towels, caps, or home items — apparel-only limits their gift market",
+      threat: "High",
+      marketReach: 70,
+      productOverlap: 45,
+      yourAdvantages: [
+        "You have wider product range (towels, bags, caps, polo)",
+        "You serve gift occasions they can't (bridal, baby, graduation)",
+        "You're not apparel-only — you're a full gift shop"
       ],
-      "postFrequency": "Daily",
-      "contentStyle": "In-store embroidery demos, lifestyle, seasonal campaigns",
-      "threat": "Medium (premium price, physical stores only)"
+      profileUrl: "https://www.tiktok.com/@stitchedlabstudio"
     },
     {
-      "name": "SM Store",
-      "category": "Big Brand",
-      "platforms": [
-        { "platform": "TikTok", "handle": "@smstore", "url": "https://www.tiktok.com/@smstore", "followers": "Large" }
+      id: 3,
+      name: "Artbox Studio",
+      platform: "Website",
+      platformIcon: "🌐",
+      followers: "—",
+      focus: "Events & corporate gifts — laser cut, acrylic, wood",
+      weakness: "Zero embroidery at all — they're in gifts but not your category",
+      threat: "Low",
+      marketReach: 40,
+      productOverlap: 15,
+      yourAdvantages: [
+        "They don't do embroidery — no direct competition",
+        "You can partner with them for mixed gift sets",
+        "Your personalization style is completely different"
       ],
-      "postFrequency": "Daily",
-      "contentStyle": "Process videos, product reveals, aesthetic short-form",
-      "threat": "Low (different market segment)"
+      profileUrl: "https://artboxstudio.ph"
     },
     {
-      "name": "Keepsakes.ph",
-      "category": "Indirect Competitor",
-      "platforms": [
-        { "platform": "Instagram", "handle": "@keepsakes.ph", "url": "https://www.instagram.com/keepsakes.ph", "followers": "8,700+" }
+      id: 4,
+      name: "Jmigs Embroidery",
+      platform: "Facebook",
+      platformIcon: "👥",
+      followers: "17.1K",
+      focus: "All embroidery items — towels, caps, bags, robes, handkerchiefs",
+      weakness: "Physical store only (Divisoria) — no online shop, no delivery, no Shopee/Lazada",
+      threat: "High",
+      marketReach: 65,
+      productOverlap: 90,
+      yourAdvantages: [
+        "You have ONLINE presence — they don't",
+        "You ship nationwide — they're walk-in Divisoria only",
+        "You can capture their audience who can't visit Manila"
       ],
-      "postFrequency": "Regular",
-      "contentStyle": "Gift sets, lifestyle photos, occasion-based posts",
-      "threat": "Medium (no embroidery — steal their audience)"
+      profileUrl: "https://www.facebook.com/p/Jmigs-embroidery-100063576168941"
     },
     {
-      "name": "GoMommy Printz",
-      "category": "Direct Competitor",
-      "platforms": [
-        { "platform": "TikTok", "handle": "@_gomommyprintz", "url": "https://www.tiktok.com/@_gomommyprintz", "followers": "Growing" },
-        { "platform": "Instagram", "handle": "@_gomommyprintz", "url": "https://www.instagram.com/_gomommyprintz", "followers": "Growing" },
-        { "platform": "Facebook", "handle": "GoMommy Printz", "url": "https://www.facebook.com/gomommyprintz", "followers": "Growing" }
+      id: 5,
+      name: "Fabrica MNL",
+      platform: "Website + Instagram",
+      platformIcon: "🌐",
+      followers: "Corporate",
+      focus: "Custom corporate merch — tote bags, apparel, bulk orders 50+ minimum",
+      weakness: "Too corporate — 50pc minimum order kills personal gift buyers",
+      threat: "Low",
+      marketReach: 50,
+      productOverlap: 35,
+      yourAdvantages: [
+        "You accept 1pc orders — they need 50pc minimum",
+        "You serve personal gifts — they only serve corporate",
+        "You're accessible to regular gift buyers"
       ],
-      "postFrequency": "Active",
-      "contentStyle": "Product posts, bulk order promos, multi-platform reposts",
-      "threat": "High"
+      profileUrl: "https://fabricamnl.com"
+    }
+  ],
+  yourEdges: [
+    "🎨 Art embroidery (pet portraits, face portraits, couple silhouettes) — competitors only do plain text",
+    "📦 Online-first with nationwide delivery — most competitors are physical stores only",
+    "🛍️ Wide product range: totes, towels, caps, polo, handkerchiefs — not apparel-only",
+    "💰 Competitive pricing 15-30% below big brands while maintaining premium packaging",
+    "⚡ 1pc minimum order — no bulk requirements for personal gifts"
+  ]
+};
+
+// ===== PRICING CALCULATOR DATA =====
+window.PRICING_DATA = {
+  lastUpdated: "2026-03-01",
+  items: {
+    tote_bag: {
+      name: "Tote Bag",
+      emoji: "🛍️",
+      materialCost: 50,
+      baseLabor: 80,
+      complexityMultiplier: { simple: 1, pet: 1.8, face: 2, couple: 2.2 },
+      competitorAvg: 550,
+      suggestedPrice: 480,
+      bulkDiscounts: { 5: 0.95, 10: 0.90, 20: 0.85 }
+    },
+    towel: {
+      name: "Bath Towel",
+      emoji: "🧴",
+      materialCost: 110,
+      baseLabor: 80,
+      complexityMultiplier: { simple: 1, pet: 1.8, face: 2, couple: 2.2 },
+      competitorAvg: 450,
+      suggestedPrice: 400,
+      bulkDiscounts: { 5: 0.95, 10: 0.90, 20: 0.85 }
+    },
+    cap: {
+      name: "Cap",
+      emoji: "🧢",
+      materialCost: 100,
+      baseLabor: 80,
+      complexityMultiplier: { simple: 1, pet: 1.5, face: 1.8, couple: 2 },
+      competitorAvg: 500,
+      suggestedPrice: 420,
+      bulkDiscounts: { 5: 0.95, 10: 0.90, 20: 0.85 }
+    },
+    polo: {
+      name: "Polo Shirt",
+      emoji: "👔",
+      materialCost: 160,
+      baseLabor: 100,
+      complexityMultiplier: { simple: 1, pet: 1.8, face: 2, couple: 2.2 },
+      competitorAvg: 600,
+      suggestedPrice: 550,
+      bulkDiscounts: { 5: 0.95, 10: 0.90, 20: 0.85 }
+    },
+    handkerchief: {
+      name: "Handkerchief",
+      emoji: "🧣",
+      materialCost: 30,
+      baseLabor: 60,
+      complexityMultiplier: { simple: 1, pet: 1.5, face: 1.8, couple: 2 },
+      competitorAvg: 250,
+      suggestedPrice: 200,
+      bulkDiscounts: { 5: 0.95, 10: 0.90, 20: 0.85 }
+    }
+  },
+  complexityLabels: {
+    simple: "Simple Name/Text",
+    pet: "Pet Portrait",
+    face: "Face Portrait",
+    couple: "Couple Silhouette"
+  }
+};
+
+// ===== SEASONAL ALERTS DATA =====
+window.SEASONAL_ALERTS = {
+  lastUpdated: "2026-03-01",
+  currentMonth: 2, // February
+  alerts: [
+    {
+      id: 1,
+      name: "Valentine's Tail",
+      urgency: "hot",
+      urgencyLabel: "🔥 Hot Now",
+      description: "Last Valentine's orders this week — final rush for late gifters",
+      action: "Accept rush orders until Feb 28, charge ₱50 rush fee",
+      endsAt: "2026-03-01",
+      daysLeft: 1
     },
     {
-      "name": "KZ Crafty",
-      "category": "Direct Competitor",
-      "platforms": [
-        { "platform": "TikTok", "handle": "@kzcrafty", "url": "https://www.tiktok.com/discover/affordable-souvenir-shop-in-the-philippines", "followers": "Active" }
-      ],
-      "postFrequency": "Regular",
-      "contentStyle": "Affordable souvenirs, custom embroidery, nationwide shipping",
-      "threat": "High"
+      id: 2,
+      name: "Graduation Season",
+      urgency: "coming",
+      urgencyLabel: "⚡ Coming Soon",
+      description: "Graduation season starts March — Batch 2026 orders incoming",
+      action: "Launch #Batch2026 promo, prep grad tote & polo inventory",
+      startsAt: "2026-03-01",
+      daysUntil: 2
     },
     {
-      "name": "MUJI Philippines",
-      "category": "Big Brand",
-      "platforms": [
-        { "platform": "TikTok", "handle": "@mujiphilippines", "url": "https://www.tiktok.com/discover/embroidery-shop-in-bacoor-cavite", "followers": "Large" },
-        { "platform": "Instagram", "handle": "@mujiphilippines", "url": "https://www.instagram.com/mujiphilippines", "followers": "Large" }
-      ],
-      "postFrequency": "Regular",
-      "contentStyle": "In-store services, minimalist aesthetic, product demos",
-      "threat": "Low (in-store only, premium BGC pricing)"
+      id: 3,
+      name: "Mother's Day",
+      urgency: "rising",
+      urgencyLabel: "📈 Rising",
+      description: "Mother's Day (May) — 10 weeks away, start content pipeline",
+      action: "Plan 'For Mama' content series, towel gift sets for moms",
+      startsAt: "2026-05-10",
+      weeksUntil: 10
     }
   ]
+};
+
+window.SUPPLIERS_DATA = {
+  "lastUpdated": "2026-03-01",
+  "suppliers": [
+    { "id": 1, "name": "Jmigs Embroidery", "platform": "Facebook", "category": "Towels / Caps / Robes", "items": "Bath towel, hand towel, face towel, handkerchief, bathrobe, caps", "pricePerPc": "₱50–₱150", "minOrder": "1 pc (retail)", "location": "Divisoria, Manila", "contact": "facebook.com/p/Jmigs-embroidery-100063576168941", "contactType": "facebook", "rating": "⭐ 17.1K followers", "priority": "TOP", "notes": "Physical store: Divisoria Mall 2F Stall 2D-01. All items free embroidery." },
+    { "id": 2, "name": "Towel Republic PH", "platform": "Facebook", "category": "Towels / Bags / Caps", "items": "Towels, tote bags, caps, bathrobes — WITH free embroidery included", "pricePerPc": "₱60–₱250", "minOrder": "1 pc", "location": "Nationwide", "contact": "facebook.com/TowelRepublicPH", "contactType": "facebook", "rating": "⭐ Active page", "priority": "TOP", "notes": "Caps ₱220, Tote ₱250 with embroidery. Very active." },
+    { "id": 3, "name": "House of Canvas Ph", "platform": "Facebook", "category": "Tote Bags", "items": "Plain canvas bags — all sizes, sublimation-ready, embroidery-ready", "pricePerPc": "₱30–₱55", "minOrder": "Bulk", "location": "Nationwide", "contact": "facebook.com/houseofcanvasph", "contactType": "facebook", "rating": "⭐ Direct manufacturer", "priority": "TOP", "notes": "Direct manufacturer and supplier. Active FB page." },
+    { "id": 4, "name": "YJJ Merchandise & Co.", "platform": "Facebook", "category": "Shirts / Polos", "items": "Plain shirts, polo shirts, sweatshirts, jackets, t-shirts, dri-fit, sando", "pricePerPc": "₱80–₱180", "minOrder": "1 pc", "location": "La Loma, QC", "contact": "0966-3806-584 (Viber)", "contactType": "phone", "rating": "⭐ Wholesale & retail", "priority": "HIGH", "notes": "Open for retail and wholesale. Viber available." },
+    { "id": 5, "name": "PTPA Custom Embroidery", "platform": "Facebook", "category": "Towels / Caps", "items": "Bath towels, caps, embroidery-ready blanks", "pricePerPc": "₱80–₱200", "minOrder": "Bulk", "location": "Tanay, Rizal", "contact": "09457050606", "contactType": "phone", "rating": "⭐ Verified", "priority": "HIGH", "notes": "Also: 09514461514. Nationwide shipping." },
+    { "id": 6, "name": "Joytex PH", "platform": "Facebook", "category": "Shirts", "items": "Basic plain shirts — direct supplier, high quality", "pricePerPc": "₱60–₱100", "minOrder": "1 pc", "location": "Philippines", "contact": "facebook.com/joytexph", "contactType": "facebook", "rating": "⭐ Direct brand", "priority": "MEDIUM", "notes": "Direct brand, affordable quality plain shirts." },
+    { "id": 7, "name": "Plain Canvas Tote (Direct Patahian)", "platform": "Shopee", "category": "Tote Bags", "items": "Canvas tote bags 10x12\", 12x14\", 13x15\" — for souvenir, eco bag, corporate", "pricePerPc": "₱38–₱55", "minOrder": "1 pc", "location": "Shopee PH", "contact": "shopee.ph", "contactType": "shopee", "rating": "4.9⭐ 22 reviews", "priority": "TOP", "notes": "Search 'plain canvas tote direct supplier' on Shopee." },
+    { "id": 8, "name": "Wholesale Tote Bag Plain (Bulk)", "platform": "Shopee", "category": "Tote Bags", "items": "Canvas tote wholesale bulk — factory direct pricing", "pricePerPc": "₱30–₱45", "minOrder": "Bulk ₱2,000", "location": "Shopee PH", "contact": "shopee.ph", "contactType": "shopee", "rating": "5.0⭐ 3 reviews", "priority": "HIGH", "notes": "Best price for bulk. Search 'wholesale tote bag plain bulk order'." },
+    { "id": 9, "name": "Plain Katsa Flat Tote — Direct", "platform": "Shopee", "category": "Tote Bags", "items": "Flat tote bag with base — katsa canvas, eco bag", "pricePerPc": "₱30–₱34", "minOrder": "1 pc", "location": "Shopee PH", "contact": "shopee.ph", "contactType": "shopee", "rating": "4.8⭐ 163 reviews", "priority": "HIGH", "notes": "Search 'plain katsa flat tote direct supplier' on Shopee." },
+    { "id": 10, "name": "Face Towel 100% Cotton Ring Spun", "platform": "Shopee", "category": "Towels", "items": "Face towels 30x30cm, 100% cotton — gym, spa, hand use", "pricePerPc": "₱83–₱96", "minOrder": "1 pc", "location": "Shopee PH", "contact": "shopee.ph", "contactType": "shopee", "rating": "⭐ Highly rated", "priority": "HIGH", "notes": "Search 'face towel cotton ring spun 30x30' on Shopee." },
+    { "id": 11, "name": "Plain Dri-Fit Polo Shirt Wholesale", "platform": "Shopee", "category": "Shirts", "items": "Unisex plain polo dri-fit — wholesale, breathable, quick-dry", "pricePerPc": "₱130", "minOrder": "1 pc", "location": "Shopee PH", "contact": "shopee.ph", "contactType": "shopee", "rating": "⭐ Listed", "priority": "MEDIUM", "notes": "Search 'unisex plain dri-fit polo wholesale' on Shopee." },
+    { "id": 12, "name": "Blank Towel Collection", "platform": "Lazada", "category": "Towels", "items": "Blank towels — various sizes, cotton, microfiber, coral fleece", "pricePerPc": "₱8–₱30", "minOrder": "1 pc", "location": "Lazada PH", "contact": "https://www.lazada.com.ph/tag/blank-towel/", "contactType": "lazada", "rating": "⭐ Multiple sellers", "priority": "HIGH", "notes": "Cheapest blank towels. Good for face towels and handkerchiefs." },
+    { "id": 13, "name": "Lexan Cotton Hand Towel", "platform": "Lazada", "category": "Towels", "items": "High quality cotton hand towel 35x75cm — soft, absorbent", "pricePerPc": "₱62.40", "minOrder": "1 pc", "location": "Lazada PH", "contact": "https://www.lazada.com.ph/tag/cotton-towel-handkerchief-unisex/", "contactType": "lazada", "rating": "5.0⭐ 3,100 sold", "priority": "TOP", "notes": "Best-seller on Lazada. 3,100+ sold. Proven quality." },
+    { "id": 14, "name": "Cotton Canvas Tote Blank Bulk", "platform": "Lazada", "category": "Tote Bags", "items": "Cotton canvas tote bag blank — 10-bag bulk pack", "pricePerPc": "₱67", "minOrder": "10 pcs (₱670)", "location": "Lazada PH", "contact": "https://www.lazada.com.ph", "contactType": "lazada", "rating": "4.4⭐ 120 reviews", "priority": "HIGH", "notes": "Search 'cotton canvas tote blank bulk' on Lazada." },
+    { "id": 15, "name": "Handkerchief Wholesale", "platform": "Lazada", "category": "Handkerchiefs", "items": "Cotton handkerchiefs wholesale — sets of 6 or 12, plain white", "pricePerPc": "₱8–₱15", "minOrder": "1 set", "location": "Lazada PH", "contact": "https://www.lazada.com.ph/tag/handkerchief-wholesale/", "contactType": "lazada", "rating": "⭐ Multiple sellers", "priority": "MEDIUM", "notes": "Best price for handkerchiefs. Great for souvenir orders." },
+    { "id": 16, "name": "JC Canvas PH", "platform": "Website", "category": "Tote Bags", "items": "Canvas tote bags with 2\" base — thick fabric, customizable", "pricePerPc": "₱39–₱54", "minOrder": "10 pcs", "location": "jccanvasph.com", "contact": "https://jccanvasph.com", "contactType": "website", "rating": "⭐ Direct supplier", "priority": "HIGH", "notes": "₱390 for 10pcs. Scale pricing for 20–100pcs." },
+    { "id": 17, "name": "Craft Clothing PH", "platform": "Website", "category": "Tote Bags", "items": "Canvas bags for branding — trendy styles, embroidery-ready", "pricePerPc": "Custom", "minOrder": "50 pcs", "location": "craftclothing.ph", "contact": "https://craftclothing.ph", "contactType": "website", "rating": "⭐ Corporate", "priority": "MEDIUM", "notes": "Good for corporate giveaway bulk orders." },
+    { "id": 18, "name": "Fabrica MNL", "platform": "Website", "category": "Tote Bags / Corporate", "items": "Custom tote bags + embroidery service — merch, corporate, events", "pricePerPc": "Custom", "minOrder": "50 pcs", "location": "fabricamnl.com", "contact": "https://fabricamnl.com", "contactType": "website", "rating": "⭐ Established", "priority": "MEDIUM", "notes": "Also offers embroidery services. Good competitor benchmark." }
+  ],
+  "facebookGroups": [
+    { "name": "PLAIN TSHIRT SUPPLIERS PHILIPPINES", "members": "73,600+", "focus": "Blank apparel suppliers — shirts, polos, hoodies", "priority": "TOP" },
+    { "name": "Polo Shirt and Plain Shirt Supplier Hub", "members": "27,600+", "focus": "Wholesale polo & plain shirt suppliers", "priority": "TOP" },
+    { "name": "Corporate Giveaways Philippines", "members": "Large", "focus": "Tote bags, towels, caps — corporate items & giveaways", "priority": "HIGH" },
+    { "name": "Affordable Wedding and Event Suppliers Manila", "members": "Large", "focus": "Souvenir suppliers for weddings, debuts, baptisms", "priority": "HIGH" },
+    { "name": "Corporate Giveaways Buyers & Suppliers PH", "members": "Active", "focus": "Bulk sourcing — tote bags, towels, caps, custom items", "priority": "HIGH" },
+    { "name": "PURCHASING GROUP & SUPPLIERS PHI.", "members": "Active", "focus": "Towel and textile suppliers — bulk & VAT-registered options", "priority": "MEDIUM" }
+  ],
+  "messageTemplate": "Hi! I'm looking for blank [ITEM] for embroidery — personalized gift/souvenir business. Can I ask:\n(1) What's your price per piece for [quantity]?\n(2) What's your minimum order?\n(3) Do you ship to [city/province]?\n(4) What materials/sizes are available?\nThank you! 😊"
 };
