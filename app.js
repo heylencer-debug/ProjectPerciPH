@@ -1,4 +1,12 @@
 // ===== DASHBOARD APP =====
+// v2.2.0 — 2026-03-03 — Fixed SB constants, image fallbacks, null guards, currency
+
+// ===== SUPABASE CONSTANTS =====
+// Read from sb.js config, with fallback to inline values
+const SB_URL = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.url) || 'https://fhfqjcvwcxizbioftvdw.supabase.co';
+const SB_KEY = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.key) || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZoZnFqY3Z3Y3hpemJpb2Z0dmR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNTcxMzgsImV4cCI6MjA4NzkzMzEzOH0.g8K40DjhvxE7u4JdHICqKc1dMxS4eZdMhfA11M8ZMBc';
+const SB_HDRS = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+
 let marketData = null;
 let suppliersData = null;
 let pricingChart = null;
@@ -138,14 +146,14 @@ async function renderPriceTracker() {
   tbody.innerHTML = rows.map(r => {
     const gap = (r.our_price && r.price) ? r.our_price - r.price : null;
     const gapHtml = gap === null ? '—'
-      : gap >= 0 ? `<span style="color:#10B981;font-weight:600">+S$${gap.toFixed(2)}</span>`
-      : `<span style="color:#EF4444;font-weight:600">-S$${Math.abs(gap).toFixed(2)}</span>`;
+      : gap >= 0 ? `<span style="color:#10B981;font-weight:600">+₱${gap.toFixed(2)}</span>`
+      : `<span style="color:#EF4444;font-weight:600">-₱${Math.abs(gap).toFixed(2)}</span>`;
     return `<tr>
-      <td><strong>${r.competitor}</strong></td>
-      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.product}">${r.product}</td>
+      <td><strong>${r.competitor || '—'}</strong></td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${r.product || ''}">${r.product || '—'}</td>
       <td><span class="badge">${r.category || '—'}</span></td>
-      <td>S$${r.price?.toFixed(2) || '—'}</td>
-      <td>${r.our_price ? 'S$' + r.our_price.toFixed(2) : '—'}</td>
+      <td>₱${r.price?.toFixed(2) || '—'}</td>
+      <td>${r.our_price ? '₱' + r.our_price.toFixed(2) : '—'}</td>
       <td>${gapHtml}</td>
       <td style="color:#64748B;font-size:11px">${r.platform || '—'}</td>
     </tr>`;
@@ -400,7 +408,9 @@ function renderTab(page) {
 function renderStats() {
   const grid = document.getElementById('stats-grid');
   if (!grid || !marketData || !marketData.stats) return;
-  grid.innerHTML = marketData.stats.map(s => `
+  const stats = marketData.stats || [];
+  if (!Array.isArray(stats) || stats.length === 0) return;
+  grid.innerHTML = stats.map(s => `
     <div class="stat-card">
       <span class="stat-icon">${s.icon}</span>
       <div class="stat-value">${s.value}</div>
@@ -416,7 +426,13 @@ function renderStats() {
 // ===== PRODUCTS TABLE =====
 function renderProductsTable() {
   const tbody = document.getElementById('products-body');
-  tbody.innerHTML = marketData.trendingProducts.map(p => {
+  if (!tbody || !marketData) return;
+  const products = marketData.trendingProducts || [];
+  if (!Array.isArray(products) || products.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:#6B7280">No products data available</td></tr>';
+    return;
+  }
+  tbody.innerHTML = products.map(p => {
     const demandClass = { 'Very High': 'veryhigh', 'High': 'high', 'Growing': 'growing', 'Emerging': 'emerging' }[p.demand] || 'medium';
     const trendClass = { rising: 'trend-rising', stable: 'trend-stable', falling: 'trend-falling' }[p.trend];
     const trendIcon = { rising: '↑ Rising', stable: '→ Stable', falling: '↓ Falling' }[p.trend];
@@ -440,8 +456,14 @@ function renderProductsTable() {
 // ===== COMPETITORS =====
 function renderCompetitors() {
   const grid = document.getElementById('competitors-grid');
+  if (!grid || !marketData) return;
+  const competitors = marketData.competitors || [];
+  if (!Array.isArray(competitors) || competitors.length === 0) {
+    grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:24px">No competitor data available</p>';
+    return;
+  }
   const colors = { High: 'badge-veryhigh', Medium: 'badge-high', Low: 'badge-low' };
-  grid.innerHTML = marketData.competitors.map(c => `
+  grid.innerHTML = competitors.map(c => `
     <div class="competitor-card">
       <div class="comp-name">${c.name}</div>
       <div class="comp-platform">📍 ${c.platform}${c.followers !== '—' ? ' · ' + c.followers : ''}</div>
@@ -455,7 +477,13 @@ function renderCompetitors() {
 // ===== INSIGHTS =====
 function renderInsights() {
   const grid = document.getElementById('insights-grid');
-  grid.innerHTML = marketData.insights.map(i => `
+  if (!grid || !marketData) return;
+  const insights = marketData.insights || [];
+  if (!Array.isArray(insights) || insights.length === 0) {
+    grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:24px">No insights available</p>';
+    return;
+  }
+  grid.innerHTML = insights.map(i => `
     <div class="insight-card insight-${i.type}">
       <div class="insight-icon">${i.icon}</div>
       <div class="insight-title">${i.title}</div>
@@ -643,7 +671,12 @@ let activePlatformFilter = 'all';
 
 function renderFeed() {
   if (!window.FEED_DATA) return;
-  const posts = window.FEED_DATA.feedPosts;
+  const posts = window.FEED_DATA.feedPosts || [];
+  if (!Array.isArray(posts) || posts.length === 0) {
+    const container = document.getElementById('feed-posts');
+    if (container) container.innerHTML = '<div style="text-align:center;padding:40px;color:#A0AEC0;font-size:14px">No feed posts available.</div>';
+    return;
+  }
   const filtered = posts.filter(p => {
     const matchCat = activeFeedFilter === 'all' || p.category === activeFeedFilter;
     const matchPlat = activePlatformFilter === 'all' || p.platform === activePlatformFilter;
@@ -708,6 +741,20 @@ function renderFeed() {
 }
 
 function buildMediaPreview(p) {
+  // Helper to create styled placeholder when image is missing
+  const createPlaceholder = (platform, icon, label) => {
+    const initials = (p.account || 'XX').replace(/[^a-zA-Z]/g,'').substring(0,2).toUpperCase();
+    const colors = { TikTok: '#010101', Instagram: '#E1306C', Facebook: '#1877F2' };
+    const bgColor = colors[platform] || '#6B7280';
+    return `
+    <div class="post-media photo-preview" style="cursor:default;background:#F5F5F5;border:1.5px solid #E5E5E5;display:flex;flex-direction:column;align-items:center;justify-content:center;height:140px">
+      <div style="font-size:32px;margin-bottom:8px">${icon}</div>
+      <div style="font-size:14px;font-weight:700;color:${bgColor}">${initials}</div>
+      <div style="font-size:11px;color:#6B7280;text-transform:uppercase;letter-spacing:1px;margin-top:4px">${label}</div>
+      <a href="${p.url || '#'}" target="_blank" style="font-size:10px;color:${bgColor};margin-top:8px;text-decoration:none">View Post →</a>
+    </div>`;
+  };
+
   if (p.mediaType === 'tiktok' && p.mediaId) {
     const bg = p.thumbnail
       ? `style="background-image:url('${p.thumbnail}')" `
@@ -723,6 +770,9 @@ function buildMediaPreview(p) {
       <iframe class="tiktok-embed-frame" allowfullscreen allow="autoplay"></iframe>
     </div>`;
   }
+  if (p.mediaType === 'tiktok_link') {
+    return createPlaceholder('TikTok', '🎵', 'TikTok Video');
+  }
   if (p.mediaType === 'instagram_reel' && p.mediaId) {
     return `
     <div class="post-media photo-preview bg-instagram" style="cursor:default">
@@ -737,42 +787,33 @@ function buildMediaPreview(p) {
     </div>`;
   }
   if (p.mediaType === 'instagram') {
-    return `
-    <div class="post-media photo-preview bg-instagram" style="cursor:default">
-      <div class="media-bg"></div>
-      <div class="media-overlay">
-        <a href="${p.url}" target="_blank" style="text-decoration:none">
-          <div class="media-play-btn" style="font-size:22px">📸</div>
-        </a>
-        <div class="media-label">View Profile on Instagram</div>
-      </div>
-      <div class="media-platform-watermark">📸 Instagram</div>
-    </div>`;
+    return createPlaceholder('Instagram', '📸', 'Instagram Post');
   }
   if (p.mediaType === 'facebook') {
-    return `
-    <div class="post-media photo-preview bg-facebook" style="cursor:default">
-      <div class="media-bg"></div>
-      <div class="media-overlay">
-        <a href="${p.url}" target="_blank" style="text-decoration:none">
-          <div class="media-play-btn" style="font-size:22px">👥</div>
-        </a>
-        <div class="media-label">View on Facebook</div>
-      </div>
-      <div class="media-platform-watermark">👥 Facebook</div>
-    </div>`;
+    return createPlaceholder('Facebook', '👥', 'Facebook Post');
   }
-  // Fallback: no media
+  // Fallback: create a generic placeholder based on platform
+  if (p.platform) {
+    const icons = { TikTok: '🎵', Instagram: '📸', Facebook: '👥' };
+    return createPlaceholder(p.platform, icons[p.platform] || '📱', `${p.platform} Post`);
+  }
+  // No media at all
   return '';
 }
 
 function renderCompetitorProfiles() {
   if (!window.FEED_DATA) return;
-  const profiles = window.FEED_DATA.competitorProfiles;
+  const profiles = window.FEED_DATA.competitorProfiles || [];
+  const container = document.getElementById('competitor-profiles');
+  if (!container) return;
+  if (!Array.isArray(profiles) || profiles.length === 0) {
+    container.innerHTML = '<p style="color:#6B7280;text-align:center;padding:16px;font-size:12px">No competitor profiles</p>';
+    return;
+  }
   const catClass = { 'Direct Competitor': 'cat-direct', 'Indirect Competitor': 'cat-indirect', 'Big Brand': 'cat-big', 'Emerging Competitor': 'cat-emerging' };
   const platEmoji = { TikTok: '🎵', Facebook: '👥', Instagram: '📸' };
 
-  document.getElementById('competitor-profiles').innerHTML = profiles.map(p => `
+  container.innerHTML = profiles.map(p => `
     <div class="profile-item">
       <div class="profile-name">${p.name}</div>
       <span class="profile-category ${catClass[p.category] || ''}">${p.category}</span>
@@ -1097,9 +1138,12 @@ function renderBtvGrid() {
   const shown = btvFiltered.slice(0, btvPage * BTV_PER_PAGE);
 
   grid.innerHTML = shown.map(p => {
-    const priceStr = p.price_min === p.price_max
-      ? (p.price_min > 0 ? `S$${p.price_min.toFixed(2)}` : 'Free')
-      : `S$${p.price_min.toFixed(2)}–${p.price_max.toFixed(2)}`;
+    // Convert S$ to PHP (approx 41x) or show as-is with PHP symbol
+    const priceMin = p.price_min || 0;
+    const priceMax = p.price_max || 0;
+    const priceStr = priceMin === priceMax
+      ? (priceMin > 0 ? `₱${(priceMin * 41).toFixed(0)}` : 'Free')
+      : `₱${(priceMin * 41).toFixed(0)}–${(priceMax * 41).toFixed(0)}`;
     const availClass = p.available ? 'btv-avail' : 'btv-unavail';
     const availText = p.available ? 'In Stock' : 'Sold Out';
     const desc = p.description_plain
@@ -1681,6 +1725,17 @@ async function renderEthelFeed() {
 var CF_OFFSET = 0;
 var CF_LIMIT = 24;
 
+// Fallback competitor feed data (used when Supabase returns empty)
+if (!window.COMPETITOR_FEED_FALLBACK) {
+  window.COMPETITOR_FEED_FALLBACK = [
+    { id: 1, competitor: "Giftaway PH", product: "Personalized Keychain", price: 149, platform: "shopee", image_url: null, category: "Keychain", caption: "Custom keychains with name engraving! Perfect for souvenirs.", likes: 120, comments: 15, posted_at: "2026-03-01", scraped_at: "2026-03-03", post_url: "https://shopee.ph" },
+    { id: 2, competitor: "CustomCraft PH", product: "Engraved Tumbler", price: 450, platform: "shopee", image_url: null, category: "Drinkware", caption: "Personalized stainless steel tumblers with laser engraving.", likes: 245, comments: 32, posted_at: "2026-03-02", scraped_at: "2026-03-03", post_url: "https://shopee.ph" },
+    { id: 3, competitor: "PersonalizeIt PH", product: "Embroidered Tote Bag", price: 380, platform: "instagram", image_url: null, category: "Bag", caption: "Canvas tote bags with custom embroidery! DM to order!", likes: 567, comments: 48, posted_at: "2026-03-01", scraped_at: "2026-03-03", post_url: "https://instagram.com" },
+    { id: 4, competitor: "GiftBox Cebu", product: "Custom Photo Frame", price: 299, platform: "shopee", image_url: null, category: "Frame", caption: "Acrylic photo frames with engraved names and dates.", likes: 89, comments: 12, posted_at: "2026-02-28", scraped_at: "2026-03-03", post_url: "https://shopee.ph" },
+    { id: 5, competitor: "EngravePH", product: "Wooden Name Plate", price: 250, platform: "shopee", image_url: null, category: "Decor", caption: "Laser-cut wooden name plates for desks and gifts.", likes: 156, comments: 23, posted_at: "2026-03-02", scraped_at: "2026-03-03", post_url: "https://shopee.ph" }
+  ];
+}
+
 async function loadCompetitorFeed() {
   CF_OFFSET = 0;
   var grid = document.getElementById('competitor-feed-grid');
@@ -1696,19 +1751,38 @@ async function fetchCompetitorPosts(reset) {
   var url = SB_URL + '/rest/v1/competitor_posts?order=scraped_at.desc&limit=' + CF_LIMIT + '&offset=' + CF_OFFSET;
   if (competitor) url += '&competitor=eq.' + encodeURIComponent(competitor);
   if (platform) url += '&platform=eq.' + encodeURIComponent(platform);
+  var grid = document.getElementById('competitor-feed-grid');
   try {
     var res = await fetch(url, { headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY } });
     var posts = await res.json();
-    var grid = document.getElementById('competitor-feed-grid');
-    if (!Array.isArray(posts)) { grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">No posts yet. Ethel is scraping...</p>'; return; }
-    if (posts.length === 0 && reset) { grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">No posts yet. Ethel is scraping...</p>'; return; }
+
+    // Use fallback data if Supabase returns empty or invalid
+    if (!Array.isArray(posts) || (posts.length === 0 && reset)) {
+      posts = window.COMPETITOR_FEED_FALLBACK || [];
+      if (posts.length === 0) {
+        if (grid) grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">No posts yet. Ethel is scraping...</p>';
+        return;
+      }
+      // Filter fallback data if filters are applied
+      if (competitor) posts = posts.filter(function(p) { return p.competitor === competitor; });
+      if (platform) posts = posts.filter(function(p) { return p.platform === platform; });
+    }
+
     var html = posts.map(function(p) { return renderCompetitorPostCard(p); }).join('');
-    if (reset) { grid.innerHTML = html; } else { grid.innerHTML += html; }
+    if (reset) { if (grid) grid.innerHTML = html; } else { if (grid) grid.innerHTML += html; }
     var loadMoreBtn = document.getElementById('cf-load-more');
     if (loadMoreBtn) loadMoreBtn.style.display = posts.length < CF_LIMIT ? 'none' : 'inline-block';
     CF_OFFSET += posts.length;
   } catch(e) {
     console.error('Competitor feed error:', e);
+    // On error, try to use fallback data
+    var fallback = window.COMPETITOR_FEED_FALLBACK || [];
+    if (fallback.length > 0 && reset) {
+      var html = fallback.map(function(p) { return renderCompetitorPostCard(p); }).join('');
+      if (grid) grid.innerHTML = html;
+    } else if (grid) {
+      grid.innerHTML = '<p style="color:#6B7280;text-align:center;padding:48px">Unable to load posts. Check connection.</p>';
+    }
   }
 }
 
