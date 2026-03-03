@@ -1,11 +1,36 @@
 // ===== DASHBOARD APP =====
-// v2.2.0 — 2026-03-03 — Fixed SB constants, image fallbacks, null guards, currency
+// v2.3.0 — 2026-03-03 — Added secure getAppSetting() for API key management via Supabase
 
 // ===== SUPABASE CONSTANTS =====
 // Read from sb.js config, with fallback to inline values
 const SB_URL = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.url) || 'https://fhfqjcvwcxizbioftvdw.supabase.co';
 const SB_KEY = (window.SUPABASE_CONFIG && window.SUPABASE_CONFIG.key) || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZoZnFqY3Z3Y3hpemJpb2Z0dmR3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzNTcxMzgsImV4cCI6MjA4NzkzMzEzOH0.g8K40DjhvxE7u4JdHICqKc1dMxS4eZdMhfA11M8ZMBc';
 const SB_HDRS = { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' };
+
+// ===== SECURE KEY LOADER =====
+// API keys are stored in Supabase app_settings table, not in code or localStorage
+let _appSettings = null;
+async function getAppSetting(key) {
+  if (!_appSettings) {
+    try {
+      if (!SB_URL || !SB_KEY) {
+        console.warn('[Dashboard] Supabase config not loaded');
+        _appSettings = {};
+        return null;
+      }
+      const res = await fetch(SB_URL + '/rest/v1/app_settings?select=key,value', {
+        headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+      });
+      const rows = await res.json();
+      _appSettings = {};
+      (rows || []).forEach(r => { _appSettings[r.key] = r.value; });
+    } catch(e) {
+      console.warn('[Dashboard] Failed to load app settings:', e.message);
+      _appSettings = {};
+    }
+  }
+  return _appSettings[key] || null;
+}
 
 let marketData = null;
 let suppliersData = null;
