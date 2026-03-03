@@ -430,3 +430,85 @@ window.FEED_DATA = {
     }
   ]
 };
+
+// ===== COMPETITOR FEED FALLBACK DATA =====
+// Used when Supabase competitor_posts table is empty or unavailable
+// This ensures the Competitor Feed page is never blank
+
+window.COMPETITOR_FEED_FALLBACK = [
+  {
+    "id": 1,
+    "competitor": "Giftaway PH",
+    "product": "Personalized Keychain",
+    "price": 149,
+    "platform": "shopee",
+    "image_url": null,
+    "category": "Keychain",
+    "caption": "Custom keychains with name engraving! Perfect for souvenirs and giveaways. Order now! 🔑✨",
+    "likes": 120,
+    "comments": 15,
+    "posted_at": "2026-03-01",
+    "scraped_at": "2026-03-03",
+    "post_url": "https://shopee.ph"
+  },
+  {
+    "id": 2,
+    "competitor": "CustomCraft PH",
+    "product": "Engraved Tumbler",
+    "price": 450,
+    "platform": "shopee",
+    "image_url": null,
+    "category": "Drinkware",
+    "caption": "Personalized stainless steel tumblers with laser engraving. Keep your drinks hot or cold in style! 🥤",
+    "likes": 245,
+    "comments": 32,
+    "posted_at": "2026-03-02",
+    "scraped_at": "2026-03-03",
+    "post_url": "https://shopee.ph"
+  },
+  {
+    "id": 3,
+    "competitor": "PersonalizeIt PH",
+    "product": "Embroidered Tote Bag",
+    "price": 380,
+    "platform": "instagram",
+    "image_url": null,
+    "category": "Bag",
+    "caption": "Canvas tote bags with custom embroidery! Perfect for everyday use or as a thoughtful gift. DM to order! 🛍️",
+    "likes": 567,
+    "comments": 48,
+    "posted_at": "2026-03-01",
+    "scraped_at": "2026-03-03",
+    "post_url": "https://instagram.com"
+  },
+  {
+    "id": 4,
+    "competitor": "GiftBox Cebu",
+    "product": "Custom Photo Frame",
+    "price": 299,
+    "platform": "shopee",
+    "image_url": null,
+    "category": "Frame",
+    "caption": "Acrylic photo frames with engraved names and dates. Perfect for weddings, birthdays, and anniversaries! 🖼️💕",
+    "likes": 89,
+    "comments": 12,
+    "posted_at": "2026-02-28",
+    "scraped_at": "2026-03-03",
+    "post_url": "https://shopee.ph"
+  },
+  {
+    "id": 5,
+    "competitor": "EngravePH",
+    "product": "Wooden Name Plate",
+    "price": 250,
+    "platform": "shopee",
+    "image_url": null,
+    "category": "Decor",
+    "caption": "Laser-cut wooden name plates for desks, doors, and gifts. Customizable fonts and sizes! 🪵✨",
+    "likes": 156,
+    "comments": 23,
+    "posted_at": "2026-03-02",
+    "scraped_at": "2026-03-03",
+    "post_url": "https://shopee.ph"
+  }
+];
