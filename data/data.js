@@ -5,6 +5,78 @@
 // Populated by Ethel 🕵️ — last updated: auto
 
 window.SUPPLIERS = [
+  // ── ENGRAVING SUPPLIES ──────────────────────────────────────────────────────
+  {
+    "name": "Artbox PH",
+    "platform": "Lazada + Shopee",
+    "category": "Engraving Supplies",
+    "products": ["Laser engraving machines", "Acrylic blanks", "Wooden blanks"],
+    "pricePerPiece": "₱150-5,000/pc (varies by item)",
+    "moq": 1,
+    "location": "Philippines (Online)",
+    "rating": 4.5,
+    "url": "https://shopee.ph/artboxph",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Main engraving blank supplier. Wide variety of acrylic and wooden blanks for laser engraving."
+  },
+  {
+    "name": "Blank & Co PH",
+    "platform": "Shopee + Facebook",
+    "category": "Engraving Blanks",
+    "products": ["Acrylic keychains", "Acrylic frames", "Wooden coasters", "Wooden boards"],
+    "pricePerPiece": "₱25-150/pc",
+    "moq": 10,
+    "location": "Philippines",
+    "rating": 4.4,
+    "url": "https://shopee.ph/search?keyword=engraving+blanks",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Bulk blanks for engraving. Good prices for acrylic keychains and wooden coasters."
+  },
+  {
+    "name": "Lazada PH - Engraving Machines",
+    "platform": "Lazada",
+    "category": "Equipment",
+    "products": ["xTool D1 laser engraver", "Sculpfun S9", "Comgrow laser cutters"],
+    "pricePerPiece": "₱15,000-50,000 (machines)",
+    "moq": 1,
+    "location": "Philippines (Online)",
+    "rating": 4.3,
+    "url": "https://www.lazada.com.ph/tag/laser-engraver/",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Machine sourcing. Compare xTool D1 vs Sculpfun for entry-level. COD available."
+  },
+  {
+    "name": "Shopee PH - Acrylic Suppliers",
+    "platform": "Shopee",
+    "category": "Raw Materials",
+    "products": ["Clear acrylic sheets", "Colored acrylic", "Acrylic rods", "Mirror acrylic"],
+    "pricePerPiece": "₱50-500/sheet",
+    "moq": 1,
+    "location": "Philippines",
+    "rating": 4.2,
+    "url": "https://shopee.ph/search?keyword=acrylic+sheet",
+    "isPromoActive": false,
+    "priority": "HIGH",
+    "notes": "Sheet cutting and custom sizes available. Search 'acrylic sheet laser cut' for pre-cut options."
+  },
+  {
+    "name": "AliExpress - Blank Suppliers",
+    "platform": "AliExpress (China)",
+    "category": "International Supplier",
+    "products": ["Sublimation blanks", "Engraving blanks", "Keychains", "Photo frames", "Acrylic standees"],
+    "pricePerPiece": "$0.50-5/pc (equiv ₱29-290)",
+    "moq": "20-100pc",
+    "location": "China (7-15 days shipping)",
+    "rating": 4.3,
+    "url": "https://www.aliexpress.com/wholesale?SearchText=engraving+blank",
+    "isPromoActive": false,
+    "priority": "MEDIUM",
+    "notes": "Bulk orders, low MOQ. Best for large quantity blanks. Use AliExpress Standard Shipping for tracking."
+  },
+
   // ── BAGS & POUCHES ──────────────────────────────────────────────────────────
   {
     "name": "JC Canvas PH",
